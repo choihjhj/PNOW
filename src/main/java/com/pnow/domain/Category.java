@@ -1,13 +1,14 @@
 package com.pnow.domain;
 
+import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.List;
-@Setter //jpa 테스트를 위해
 @Getter
 @Entity
+@NoArgsConstructor //기본생성자, JUnit test에서 @Builder사용하려고
 public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,5 +22,10 @@ public class Category {
 
     @OneToMany(mappedBy = "category", cascade = CascadeType.REMOVE)
     private List<Store> storeList;
+
+    @Builder
+    public Category(CategoryType categoryName) {
+        this.categoryName = categoryName;
+    }
 
 }
