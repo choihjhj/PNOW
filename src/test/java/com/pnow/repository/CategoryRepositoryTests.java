@@ -37,7 +37,6 @@ public class CategoryRepositoryTests {
 
         //then
         Category category = categoryList.get(0);
-        System.out.println("카테고리 이름 : " + category.getCategoryName());
         assertEquals(CategoryType.한식, category.getCategoryName());
 
     }
