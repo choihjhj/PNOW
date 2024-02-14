@@ -36,6 +36,9 @@ out/
 ### VS Code ###
 .vscode/
 
+#임시 제외
+src/main/java/com/pnow/config/
+
 # 스프링 시큐리티 보안 설정 제외
 application-oauth.properties
 src/main/java/com/pnow/config/auth/OAuth2Config.java

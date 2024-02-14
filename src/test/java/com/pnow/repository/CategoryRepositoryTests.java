@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @Slf4j
 //@ExtendWith(SpringExtension.class) //JUnit5 버전
-@SpringBootTest //자동으로 h2 데이터베이스 실행함
+@SpringBootTest() //자동으로 h2 데이터베이스 실행함
 public class CategoryRepositoryTests {
     @Autowired
     private CategoryRepository categoryRepository;
