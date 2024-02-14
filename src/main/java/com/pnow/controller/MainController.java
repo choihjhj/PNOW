@@ -1,5 +1,6 @@
 package com.pnow.controller;
 
+import com.pnow.domain.CategoryType;
 import com.pnow.service.StoreService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -13,6 +14,7 @@ public class MainController {
 
     @GetMapping("/")
     public String root(Model model) {
+        model.addAttribute("CategoryType", CategoryType.values());
         
         return "index";
 

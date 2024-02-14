@@ -64,11 +64,9 @@
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Store Category:</h6>
-                        <a class="collapse-item" th:href="@{/buttons.html}">한식</a>
-                        <a class="collapse-item" href="cards.html">중식</a>
-                        <a class="collapse-item" href="cards.html">일식</a>
-                        <a class="collapse-item" href="cards.html">양식</a>
-                        <a class="collapse-item" href="cards.html">카페</a>
+                        <th:block th:each="categoryName : ${CategoryType}">
+                            <a class="collapse-item" th:href="@{'/store/' + ${categoryName}} " th:text="${categoryName}">Category</a>
+                        </th:block>
                     </div>
                 </div>
             </li>
