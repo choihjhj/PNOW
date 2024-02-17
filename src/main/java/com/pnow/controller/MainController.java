@@ -15,12 +15,7 @@ public class MainController {
     @GetMapping("/")
     public String root(Model model) {
         model.addAttribute("CategoryType", CategoryType.values());
-        
-        return "index";
-
-        //category 1에 해당하는 list DB에서 불러와서 model에 담기
-
-        //return "redirect:/home";
+        return "home";
     }
 
 }
