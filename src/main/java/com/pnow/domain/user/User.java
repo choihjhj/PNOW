@@ -6,7 +6,6 @@ import com.pnow.domain.Reservation;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.List;
@@ -15,7 +14,6 @@ import java.util.List;
 @Table(name = "users") //user는 예약어라서 쓰면 안되니까 users라고 테이블명 셋팅
 @Entity
 @Getter
-@Setter //jpa 테스트를 위해
 public class User extends BaseTimeEntity {
 
     @Id

@@ -2,14 +2,13 @@ package com.pnow.domain;
 
 import com.pnow.domain.user.User;
 import lombok.Getter;
-import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
-@Setter //jpa 테스트를 위해
+
 @Getter
 @Entity
 @DynamicInsert //@ColumnDefault 사용하려고
