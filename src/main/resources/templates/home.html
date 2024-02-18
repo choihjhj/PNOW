@@ -57,12 +57,13 @@
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Store Category:</h6>
-                        <th:block th:each="categoryName : ${CategoryType}">
-                            <a class="collapse-item" th:href="@{'/store/' + ${categoryName}} "
-                               th:text="${categoryName}">Category</a>
-                        </th:block>
+                        <div th:each="category : ${categoryList}">
+                            <a class="collapse-item" th:href="@{'/store/' + ${category.id}}"
+                               th:text="${category.categoryName}">Category</a>
+                        </div>
                     </div>
                 </div>
+
             </li>
 
             <!-- Nav Item - Tables 예약목록-->
@@ -202,6 +203,7 @@
                         <!-- Nav Item - User Information -->
                         <li class="nav-item dropdown no-arrow">
                             <div class="nav-link dropdown-toggle" th:unless="${user}">
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Login : </span>
                                 <a th:href="@{/oauth2/authorization/google}" class="btn btn-success active"
                                    role="button">Google</a>
                             </div>
@@ -249,17 +251,17 @@
                     <p>플레이스 나우는 모든 음식점을 편하게 예약하고 방문할 수 있는 서비스를 제공해 주는 웹 사이트 입니다.</p>
                     <p>방문 전 웨이팅 없이 예약으로 오늘 하루를 즐기시길 바랍니다.</p>
                     <p>지금 바로 PlaceNOW를 즐기세요. &#127834;&#127835;&#127836;&#127837;&#127839;&#127843;&#127829;&#127847;&#127856;&#127828;&#127844;&#127867;</p>
-                    <div th:if="${user}">
-                        <span th:text="${user.getEmail()}"></span>
-                    </div>
-                    <div th:unless="${user}">
-                        <a th:href="@{/oauth2/authorization/google}" class="btn btn-success active"
-                           role="button">Google</a>
-                    </div>
-                    <div th:if="${user}">
-                        Logged in as : <span id="user" th:text="${user.getName()}"></span>
-                        <a th:href="@{/logout}" class="btn btn-info active" role="button">Logout</a>
-                    </div>
+<!--                    <div th:if="${user}">-->
+<!--                        <span th:text="${user.getEmail()}"></span>-->
+<!--                    </div>-->
+<!--                    <div th:unless="${user}">-->
+<!--                        <a th:href="@{/oauth2/authorization/google}" class="btn btn-success active"-->
+<!--                           role="button">Google</a>-->
+<!--                    </div>-->
+<!--                    <div th:if="${user}">-->
+<!--                        Logged in as : <span id="user" th:text="${user.getName()}"></span>-->
+<!--                        <a th:href="@{/logout}" class="btn btn-info active" role="button">Logout</a>-->
+<!--                    </div>-->
                 </div>
                 <!-- /.container-fluid -->
 
