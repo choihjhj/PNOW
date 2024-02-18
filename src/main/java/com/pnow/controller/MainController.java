@@ -7,8 +7,8 @@ import com.pnow.service.CategoryService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -17,16 +17,14 @@ import java.util.List;
 public class MainController {
 
     private final CategoryService categoryService;
+    private final HttpSession httpSession;
 
     @GetMapping("/")
-    public String root(Model model, @LoginUser SessionUser user) {
+    public String root(@LoginUser SessionUser user) {
         List<Category> categoryList = categoryService.categoryList();
-        model.addAttribute("categoryList", categoryList);
-        log.info("카테고리List 객체 : {}",categoryList);
 
-        if( user != null){
-            model.addAttribute("user",user);
-        }
+        httpSession.setAttribute("categoryList", categoryList); //model이 아닌 세션에 저장
+
         return "home";
     }
 
