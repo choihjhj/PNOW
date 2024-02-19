@@ -8,7 +8,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -27,6 +26,10 @@ public class StoreController {
         model.addAttribute("categoryName", categoryType.name()); // CategoryType의 이름을 모델에 추가
 
         return "store/storeList";
+    }
+    @GetMapping ("/store/detail/{id}")
+    public String storeDetail(Model model, @PathVariable("id") Long id){
+        return "store/storeDetail";
     }
 
 }
