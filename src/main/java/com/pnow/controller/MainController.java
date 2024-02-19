@@ -24,7 +24,7 @@ public class MainController {
         List<Category> categoryList = categoryService.categoryList();
 
         httpSession.setAttribute("categoryList", categoryList); //model이 아닌 세션에 저장
-
+//        return "index";
         return "home";
     }
 

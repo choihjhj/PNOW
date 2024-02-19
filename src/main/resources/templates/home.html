@@ -65,7 +65,7 @@
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Store Category:</h6>
                         <div th:each="category :  ${#session.getAttribute('categoryList')}">
-                        <a class="collapse-item" th:href="@{'/store/' + ${category.id}}"
+                        <a class="collapse-item" th:href="@{'/store/category/' + ${category.id}}"
                                th:text="${category.categoryName}">Category</a>
                         </div>
                     </div>
