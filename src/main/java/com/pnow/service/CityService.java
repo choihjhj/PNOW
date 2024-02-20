@@ -1,19 +1,20 @@
 package com.pnow.service;
 
-import com.pnow.domain.Category;
-import com.pnow.repository.CategoryRepository;
+import com.pnow.domain.City;
+import com.pnow.repository.CityRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
 
 @RequiredArgsConstructor
 @Service
-public class CategoryService {
-    private final CategoryRepository categoryRepository;
+public class CityService {
+    private final CityRepository cityRepository;
 
     @Transactional(readOnly = true)
-    public List<Category> getCategoryList(){
-        return categoryRepository.findAll();
+    public List<City> getCityList(){
+        return cityRepository.findAll();
     }
 }

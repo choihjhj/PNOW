@@ -1,7 +1,6 @@
 package com.pnow.domain;
 
 import lombok.Getter;
-
 import javax.persistence.*;
 import java.time.LocalTime;
 import java.util.List;
@@ -22,8 +21,12 @@ public class Store {
     @Column(nullable = false)
     private String storeName; //음식점명
 
-    @Column
-    private String address; //음식점 주소
+    @ManyToOne
+    @JoinColumn(name = "district_id")
+    private District district; //시군구 district_id (도 관련 city_id도 내포되어 있음)
+
+    @Column(nullable = false)
+    private String detailAddress; //나머지 상세주소
 
     @Column
     private String phoneNumber; //음식점 전화번호
@@ -45,8 +48,5 @@ public class Store {
 
     @OneToMany(mappedBy = "store", cascade = CascadeType.REMOVE)
     private List<Menu> menuList;
-
-
-
 
 }

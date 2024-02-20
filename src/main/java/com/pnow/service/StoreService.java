@@ -14,11 +14,11 @@ public class StoreService {
     private final StoreRepository storeRepository;
     public List<Store> getStoreList(Long categoryId){
         List<Store> storeList = storeRepository.findByCategoryId(categoryId);
-        if(storeList != null){
-            return storeList;
-        } else {
-            throw new DataNotFoundException("storeList not found");
+        if(storeList.isEmpty()){
+            throw new DataNotFoundException("No store found for category with ID: " + categoryId);
         }
+        return storeList;
+
 
     }
 }

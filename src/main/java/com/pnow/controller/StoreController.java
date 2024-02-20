@@ -15,7 +15,7 @@ import java.util.List;
 public class StoreController {
     private final StoreService storeService;
 
-    @GetMapping("/store/category/{categoryId}")
+    @GetMapping("/store/list/{categoryId}")
     public String store(Model model,@PathVariable("categoryId") Long categoryId){
         //전달받은 categoryId에 해당하는 store 리스트 모델에 저장
         List<Store> storeList = storeService.getStoreList(categoryId);
