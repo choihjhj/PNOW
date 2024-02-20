@@ -16,6 +16,32 @@
     <!-- jQuery -->
     <script src="/vendor/jquery/jquery.min.js"></script>
     <!-- jQuery 이후에 나머지 스크립트 실행 -->
+    <!-- 도/특별시 city_id 선택 되었을 때 districtList 얻어오는 ajax (추가로 컨트롤러 세션에 cityId 저장함) -->
+    <script th:inline="javascript">
+        $(document).ready(function() {
+            $('#sido').change(function() {
+                var selectedCityId = $(this).val();
+                $.ajax({
+                    type: 'GET',
+                    url: '/district/' + selectedCityId,
+                    success: function(data) {
+                        var options = '';
+                        $.each(data, function(index, district) {
+                            options += '<option value="' + district.id + '">' + district.districtName + '</option>';
+                        });
+                        $('#sigungu').html(options);
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Failed to retrieve district list:', error);
+                    }
+                });
+            });
+        });
+
+
+
+    </script>
+    <!-- 도, 시군구 select 부분 end -->
 </head>
 <head>
     <style>
@@ -135,7 +161,7 @@
                     <div>
                         <label>도/특별시 선택</label>
                         <select name="sido" id="sido">
-                            <option value="전체" selected>전체</option>
+<!--                            <option value="전체" selected>전체</option>-->
                             <option th:each="city : ${#session.getAttribute('cityList')}"
                                     th:value="${city.id}"
                                     th:text="${city.cityName}"></option>
@@ -144,35 +170,10 @@
                     <div>
                         <label>주소 소분류</label>
                         <select name="sigungu" id="sigungu">
-                            <option value="-----" selected>-----</option>
+<!--                            <option value="-&#45;&#45;&#45;&#45;" selected>-&#45;&#45;&#45;&#45;</option>-->
                         </select>
                     </div>
-                    <!-- 도/특별시 city_id 선택 되었을 때 districtList 얻어오는 ajax (추가로 컨트롤러 세션에 cityId 저장함) -->
-                    <script th:inline="javascript">
-                        $(document).ready(function() {
-                            $('#sido').change(function() {
-                                var selectedCityId = $(this).val();
-                                $.ajax({
-                                    type: 'GET',
-                                    url: '/district/' + selectedCityId,
-                                    success: function(data) {
-                                        var options = '';
-                                        $.each(data, function(index, district) {
-                                            options += '<option value="' + district.id + '">' + district.districtName + '</option>';
-                                        });
-                                        $('#sigungu').html(options);
-                                    },
-                                    error: function(xhr, status, error) {
-                                        console.error('Failed to retrieve district list:', error);
-                                    }
-                                });
-                            });
-                        });
 
-
-
-                    </script>
-                    <!-- 도, 시군구 select 부분 end -->
                     <!-- Topbar Navbar -->
                     <ul class="navbar-nav ml-auto">
                         <!-- Nav Item - Search Dropdown (Visible Only XS) -->

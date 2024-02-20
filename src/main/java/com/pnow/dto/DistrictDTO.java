@@ -11,7 +11,7 @@ public class DistrictDTO {
     private String districtName;
 
     // 필드를 초기화하는 생성자 추가
-    public DistrictDTO(Long id, String districtName) {
+    public DistrictDTO(Long id,String districtName) {
         this.id = id;
         this.districtName = districtName;
     }
