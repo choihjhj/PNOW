@@ -2,6 +2,7 @@ package com.pnow.controller;
 
 import com.pnow.domain.Category;
 import com.pnow.domain.City;
+import com.pnow.dto.StoreDTO;
 import com.pnow.service.CategoryService;
 import com.pnow.service.CityService;
 import com.pnow.service.StoreService;
@@ -12,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseBody;
+
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -51,11 +53,12 @@ public class StoreController {
      * */
     @GetMapping("/store/list/{categoryId}/{cityId}/{districtId}")
     @ResponseBody
-    public void /*List<StoreDTO>*/ storeListRead(@PathVariable("categoryId") Long categoryId,
-                                        @PathVariable("cityId") Long cityId,
-                                        @PathVariable("districtId") Long districtId) {
+    public List<StoreDTO> storeListRead(@PathVariable("categoryId") Long categoryId,
+                                          @PathVariable("cityId") Long cityId,
+                                          @PathVariable("districtId") Long districtId) {
         log.info("/store/list/{categoryId}/{cityId}'/{districtId} get 메소드 진입. " +
                 "categoryId = {}, cityId = {}, districtId = {}", categoryId, cityId, districtId);
+        return storeService.findStoreDTOList(categoryId, cityId, districtId);
 
     }
 

@@ -42,9 +42,8 @@
                     type: 'GET',
                     url: '/store/list/' + categoryId + '/' + selectedCityId + '/' + selectedDistrictId,
                     success: function (data) {
-                        alert("/store/list/{categoryId}/{cityId}/{districtId} 접속하고옴")
-                        // 받아온 데이터를 처리하는 코드를 추가할 수 있습니다.
-                        // 예를 들어, 받아온 데이터를 가지고 화면에 표시하는 등의 작업을 수행할 수 있습니다.
+                        alert("data"+data)
+
                     },
                     error: function (xhr, status, error) {
                         console.error('Failed to retrieve store list:', error);
