@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="home :: header"></head>
+<head>
+    <script th:inline="javascript">
+        $(document).ready(function () {
+            <!-- cityId 선택 되었을 때 districtList 얻어오는 ajax -->
+            $('#sido').change(function () {
+                var selectedCityId = $(this).val();
+                $.ajax({
+                    type: 'GET',
+                    url: '/district/list/' + selectedCityId,
+                    success: function (data) {
+                        var options = '';
+                        $.each(data, function (index, district) {
+                            options += '<option value="' + district.id + '">' + district.districtName + '</option>';
+                        });
+                        $('#sigungu').html(options);
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('Failed to retrieve district list:', error);
+                    }
+                });
+            });
+            <!-- cityId 선택 되었을 때 districtList 얻어오는 ajax END -->
+
+
+            <!-- districtId 선택 되었을 때 한식/중식/일식/양식/카페 a태그들 href 동적으로 변경 -->
+            $('#sigungu').change(function () {
+                var selectedCityId = $('#sido').val(); // 선택된 cityId 가져오기
+                var selectedDistrictId = $(this).val(); // 선택된 districtId 가져오기
+                alert("여기까지는 됨");
+                $('#categoryLink0').attr('href', '/store/list/' + $('#category0Id').val() + '/' + selectedCityId + '/' + selectedDistrictId);
+                $('#categoryLink1').attr('href', '/store/list/' + $('#category1Id').val() + '/' + selectedCityId + '/' + selectedDistrictId);
+                $('#categoryLink2').attr('href', '/store/list/' + $('#category2Id').val() + '/' + selectedCityId + '/' + selectedDistrictId);
+                $('#categoryLink3').attr('href', '/store/list/' + $('#category3Id').val() + '/' + selectedCityId + '/' + selectedDistrictId);
+                $('#categoryLink4').attr('href', '/store/list/' + $('#category4Id').val() + '/' + selectedCityId + '/' + selectedDistrictId);
+
+
+                // $('input[name="selectedCityId"]').val(selectedCityId);
+                // $('input[name="selectedDistrictId"]').val(selectedDistrictId);
+                //
+                // // 카테고리 링크의 href 속성을 동적으로 변경
+                // $('#categoryLink0').attr('href', '/store/list/' + $('input[name="categoryList[0].id"]').val() + '/' + selectedCityId + '/' + selectedDistrictId);
+                // $('#categoryLink1').attr('href', '/store/list/' + $('input[name="categoryList[1].id"]').val() + '/' + selectedCityId + '/' + selectedDistrictId);
+                // $('#categoryLink2').attr('href', '/store/list/' + $('input[name="categoryList[2].id"]').val() + '/' + selectedCityId + '/' + selectedDistrictId);
+                // $('#categoryLink3').attr('href', '/store/list/' + $('input[name="categoryList[3].id"]').val() + '/' + selectedCityId + '/' + selectedDistrictId);
+                // $('#categoryLink4').attr('href', '/store/list/' + $('input[name="categoryList[4].id"]').val() + '/' + selectedCityId + '/' + selectedDistrictId);
+
+            });
+            <!-- districtId 선택 되었을 때 한식/중식/일식/양식/카페 a태그들 href 동적으로 변경 END -->
+
+        });
+    </script>
+</head>
+<body id="page-top" th:classappend="${bodyClass}">
+<!-- Page Wrapper -->
+<div id="wrapper">
+    <!-- Sidebar -->
+    <div th:replace="home :: sidebar"/>
+    <!-- End of Sidebar -->
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+        <!-- Main Content -->
+        <div id="content">
+            <!-- Topbar -->
+            <div th:replace="home :: topbar"/>
+            <!-- End of Topbar -->
+
+            <!-- Begin Page Content -->
+            <div class="container-fluid">
+                <!-- Page Heading -->
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <!--                    <span class="h3 mb-4 text-gray-800" th:text="Buttons"></span>-->
+                        <h6 class="m-0 font-weight-bold text-primary">카테고리 선택</h6>
+                    </div>
+
+                    <div class="card-body">
+                        <!-- 카테고리(한식/중식/일식/양식/카페) 클릭 부분 -->
+                        <a id="categoryLink0"  href="#" class="btn btn-primary btn-icon-split">
+                            <input type="hidden" id="category0Id" th:value="${categoryList[0].getId()}"/>
+                            <span class="text" th:text="${categoryList[0].getCategoryName()}"></span>
+                        </a>
+                        <a id="categoryLink1"  href="#" class="btn btn-success btn-icon-split">
+                            <input type="hidden" id="category1Id" th:value="${categoryList[1].getId()}"/>
+                            <span class="text" th:text="${categoryList[1].getCategoryName()}"></span>
+                        </a>
+                        <a id="categoryLink2"  href="#" class="btn btn-info btn-icon-split">
+                            <input type="hidden" id="category2Id" th:value="${categoryList[2].getId()}"/>
+                            <span class="text" th:text="${categoryList[2].getCategoryName()}"></span>
+                        </a>
+                        <a id="categoryLink3"  href="#" class="btn btn-warning btn-icon-split">
+                            <input type="hidden" id="category3Id" th:value="${categoryList[3].getId()}"/>
+                            <span class="text" th:text="${categoryList[3].getCategoryName()}"></span>
+                        </a>
+                        <a id="categoryLink4"  href="#" class="btn btn-danger btn-icon-split">
+                            <input type="hidden" id="category4Id" th:value="${categoryList[4].getId()}"/>
+                            <span class="text" th:text="${categoryList[4].getCategoryName()}"></span>
+                        </a>
+                        <!-- 카테고리(한식/중식/일식/양식/카페) 클릭 부분 END -->
+
+                        <!-- 도, 시군구 위치 선택 select 부분 -->
+                        <label>위치 선택: </label>
+                        <select name="sido" id="sido">-->
+                            <!--                            <option value="전체">전체</option>-->
+                            <option th:each="city : ${cityList}"
+                                    th:value="${city.id}"
+                                    th:text="${city.cityName}"></option>
+                        </select>
+                        <select name="sigungu" id="sigungu">
+                            <option value="----">----</option>
+                        </select>
+                        <!-- 도, 시군구 위치 선택 select 부분 END -->
+                    </div>
+                </div>
+
+            </div>
+            <!-- /.container-fluid -->
+
+        </div>
+        <!-- End of Main Content -->
+    </div>
+    <!-- End of Content Wrapper -->
+</div>
+<!-- End of Page Wrapper -->
+<div th:replace="home :: footer"/>
+</body>
+</html>

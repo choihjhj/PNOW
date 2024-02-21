@@ -18,33 +18,35 @@
             <!-- Begin Page Content -->
             <div class="container-fluid">
                 <!-- Page Heading -->
-                <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                    <h1 class="h3 mb-0 text-gray-800" th:text="${categoryName}">
-                        <i class="fas fa-laugh-wink"></i>
-                    </h1>
-                </div>
-                <div class="row" style="display: flex; flex-wrap: wrap;">
-                    <div th:each="store : ${storeList}" class="col-xl-3 col-md-6 mb-4">
-                        <div class="card border-left-info shadow h-100 py-2">
-                            <div class="card-body">
-                                <div class="row no-gutters align-items-center">
-                                    <div class="col mr-2">
-                                        <a th:href="@{'/store/detail/' + ${store.id} }">
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800" th:text="${store.storeName}">가게이름</div>
-                                        </a>
-                                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1" th:text="${store.address}">가게주소</div>
-                                        <div class="text-xs font-weight-bold text-success text-uppercase mb-1" th:text="${store.openingTime} +'-'+ ${store.closingTime}">영업시간</div>
-                                    </div>
-                                    <div class="col-auto">
-                                        <a th:href="@{'/store/detail/' + ${store.id} }">
-                                            <img th:src="@{'/img/' + ${store.storeName} + '.PNG'}" alt="가게 이미지" style="width: 50px; height: auto;">
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <!--                -->
+                <!--                <div class="d-sm-flex align-items-center justify-content-between mb-4">-->
+                <!--                    <h1 class="h3 mb-0 text-gray-800" th:text="${categoryName}">-->
+                <!--                        <i class="fas fa-laugh-wink"></i>-->
+                <!--                    </h1>-->
+                <!--                </div>-->
+                <!--                <div class="row" style="display: flex; flex-wrap: wrap;">-->
+                <!--                    <div th:each="store : ${storeList}" class="col-xl-3 col-md-6 mb-4">-->
+                <!--                        <div class="card border-left-info shadow h-100 py-2">-->
+                <!--                            <div class="card-body">-->
+                <!--                                <div class="row no-gutters align-items-center">-->
+                <!--                                    <div class="col mr-2">-->
+                <!--                                        <a th:href="@{'/store/detail/' + ${store.id} }">-->
+                <!--                                            <div class="h5 mb-0 font-weight-bold text-gray-800" th:text="${store.storeName}">가게이름</div>-->
+                <!--                                        </a>-->
+                <!--                                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1" th:text="${store.address}">가게주소</div>-->
+                <!--                                        <div class="text-xs font-weight-bold text-success text-uppercase mb-1" th:text="${store.openingTime} +'-'+ ${store.closingTime}">영업시간</div>-->
+                <!--                                    </div>-->
+                <!--                                    <div class="col-auto">-->
+                <!--                                        <a th:href="@{'/store/detail/' + ${store.id} }">-->
+                <!--                                            <img th:src="@{'/img/' + ${store.storeName} + '.PNG'}" alt="가게 이미지" style="width: 50px; height: auto;">-->
+                <!--                                        </a>-->
+                <!--                                    </div>-->
+                <!--                                </div>-->
+                <!--                            </div>-->
+                <!--                        </div>-->
+                <!--                    </div>-->
+                <!--                </div>-->
+                <!--                -->
             </div>
             <!-- /.container-fluid -->
 
@@ -55,5 +57,21 @@
 </div>
 <!-- End of Page Wrapper -->
 <div th:replace="home :: footer"/>
+<!-- Script to set selected cityId and districtId -->
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    $(document).ready(function() {
+        // 이전에 선택한 cityId와 districtId를 가져와서 선택된 값으로 설정
+        var selectedCityId = /*[[${httpSession.getAttribute("cityId")}]]*/;
+        var selectedDistrictId = /*[[${httpSession.getAttribute("districtId")}]]*/;
+
+        // 선택된 cityId와 districtId가 있는지 확인하고, 있을 경우 해당 값으로 select 요소를 설정
+        if (selectedCityId && selectedDistrictId) {
+            $('#sido').val(selectedCityId).change(); // cityId를 선택된 값으로 설정하고 이에 대한 change 이벤트를 발생시킴
+            $('#sigungu').val(selectedDistrictId); // districtId를 선택된 값으로 설정
+        }
+    });
+    /*]]>*/
+</script>
 </body>
 </html>

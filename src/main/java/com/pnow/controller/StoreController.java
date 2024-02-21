@@ -1,35 +1,67 @@
 package com.pnow.controller;
 
-import com.pnow.domain.CategoryType;
-import com.pnow.domain.Store;
+import com.pnow.domain.Category;
+import com.pnow.domain.City;
+import com.pnow.service.CategoryService;
+import com.pnow.service.CityService;
 import com.pnow.service.StoreService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+
 import java.util.List;
 
 @RequiredArgsConstructor
 @Controller
+@Slf4j
 public class StoreController {
     private final StoreService storeService;
+    private final CategoryService categoryService;
+    private final CityService cityService;
 
+    /*
+    * categoryList, cityList 조회 후 model에 담아주는 메소드
+    * */
+    @GetMapping("/store")
+    public String store(Model model){
+        log.info("/store get 메소드 진입");
+
+        //category목록 조회 후 model에 데이터 저장
+        List<Category> categoryList = categoryService.findCategoryList();
+        model.addAttribute("categoryList", categoryList);
+
+        //city목록 조회 후 model에 데이터 저장
+        List<City> cityList = cityService.findCityList();
+        model.addAttribute("cityList", cityList);
+
+        return "/store/store";
+    }
+
+
+/*
     @GetMapping("/store/list/{categoryId}")
-    public String store(Model model,@PathVariable("categoryId") Long categoryId){
-        //전달받은 categoryId에 해당하는 store 리스트 모델에 저장
+    public String storeListRead(Model model, @PathVariable("categoryId") Long categoryId, HttpSession httpSession) {
+        // 전달받은 categoryId에 해당하는 store 리스트 모델에 저장
         List<Store> storeList = storeService.getStoreList(categoryId);
-        model.addAttribute("storeList",storeList);
+        model.addAttribute("storeList", storeList);
+
+        // 세션이 존재하고 cityId 속성이 존재하는 경우에만 모델에 추가
+        if (httpSession != null && httpSession.getAttribute("cityId") != null) {
+            model.addAttribute("cityId", httpSession.getAttribute("cityId"));
+        }
 
         // categoryId에 해당하는 CategoryType의 이름을 가져와서 모델에 추가, enum 활용
-        CategoryType categoryType = CategoryType.values()[categoryId.intValue()-1]; // categoryId를 이용하여 CategoryType을 가져옴, 배열은 0번지부터시작, enum은 1번지부터 시작
+        CategoryType categoryType = CategoryType.values()[categoryId.intValue() - 1]; // categoryId를 이용하여 CategoryType을 가져옴, 배열은 0번지부터시작, enum은 1번지부터 시작
         model.addAttribute("categoryName", categoryType.name()); // CategoryType의 이름을 모델에 추가
 
         return "store/storeList";
     }
+
     @GetMapping ("/store/detail/{id}")
     public String storeDetail(Model model, @PathVariable("id") Long id){
         return "store/storeDetail";
     }
-
+*/
 }

@@ -13,7 +13,7 @@ public class CategoryService {
     private final CategoryRepository categoryRepository;
 
     @Transactional(readOnly = true)
-    public List<Category> getCategoryList(){
+    public List<Category> findCategoryList(){
         return categoryRepository.findAll();
     }
 }

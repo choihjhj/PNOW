@@ -14,7 +14,7 @@ public class CityService {
     private final CityRepository cityRepository;
 
     @Transactional(readOnly = true)
-    public List<City> getCityList(){
+    public List<City> findCityList(){
         return cityRepository.findAll();
     }
 }

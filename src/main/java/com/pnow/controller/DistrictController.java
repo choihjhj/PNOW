@@ -19,18 +19,18 @@ public class DistrictController {
 
     @GetMapping("/district/list/{cityId}")
     public List<DistrictDTO> districtListRead(@PathVariable("cityId") Long cityId){
-        log.info("districtDTO 목록 조회 메소드 진입. cityId: {}", cityId);
-
-        //선택된 데이터(cityId) 세션에 저장
-        httpSession.setAttribute("cityId",cityId);
+        log.info("/district/list/{cityId} get 메소드 진입. cityId = {}", cityId);
+//
+//        //선택된 데이터(cityId) 세션에 저장
+//        httpSession.setAttribute("cityId",cityId);
 
         // DistrictDTO 반환
         return districtService.findDistrictsWithCityId(cityId);
     }
-    @GetMapping("/district/{districtId}")
-    public void districtIdSessionSet(@PathVariable("districtId") Long districtId){
-        log.info("districtId 세션에 저장 메소드 진입. districtId: {}", districtId);
-        //선택된 데이터(districtId) 세션에 저장
-        httpSession.setAttribute("districtId",districtId);
-    }
+//    @GetMapping("/district/{districtId}")
+//    public void districtIdSessionSet(@PathVariable("districtId") Long districtId){
+//        log.info("districtId 세션에 저장 메소드 진입. districtId: {}", districtId);
+//        //선택된 데이터(districtId) 세션에 저장
+//        httpSession.setAttribute("districtId",districtId);
+//    }
 }

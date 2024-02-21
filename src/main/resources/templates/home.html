@@ -17,45 +17,44 @@
     <script src="/vendor/jquery/jquery.min.js"></script>
     <!-- jQuery 이후에 나머지 스크립트 실행 -->
     <!-- 도/특별시 city_id 선택 되었을 때 districtList 얻어오는 ajax (추가로 컨트롤러 세션에 cityId 저장함) -->
-    <script th:inline="javascript">
-        $(document).ready(function() {
-            $('#sido').change(function() {
-                var selectedCityId = $(this).val();
-                $.ajax({
-                    type: 'GET',
-                    url: '/district/list/' + selectedCityId,
-                    success: function(data) {
-                        var options = '';
-                        $.each(data, function(index, district) {
-                            options += '<option value="' + district.id + '">' + district.districtName + '</option>';
-                        });
-                        $('#sigungu').html(options);
-                    },
-                    error: function(xhr, status, error) {
-                        console.error('Failed to retrieve district list:', error);
-                    }
-                });
-            });
-            $('#sigungu').change(function() {
-                var selectedDistrictId = $(this).val();
-                $.ajax({
-                    type: 'GET',
-                    url: '/district/' + selectedDistrictId,
-                    success: function(data) {
-                        // 아무 작업도 수행하지 않음
-                    },
-                    error: function(xhr, status, error) {
-                        console.error('Failed to insert session districtId:', error);
-                    }
+    <!--    <script th:inline="javascript">-->
+    <!--        $(document).ready(function() {-->
+    <!--            $('#sido').change(function() {-->
+    <!--                var selectedCityId = $(this).val();-->
+    <!--                $.ajax({-->
+    <!--                    type: 'GET',-->
+    <!--                    url: '/district/list/' + selectedCityId,-->
+    <!--                    success: function(data) {-->
+    <!--                        var options = '';-->
+    <!--                        $.each(data, function(index, district) {-->
+    <!--                            options += '<option value="' + district.id + '">' + district.districtName + '</option>';-->
+    <!--                        });-->
+    <!--                        $('#sigungu').html(options);-->
+    <!--                    },-->
+    <!--                    error: function(xhr, status, error) {-->
+    <!--                        console.error('Failed to retrieve district list:', error);-->
+    <!--                    }-->
+    <!--                });-->
+    <!--            });-->
+    <!--            $('#sigungu').change(function() {-->
+    <!--                var selectedDistrictId = $(this).val();-->
+    <!--                $.ajax({-->
+    <!--                    type: 'GET',-->
+    <!--                    url: '/district/' + selectedDistrictId,-->
+    <!--                    success: function(data) {-->
+    <!--                        // 아무 작업도 수행하지 않음-->
+    <!--                    },-->
+    <!--                    error: function(xhr, status, error) {-->
+    <!--                        console.error('Failed to insert session districtId:', error);-->
+    <!--                    }-->
 
-                });
+    <!--                });-->
 
-            });
-        });
+    <!--            });-->
+    <!--        });-->
 
 
-
-    </script>
+    <!--    </script>-->
     <!-- 도, 시군구 select 부분 end -->
 </head>
 <head>
@@ -94,22 +93,22 @@
             <div class="sidebar-heading">
                 Interface
             </div>
-            <!-- Nav Item - Pages Collapse Menu 카테고리-->
+
+            <!--                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">-->
+            <!--                    <div class="bg-white py-2 collapse-inner rounded">-->
+            <!--                        <h6 class="collapse-header">Store Category:</h6>-->
+            <!--                        <div th:each="category :  ${#session.getAttribute('categoryList')}">-->
+            <!--                            <a class="collapse-item" th:href="@{'/store/list/' + ${category.id}}"-->
+            <!--                               th:text="${category.categoryName}">Category</a>-->
+            <!--                        </div>-->
+            <!--                    </div>-->
+            <!--                </div>-->
+            </li>
+            <!-- Nav Item - Tables 맛집 카테고리-->
             <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
-                   aria-expanded="true" aria-controls="collapseTwo">
-                    <i class="fas fa-fw fa-cog"></i>
-                    <span>카테고리</span>
-                </a>
-                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Store Category:</h6>
-                        <div th:each="category :  ${#session.getAttribute('categoryList')}">
-                            <a class="collapse-item" th:href="@{'/store/list/' + ${category.id}}"
-                               th:text="${category.categoryName}">Category</a>
-                        </div>
-                    </div>
-                </div>
+                <a class="nav-link" th:href="@{/store}">
+                    <i class="fas fa-fw fa-chart-area"></i>
+                    <span>맛집 카테고리</span></a>
             </li>
             <!-- Nav Item - Tables 예약목록-->
             <li class="nav-item">
@@ -173,22 +172,22 @@
                         </div>
                     </form>
                     <!-- 도, 시군구 select 부분 -->
-                    <div>
-                        <label>도/특별시 선택</label>
-                        <select name="sido" id="sido">
-<!--                            <option value="전체" selected>전체</option>-->
-                            <option th:each="city : ${#session.getAttribute('cityList')}"
-                                    th:value="${city.id}"
-                                    th:text="${city.cityName}"></option>
-                        </select>
-                    </div>
-                    <div>
-                        <label>주소 소분류</label>
-                        <select name="sigungu" id="sigungu">
-<!--                            <option value="-&#45;&#45;&#45;&#45;" selected>-&#45;&#45;&#45;&#45;</option>-->
-                        </select>
-                    </div>
-
+                    <!--                    <div>-->
+                    <!--                        <label>도/특별시 선택</label>-->
+                    <!--                        <select name="sido" id="sido">-->
+                    <!--&lt;!&ndash;                            <option value="전체" selected>전체</option>&ndash;&gt;-->
+                    <!--                            <option th:each="city : ${#session.getAttribute('cityList')}"-->
+                    <!--                                    th:value="${city.id}"-->
+                    <!--                                    th:text="${city.cityName}"></option>-->
+                    <!--                        </select>-->
+                    <!--                    </div>-->
+                    <!--                    <div>-->
+                    <!--                        <label>주소 소분류</label>-->
+                    <!--                        <select name="sigungu" id="sigungu">-->
+                    <!--&lt;!&ndash;                            <option value="-&#45;&#45;&#45;&#45;" selected>-&#45;&#45;&#45;&#45;</option>&ndash;&gt;-->
+                    <!--                        </select>-->
+                    <!--                    </div>-->
+                    <!-- 도, 시군구 select 부분 END-->
                     <!-- Topbar Navbar -->
                     <ul class="navbar-nav ml-auto">
                         <!-- Nav Item - Search Dropdown (Visible Only XS) -->
@@ -303,7 +302,7 @@
         <i class="fas fa-angle-up"></i>
     </a>
     <!-- Bootstrap core JavaScript-->
-<!--    <script src="/vendor/jquery/jquery.min.js"></script>-->
+    <!--    <script src="/vendor/jquery/jquery.min.js"></script>-->
     <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
     <!-- Core plugin JavaScript-->
     <script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
