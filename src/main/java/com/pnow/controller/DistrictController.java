@@ -17,6 +17,11 @@ public class DistrictController {
     private final DistrictService districtService;
     private final HttpSession httpSession;
 
+    /*
+     * 지역 조회
+     * GET /district/list/{cityId}
+     * return List<DistrictDTO>
+     * */
     @GetMapping("/district/list/{cityId}")
     public List<DistrictDTO> districtListRead(@PathVariable("cityId") Long cityId){
         log.info("/district/list/{cityId} get 메소드 진입. cityId = {}", cityId);
@@ -24,7 +29,7 @@ public class DistrictController {
 //        //선택된 데이터(cityId) 세션에 저장
 //        httpSession.setAttribute("cityId",cityId);
 
-        // DistrictDTO 반환
+        // DistrictDTO List 반환
         return districtService.findDistrictsWithCityId(cityId);
     }
 //    @GetMapping("/district/{districtId}")

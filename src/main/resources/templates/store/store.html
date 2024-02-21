@@ -25,30 +25,33 @@
             <!-- cityId 선택 되었을 때 districtList 얻어오는 ajax END -->
 
 
-            <!-- districtId 선택 되었을 때 한식/중식/일식/양식/카페 a태그들 href 동적으로 변경 -->
+            <!-- 지역 선택 되었을 때 선택된 cityId, districtId 변수에 저장 -->
             $('#sigungu').change(function () {
                 var selectedCityId = $('#sido').val(); // 선택된 cityId 가져오기
                 var selectedDistrictId = $(this).val(); // 선택된 districtId 가져오기
-                alert("여기까지는 됨");
-                $('#categoryLink0').attr('href', '/store/list/' + $('#category0Id').val() + '/' + selectedCityId + '/' + selectedDistrictId);
-                $('#categoryLink1').attr('href', '/store/list/' + $('#category1Id').val() + '/' + selectedCityId + '/' + selectedDistrictId);
-                $('#categoryLink2').attr('href', '/store/list/' + $('#category2Id').val() + '/' + selectedCityId + '/' + selectedDistrictId);
-                $('#categoryLink3').attr('href', '/store/list/' + $('#category3Id').val() + '/' + selectedCityId + '/' + selectedDistrictId);
-                $('#categoryLink4').attr('href', '/store/list/' + $('#category4Id').val() + '/' + selectedCityId + '/' + selectedDistrictId);
-
-
-                // $('input[name="selectedCityId"]').val(selectedCityId);
-                // $('input[name="selectedDistrictId"]').val(selectedDistrictId);
-                //
-                // // 카테고리 링크의 href 속성을 동적으로 변경
-                // $('#categoryLink0').attr('href', '/store/list/' + $('input[name="categoryList[0].id"]').val() + '/' + selectedCityId + '/' + selectedDistrictId);
-                // $('#categoryLink1').attr('href', '/store/list/' + $('input[name="categoryList[1].id"]').val() + '/' + selectedCityId + '/' + selectedDistrictId);
-                // $('#categoryLink2').attr('href', '/store/list/' + $('input[name="categoryList[2].id"]').val() + '/' + selectedCityId + '/' + selectedDistrictId);
-                // $('#categoryLink3').attr('href', '/store/list/' + $('input[name="categoryList[3].id"]').val() + '/' + selectedCityId + '/' + selectedDistrictId);
-                // $('#categoryLink4').attr('href', '/store/list/' + $('input[name="categoryList[4].id"]').val() + '/' + selectedCityId + '/' + selectedDistrictId);
-
             });
-            <!-- districtId 선택 되었을 때 한식/중식/일식/양식/카페 a태그들 href 동적으로 변경 END -->
+            <!-- 지역 선택 되었을 때 선택된 cityId, districtId 변수에 저장 END -->
+
+            <!-- 카테고리 링크 클릭 시 Ajax 요청을 보내서 List<storeDTO> 받아와 출력 -->
+            $('[id^=categoryLink]').click(function (e) {
+                e.preventDefault();
+                var categoryId = $(this).find('input[type="hidden"]').val();
+                var selectedCityId = $('#sido').val();
+                var selectedDistrictId = $('#sigungu').val();
+                $.ajax({
+                    type: 'GET',
+                    url: '/store/list/' + categoryId + '/' + selectedCityId + '/' + selectedDistrictId,
+                    success: function (data) {
+                        alert("/store/list/{categoryId}/{cityId}/{districtId} 접속하고옴")
+                        // 받아온 데이터를 처리하는 코드를 추가할 수 있습니다.
+                        // 예를 들어, 받아온 데이터를 가지고 화면에 표시하는 등의 작업을 수행할 수 있습니다.
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('Failed to retrieve store list:', error);
+                    }
+                });
+            });
+            <!-- 카테고리 링크 클릭 시 Ajax 요청을 보내서 List<storeDTO> 받아와 출력 END -->
 
         });
     </script>

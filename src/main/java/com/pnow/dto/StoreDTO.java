@@ -6,7 +6,7 @@ import java.time.LocalTime;
 
 @Getter
 @Setter
-public class StoreDto {
+public class StoreDTO {
     private Long id;                //가게 id
     private String categoryName;    //카테고리 이름
     private String storeName;       //가게 이름

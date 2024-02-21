@@ -10,6 +10,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
 
@@ -21,9 +23,13 @@ public class StoreController {
     private final CategoryService categoryService;
     private final CityService cityService;
 
+
     /*
-    * categoryList, cityList 조회 후 model에 담아주는 메소드
-    * */
+     * store.html 호출 메서드
+     * -카테고리, 지역 조회 후 model에 저장
+     * GET /store
+     * return "/store/store"
+     * */
     @GetMapping("/store")
     public String store(Model model){
         log.info("/store get 메소드 진입");
@@ -38,6 +44,25 @@ public class StoreController {
 
         return "/store/store";
     }
+
+    /*
+     *
+     *
+     * GET /store/list/{categoryId}/{cityId}'/{districtId}
+     * return List<StoreDTO>
+     * */
+
+    @GetMapping("/store/list/{categoryId}/{cityId}/{districtId}")
+    @ResponseBody
+    public void /*List<StoreDTO>*/ storeListRead(@PathVariable("categoryId") Long categoryId,
+                                        @PathVariable("cityId") Long cityId,
+                                        @PathVariable("districtId") Long districtId) {
+        log.info("/store/list/{categoryId}/{cityId}'/{districtId} get 메소드 진입. " +
+                "categoryId = {}, cityId = {}, districtId = {}", categoryId, cityId, districtId);
+
+    }
+
+
 
 
 /*

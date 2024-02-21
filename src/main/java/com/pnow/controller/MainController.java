@@ -20,6 +20,11 @@ public class MainController {
     private final CityService cityService;
     private final HttpSession httpSession;
 
+
+    /*
+     * GET /
+     * return "home"
+     * */
     @GetMapping("/")
     public String root(@LoginUser SessionUser user) {
         log.info("root 메소드 진입 user = {}",user);
