@@ -4,12 +4,14 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-//@NoArgsConstructor
+
 @Getter
 @Setter
 @NoArgsConstructor  //기본생성자
 @AllArgsConstructor //모든생성자
-public class DistrictDTO {
-    private Long id;             //지역ID
-    private String districtName; //지역이름
+public class MenuDTO {
+    private Long id;            //메뉴ID
+    private String menuName;    //메뉴이름
+    private int price;          //메뉴가격
+
 }
