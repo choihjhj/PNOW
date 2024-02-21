@@ -26,7 +26,7 @@ public class StoreService {
 
     public List<StoreDTO> findStoreDTOList(Long categoryId, Long cityId, Long districtId) {
         // 1. categoryId와 districtId에 해당하는 Store 엔티티를 가져옵니다.
-        List<Store> stores = storeRepository.findByCategoryIdAndDistrictId(categoryId, districtId);
+        List<Store> stores = storeRepository.findByCategoryIdAndDistrictIdOrderByStoreNameAsc(categoryId, districtId);
 
         // 2. 전달받은 cityId에 해당하는 cityName을 가져옵니다.
         Optional<City> cityOptional = cityRepository.findById(cityId);

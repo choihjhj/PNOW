@@ -9,5 +9,5 @@ import java.util.List;
 @Repository
 public interface StoreRepository extends JpaRepository<Store, Long> {
     //    List<Store> findByCategoryId(Long categoryId);
-    List<Store> findByCategoryIdAndDistrictId(Long categoryId, Long districtId);
+    List<Store> findByCategoryIdAndDistrictIdOrderByStoreNameAsc(Long categoryId, Long districtId);
 }
