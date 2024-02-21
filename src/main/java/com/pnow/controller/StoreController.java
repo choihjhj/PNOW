@@ -25,7 +25,7 @@ public class StoreController {
 
 
     /*
-     * store.html 호출 메서드
+     * store.html 접속
      * -카테고리, 지역 조회 후 model에 저장
      * GET /store
      * return "/store/store"
@@ -46,8 +46,7 @@ public class StoreController {
     }
 
     /*
-     *
-     *
+     * 가게 목록 조회
      * GET /store/list/{categoryId}/{cityId}'/{districtId}
      * return List<StoreDTO>
      * */

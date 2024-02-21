@@ -8,13 +8,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-
 import javax.servlet.http.HttpSession;
 
 @RequiredArgsConstructor
 @Controller
 @Slf4j
-public class MainController {
+public class HomeController {
 
     private final CategoryService categoryService;
     private final CityService cityService;
@@ -22,12 +21,13 @@ public class MainController {
 
 
     /*
+     * 홈 접속
      * GET /
      * return "home"
      * */
     @GetMapping("/")
     public String root(@LoginUser SessionUser user) {
-        log.info("root 메소드 진입 user = {}",user);
+        log.info("root 메소드 진입 user = {}", user);
         //topbar, sidebar에서 공용으로 쓸 데이터(categoryList, cityList) 세션에 저장
         /*
         List<Category> categoryList = categoryService.getCategoryList();
