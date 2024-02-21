@@ -19,7 +19,7 @@ public class DistrictService {
 
         List<DistrictDTO> districtDTOList = districtRepository.findDistrictDTOsByCityId(cityId);
 
-        // 만약 시군구 리스트가 비어 있다면 예외 던지기
+        // 만약 지역 리스트가 비어 있다면 예외 던지기
         if (districtDTOList.isEmpty()) {
             throw new DataNotFoundException("No districts found for city with ID: " + cityId);
         }

@@ -1,7 +1,6 @@
 package com.pnow.domain;
 
 import lombok.Getter;
-
 import javax.persistence.*;
 import java.util.List;
 
@@ -12,7 +11,6 @@ public class District {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "district_id")
     private Long id;
-
 
     @ManyToOne
     @JoinColumn(name = "city_id")

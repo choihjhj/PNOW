@@ -12,7 +12,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -50,7 +49,6 @@ public class StoreController {
      * GET /store/list/{categoryId}/{cityId}'/{districtId}
      * return List<StoreDTO>
      * */
-
     @GetMapping("/store/list/{categoryId}/{cityId}/{districtId}")
     @ResponseBody
     public void /*List<StoreDTO>*/ storeListRead(@PathVariable("categoryId") Long categoryId,
