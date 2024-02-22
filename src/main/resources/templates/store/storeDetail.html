@@ -17,14 +17,44 @@
 
             <!-- Begin Page Content -->
             <div class="container-fluid">
-                <span th:text="${store.storeName}">storeDetail</span>
-                <ul>
-                    <!-- storeDTO의 menuList를 반복하여 출력 -->
-                    <li th:each="menu : ${store.menuList}">
-                        <!-- 각 메뉴의 이름과 가격을 출력 -->
-                        <span th:text="${menu.menuName}"></span>: <span th:text="${menu.price}"></span>
-                    </li>
-                </ul>
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <!-- 카드 안에 내용 시작 -->
+
+                        <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                            <h1 class="h3 mb-0 text-gray-800" th:text="${store.storeName}">가게이름</h1>
+<!--                        <img src="/img/색칠별.png" alt="즐겨찾기했을 때" style="width: 50px; height: auto;">-->
+                        <a href="#"><img src="/img/빈별.png" alt="즐겨찾기안했을 때" style="width: 50px; height: auto;"></a>
+                        </div>
+                        <img  th:src="'/img/' + ${store.storeName} + '.PNG'" alt="가게 이미지" style="max-width: 100%; height: auto;"><br><br>
+                        <h6 class="m-0 font-weight-bold text-primary" th:text="${store.storeStatus}">영업상태</h6>
+                    <span th:text="${store.categoryName}">카테고리 이름</span><br>
+                        <span th:text="${store.cityName}+' '+${store.districtName}+' '+${store.detailAddress}">주소</span><br>
+
+                        <span th:text="'&#128345;'+${store.openingTime}+'-'+${store.closingTime}">운영시간</span><br>
+                        <span th:text="'&#128222;'+${store.phoneNumber}">전화번호</span><br>
+
+                        <a th:href="'/reservation/' + ${store.id}" class="btn btn-success btn-icon-split">
+                            <span class="text">예약하기</span>
+                        </a>
+
+
+
+                    </div>
+
+
+                    <div class="card-body">
+                        <p>메뉴 가격</p>
+                        <ul>
+                            <!-- storeDTO의 menuList를 반복하여 출력 -->
+                            <li th:each="menu : ${store.menuList}">
+                                <!-- 각 메뉴의 이름과 가격을 출력 -->
+                                <span th:text="${menu.menuName}"></span>: <span th:text="${menu.price}"></span>
+                            </li>
+                        </ul>
+                    </div>
+
+                </div>
 
 
             </div>

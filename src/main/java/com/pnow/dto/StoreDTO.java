@@ -23,4 +23,5 @@ public class StoreDTO {
     private String phoneNumber;         //전화 번호
     private CategoryType categoryName;  //카테고리 이름
     private List<MenuDTO> menuList;     //메뉴가격리스트
+    private String storeStatus;         //영업상태(영업중, 영업준비중)
 }

@@ -36,13 +36,20 @@ public class StoreService {
         StoreDTO storeDTO = new StoreDTO();
         storeDTO.setId(store.getId());
         storeDTO.setStoreName(store.getStoreName());
-        storeDTO.setOpeningTime(formatTime(store.getOpeningTime()));
-        storeDTO.setClosingTime(formatTime(store.getClosingTime()));
+        storeDTO.setStoreStatus(getStoreStatus(store)); //영업상태 셋팅
+        storeDTO.setOpeningTime(formatTime(store.getOpeningTime())); //LocalTime -> String "HH:mm"으로 포맷
+        storeDTO.setClosingTime(formatTime(store.getClosingTime())); //LocalTime -> String "HH:mm"으로 포맷
         storeDTO.setCityName(store.getDistrict().getCity().getCityName());
         storeDTO.setDistrictName(store.getDistrict().getDistrictName());
         storeDTO.setDetailAddress(store.getDetailAddress());
         log.info("storeDTO.getStoreName() = {}", storeDTO.getStoreName());
         return storeDTO;
+    }
+
+    private String getStoreStatus(Store store) {
+        LocalTime now = LocalTime.now();
+        return (now.compareTo(store.getOpeningTime()) >= 0 && now.compareTo(store.getClosingTime()) < 0) ?
+                "영업중" : "영업준비중";
     }
 
     private String formatTime(LocalTime time) {
