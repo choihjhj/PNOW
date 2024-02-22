@@ -47,7 +47,7 @@ public class StoreController {
 
     /*
      * 가게 목록 조회
-     * GET /store/list/{categoryId}/{cityId}'/{districtId}
+     * GET /store/list/{categoryId}/{cityId}/{districtId}
      * return List<StoreDTO>
      * */
     @GetMapping("/store/list/{categoryId}/{cityId}/{districtId}")
@@ -59,6 +59,18 @@ public class StoreController {
                 "categoryId = {}, cityId = {}, districtId = {}", categoryId, cityId, districtId);
         return storeService.findStoreDTOList(categoryId, cityId, districtId);
 
+    }
+
+    /*
+     * 가게 조회
+     * GET /store/detail/{id}
+     * return "storeDetail"
+     * */
+    @GetMapping("/store/detail/{id}")
+    public String storeRead(Model model, @PathVariable("id") Long id ){
+//        StoreDTO store =
+
+        return "storeDetail";
     }
 
 
