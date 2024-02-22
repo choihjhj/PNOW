@@ -15,6 +15,22 @@
     <link th:href="@{/css/sb-admin-2.min.css}" rel="stylesheet">
     <!-- jQuery -->
     <script src="/vendor/jquery/jquery.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // 공통 함수: 로그인 여부 확인
+            function checkLogin(e) {
+                var userSession = $('#user').val();
+                if (!userSession) {
+                    alert('로그인 후 이용 가능합니다.');
+                    e.preventDefault();
+                }
+            }
+
+            // 예약목록, 즐겨찾기, 내정보 링크 클릭 시
+            $('#reservationLink, #bookmarkLink, #userInfoLink').click(checkLogin);
+        });
+    </script>
+
 </head>
 <head>
     <style>
@@ -62,13 +78,13 @@
             </li>
             <!-- Nav Item - Tables 예약목록-->
             <li class="nav-item">
-                <a class="nav-link" th:href="@{/reservation}">
+                <a class="nav-link" th:href="@{/reservation}" id="reservationLink">
                     <i class="fas fa-fw fa-table"></i>
                     <span>예약목록</span></a>
             </li>
             <!-- Nav Item - Charts 즐겨찾기-->
             <li class="nav-item">
-                <a class="nav-link" th:href="@{/bookmark}">
+                <a class="nav-link" th:href="@{/bookmark}" id="bookmarkLink">
                     <i class="fas fa-fw fa-chart-area"></i>
                     <span>즐겨찾기</span></a>
             </li>
@@ -83,7 +99,7 @@
                      data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Custom Utilities:</h6>
-                        <a class="collapse-item" href="utilities-color.html">내정보</a>
+                        <a class="collapse-item" href="utilities-color.html" id="userInfoLink">내정보</a>
                         <!--                        <a class="collapse-item" href="utilities-border.html">회원탈퇴</a>-->
                     </div>
                 </div>
@@ -178,6 +194,7 @@
                         <div class="topbar-divider d-none d-sm-block"></div>
                         <!-- Nav Item - User Information -->
                         <li class="nav-item dropdown no-arrow">
+                            <input type="hidden" id="user" th:value="${#session.getAttribute('user')}"/>
                             <div class="nav-link dropdown-toggle" th:unless="${#session.getAttribute('user')}">
                                 <span class="mr-2 d-none d-lg-inline text-gray-600 small">Login : </span>
                                 <a th:href="@{/oauth2/authorization/google}" class="btn btn-success active"
@@ -209,6 +226,7 @@
             <!-- End of Topbar -->
             <!-- Begin Page Content -->
             <div class="container-fluid">
+
                 <!-- Page Heading -->
                 <div class="d-sm-flex align-items-center justify-content-between mb-4">
                     <h1 class="h3 mb-0 text-gray-800">

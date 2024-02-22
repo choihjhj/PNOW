@@ -4,14 +4,17 @@
 <head>
     <script th:inline="javascript">
         $(document).ready(function() {
-            $('#reservationButton').click(function(e) {
-                var userSession = $('#user').val()
-                // 세션에 사용자 정보가 없는 경우
+            // 공통 함수: 로그인 여부 확인
+            function checkLogin(e) {
+                var userSession = $('#user').val();
                 if (!userSession) {
                     alert('로그인 후 이용 가능합니다.');
-                    e.preventDefault(); // 기본 동작 중단
+                    e.preventDefault();
                 }
-            });
+            }
+
+            // 예약목록, 즐겨찾기, 내정보 링크 클릭 시
+            $('#reservationButton, #bookmarkButton').click(checkLogin);
         });
     </script>
 </head>
@@ -31,7 +34,6 @@
 
             <!-- Begin Page Content -->
             <div class="container-fluid">
-                <input type="hidden" id="user" th:value="${user}"/>
                 <div class="card shadow mb-4">
                     <div class="card-header py-3">
                         <!-- 카드 안에 내용 시작 -->
@@ -39,7 +41,7 @@
                         <div class="d-sm-flex align-items-center justify-content-between mb-4">
                             <h1 class="h3 mb-0 text-gray-800" th:text="${store.storeName}">가게이름</h1>
 <!--                        <img src="/img/색칠별.png" alt="즐겨찾기했을 때" style="width: 50px; height: auto;">-->
-                        <a href="#"><img src="/img/빈별.png" alt="즐겨찾기안했을 때" style="width: 50px; height: auto;"></a>
+                        <a id="bookmarkButton" href="#"><img src="/img/빈별.png" alt="즐겨찾기안했을 때" style="width: 50px; height: auto;"></a>
                         </div>
                         <img  th:src="'/img/' + ${store.storeName} + '.PNG'" alt="가게 이미지" style="max-width: 100%; height: auto;"><br><br>
                         <h6 class="m-0 font-weight-bold text-primary" th:text="${store.storeStatus}">영업상태</h6>
