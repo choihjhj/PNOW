@@ -10,7 +10,7 @@ import java.util.List;
 
 @Repository
 public interface DistrictRepository extends JpaRepository<District, Long> {
-    // 도시의 시군구 리스트를 DistrictDTO로 가져오는 쿼리
+    // cityId에 해당하는 district들을 DistrictDTO로 바로 넣기 위해  @Query 사용
     @Query("SELECT new com.pnow.dto.DistrictDTO(d.id, d.districtName) FROM District d WHERE d.city.id = :cityId") //추가로직 필요없으므로 DTO에 바로 받아 넣기
     List<DistrictDTO> findDistrictDTOsByCityId(@Param("cityId") Long cityId);
 }

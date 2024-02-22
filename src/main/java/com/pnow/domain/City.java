@@ -16,5 +16,5 @@ public class City {
     private String cityName; //도 이름
 
     @OneToMany(mappedBy = "city", cascade = CascadeType.REMOVE)
-    private List<District> districtList; //city_id 해당하는 시군구 List
+    private List<District> districtList; //city_id 해당하는 지역(시군구) List
 }
