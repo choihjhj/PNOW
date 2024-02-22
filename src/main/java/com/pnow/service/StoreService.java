@@ -11,9 +11,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -25,36 +25,35 @@ public class StoreService {
     private final DistrictRepository districtRepository;
 
     public List<StoreDTO> findStoreDTOList(Long categoryId, Long cityId, Long districtId) {
-        // 1. categoryId와 districtId에 해당하는 Store 엔티티를 가져옵니다.
+        // 1. categoryId, districtId에 해당하는 Store 엔티티 가져오기
         List<Store> stores = storeRepository.findByCategoryIdAndDistrictIdOrderByStoreNameAsc(categoryId, districtId);
 
-        // 2. 전달받은 cityId에 해당하는 cityName을 가져옵니다.
+        // 2. 전달받은 cityId에 해당하는 cityName 가져오기
         Optional<City> cityOptional = cityRepository.findById(cityId);
         String cityName = cityOptional.map(City::getCityName).orElse(null);
 
 
-        // 3. 전달받은 districtId에 해당하는 districtName을 가져옵니다.
+        // 3. 전달받은 districtId에 해당하는 districtName 가져오기
         Optional<District> districtOptional = districtRepository.findById(districtId);
         String districtName = districtOptional.map(District::getDistrictName).orElse(null);
 
 
-        // 4. StoreDTO를 구성합니다.
-        List<StoreDTO> storeDTOs = new ArrayList<>();
-        for (Store store : stores) {
-            StoreDTO storeDTO = new StoreDTO();
+        // 4. List<Store>를 List<StoreDTO>로 변환
+        return stores.stream()
+                .map(store -> {
+                    StoreDTO storeDTO = new StoreDTO();
+                    storeDTO.setId(store.getId());
+                    storeDTO.setStoreName(store.getStoreName());
+                    storeDTO.setOpeningTime(store.getOpeningTime());
+                    storeDTO.setClosingTime(store.getClosingTime());
+                    storeDTO.setCityName(cityName);
+                    storeDTO.setDistrictName(districtName);
+                    storeDTO.setDetailAddress(store.getDetailAddress());
+                    log.info("storeDTO.getStoreName() = {}", storeDTO.getStoreName());
+                    return storeDTO;
+                })
+                .collect(Collectors.toList());
 
-            storeDTO.setId(store.getId());
-            storeDTO.setStoreName(store.getStoreName());
-            storeDTO.setOpeningTime(store.getOpeningTime());
-            storeDTO.setClosingTime(store.getClosingTime());
-            storeDTO.setCityName(cityName);
-            storeDTO.setDistrictName(districtName);
-            storeDTO.setDetailAddress(store.getDetailAddress());
-            storeDTOs.add(storeDTO);
-            log.info("storeDTO.getStoreName() = {}", storeDTO.getStoreName());
-        }
-
-        return storeDTOs;
     }
 }
 

@@ -9,5 +9,5 @@ import java.util.List;
 @Repository
 public interface StoreRepository extends JpaRepository<Store, Long> {
     //    List<Store> findByCategoryId(Long categoryId);
-    List<Store> findByCategoryIdAndDistrictIdOrderByStoreNameAsc(Long categoryId, Long districtId);
+    List<Store> findByCategoryIdAndDistrictIdOrderByStoreNameAsc(Long categoryId, Long districtId); //추가로직 필요하므로 일단 엔티티에 받기(추가로직은 서비스에서 작업)
 }
