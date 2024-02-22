@@ -19,10 +19,10 @@ import java.util.List;
 @Controller
 @Slf4j
 public class StoreController {
+
     private final StoreService storeService;
     private final CategoryService categoryService;
     private final CityService cityService;
-
 
     /*
      * store.html 접속
@@ -63,14 +63,17 @@ public class StoreController {
 
     /*
      * 가게 조회
-     * - 메뉴,가격도 담은 전체 storeDTO model에 저장
+     * - 메뉴,가격도 담은 storeDTO model에 저장
      * GET /store/detail/{id}
      * return "storeDetail"
      * */
     @GetMapping("/store/detail/{id}")
     public String storeRead(Model model, @PathVariable("id") Long id ){
+        log.info("/store/detail/{id} get 메소드 진입 storeId = {}",id);
+
         StoreDTO storeDTO = storeService.findStoreDTO(id);
         model.addAttribute("store", storeDTO);
+
         return "/store/storeDetail";
     }
 

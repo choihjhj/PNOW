@@ -19,7 +19,6 @@ public class HomeController {
     private final CityService cityService;
     private final HttpSession httpSession;
 
-
     /*
      * 홈 접속
      * GET /
@@ -28,14 +27,6 @@ public class HomeController {
     @GetMapping("/")
     public String root(@LoginUser SessionUser user) {
         log.info("root 메소드 진입 user = {}", user);
-        //topbar, sidebar에서 공용으로 쓸 데이터(categoryList, cityList) 세션에 저장
-        /*
-        List<Category> categoryList = categoryService.getCategoryList();
-        List<City> cityList = cityService.getCityList();
-
-        httpSession.setAttribute("categoryList", categoryList);
-        httpSession.setAttribute("cityList",cityList);
-*/
 
         return "home";
 //        return "temp2";

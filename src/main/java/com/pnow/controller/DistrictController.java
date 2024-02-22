@@ -7,15 +7,15 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
-import javax.servlet.http.HttpSession;
+
 import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
 @Slf4j
 public class DistrictController {
+
     private final DistrictService districtService;
-    private final HttpSession httpSession;
 
     /*
      * 지역 조회
