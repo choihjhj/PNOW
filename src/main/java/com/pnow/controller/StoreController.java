@@ -1,5 +1,7 @@
 package com.pnow.controller;
 
+import com.pnow.config.auth.LoginUser;
+import com.pnow.config.auth.dto.SessionUser;
 import com.pnow.domain.Category;
 import com.pnow.domain.City;
 import com.pnow.dto.StoreDTO;
@@ -62,17 +64,19 @@ public class StoreController {
     }
 
     /*
+     * storeDetail.html 접속
      * 가게 조회
      * - 메뉴,가격도 담은 storeDTO model에 저장
      * GET /store/detail/{id}
-     * return "storeDetail"
+     * return "/store/storeDetail"
      * */
     @GetMapping("/store/detail/{id}")
-    public String storeRead(Model model, @PathVariable("id") Long id ){
+    public String storeRead(Model model, @PathVariable("id") Long id, @LoginUser SessionUser user ){
         log.info("/store/detail/{id} get 메소드 진입 storeId = {}",id);
 
         StoreDTO storeDTO = storeService.findStoreDTO(id);
         model.addAttribute("store", storeDTO);
+        model.addAttribute("user", user);
 
         return "/store/storeDetail";
     }

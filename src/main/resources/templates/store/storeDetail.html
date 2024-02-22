@@ -1,6 +1,20 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="home :: header"></head>
+<head>
+    <script th:inline="javascript">
+        $(document).ready(function() {
+            $('#reservationButton').click(function(e) {
+                var userSession = $('#user').val()
+                // 세션에 사용자 정보가 없는 경우
+                if (!userSession) {
+                    alert('로그인 후 이용 가능합니다.');
+                    e.preventDefault(); // 기본 동작 중단
+                }
+            });
+        });
+    </script>
+</head>
 <body id="page-top" th:classappend="${bodyClass}">
 <!-- Page Wrapper -->
 <div id="wrapper">
@@ -17,6 +31,7 @@
 
             <!-- Begin Page Content -->
             <div class="container-fluid">
+                <input type="hidden" id="user" th:value="${user}"/>
                 <div class="card shadow mb-4">
                     <div class="card-header py-3">
                         <!-- 카드 안에 내용 시작 -->
@@ -34,7 +49,7 @@
                         <span th:text="'&#128345;'+${store.openingTime}+'-'+${store.closingTime}">운영시간</span><br>
                         <span th:text="'&#128222;'+${store.phoneNumber}">전화번호</span><br>
 
-                        <a th:href="'/reservation/' + ${store.id}" class="btn btn-success btn-icon-split">
+                        <a th:href="'/reservation/' + ${store.id}" id="reservationButton" class="btn btn-success btn-icon-split">
                             <span class="text">예약하기</span>
                         </a>
 
