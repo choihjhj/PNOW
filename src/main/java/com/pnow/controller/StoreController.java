@@ -63,14 +63,15 @@ public class StoreController {
 
     /*
      * 가게 조회
+     * - 메뉴,가격도 담은 전체 storeDTO model에 저장
      * GET /store/detail/{id}
      * return "storeDetail"
      * */
     @GetMapping("/store/detail/{id}")
     public String storeRead(Model model, @PathVariable("id") Long id ){
-//        StoreDTO store =
-
-        return "storeDetail";
+        StoreDTO storeDTO = storeService.findStoreDTO(id);
+        model.addAttribute("store", storeDTO);
+        return "/store/storeDetail";
     }
 
 

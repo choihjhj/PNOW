@@ -17,7 +17,16 @@
 
             <!-- Begin Page Content -->
             <div class="container-fluid">
-                <p>storeDetail</p>
+                <span th:text="${store.storeName}">storeDetail</span>
+                <ul>
+                    <!-- storeDTO의 menuList를 반복하여 출력 -->
+                    <li th:each="menu : ${store.menuList}">
+                        <!-- 각 메뉴의 이름과 가격을 출력 -->
+                        <span th:text="${menu.menuName}"></span>: <span th:text="${menu.price}"></span>
+                    </li>
+                </ul>
+
+
             </div>
             <!-- /.container-fluid -->
 
