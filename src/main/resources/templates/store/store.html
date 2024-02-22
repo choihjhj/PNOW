@@ -1,6 +1,15 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="home :: header"></head>
+<head th:replace="home :: header">
+    <style>
+        /* 여기에 CSS 스타일을 작성합니다 */
+        .active {
+            /* 클릭된 링크에 적용할 스타일을 지정합니다 */
+            background-color: #007bff;
+            color: #fff;
+        }
+    </style>
+</head>
 <head>
     <script th:inline="javascript">
         $(document).ready(function () {
@@ -27,6 +36,13 @@
             <!-- 카테고리 링크 클릭 시 Ajax 요청을 보내서 List<storeDTO> 받아와 출력 -->
             $('[id^=categoryLink]').click(function (e) {
                 e.preventDefault();
+                <!-- 클릭한 한중일양카 a 태그 css 적용 -->
+                // 모든 카테고리 링크에서 active 클래스 제거
+                $('[id^=categoryLink]').removeClass('active');
+                // 클릭한 카테고리 링크에 active 클래스 추가
+                $(this).addClass('active');
+                <!-- 클릭한 한중일양카 a 태그 css 적용 END -->
+
                 var categoryId = $(this).find('input[type="hidden"]').val();
                 var selectedCityId = $('#sido').val();
                 var selectedDistrictId = $('#sigungu').val();
@@ -34,8 +50,38 @@
                     type: 'GET',
                     url: '/store/list/' + categoryId + '/' + selectedCityId + '/' + selectedDistrictId,
                     success: function (data) {
-                        alert("data"+data)
+                        // 이전 내용을 지우기
+                        $('#storeDTOContainer').empty();
 
+                        // 받아온 data를 문장 만들어 storeCard 변수에 저장해서 $('#storeDTOContainer') 추가하는 작업 반복수행
+                        $.each(data, function (index, storeDTO) {
+                            var storeCard = '<div class="col-xl-3 col-md-6 mb-4">' +
+                                '<div class="card border-left-info shadow h-100 py-2">' +
+                                '<div class="card-body">' +
+                                '<div class="row no-gutters align-items-center">' +
+                                '<div class="col mr-2">' +
+                                '<a href="/store/detail/' + storeDTO.id + '">' +
+                                '<div class="h5 mb-0 font-weight-bold text-gray-800">' + storeDTO.storeName + '</div>' +
+                                '</a>' +
+                                '<div class="text-xs font-weight-bold text-primary text-uppercase mb-1">' + storeDTO.cityName + ' ' + storeDTO.districtName + ' ' + storeDTO.detailAddress + '</div>' +
+                                '<div class="text-xs font-weight-bold text-success text-uppercase mb-1">' + storeDTO.openingTime + '-' + storeDTO.closingTime + '</div>' +
+                                '</div>' +
+                                '<div class="col-auto">' +
+                                '<a href="/store/detail/' + storeDTO.id + '">' +
+                                '<img src="/img/' + storeDTO.storeName + '.PNG" alt="가게 이미지" style="width: 50px; height: auto;">' +
+                                '</a>' +
+                                '</div>' +
+                                '</div>' +
+                                '</div>' +
+                                '</div>' +
+                                '</div>';
+
+                            // $('#storeDTOContainer')에 storeCard 문장 추가
+                            $('#storeDTOContainer').append(storeCard);
+                        });
+
+                        // $('#storeDTOContainer') 만들었던 반복문문장 보여주기
+                        $('#storeDTOContainer').show();
                     },
                     error: function (xhr, status, error) {
                         console.error('Failed to retrieve store list:', error);
@@ -69,26 +115,25 @@
                         <!--                    <span class="h3 mb-4 text-gray-800" th:text="Buttons"></span>-->
                         <h6 class="m-0 font-weight-bold text-primary">카테고리 선택</h6>
                     </div>
-
                     <div class="card-body">
                         <!-- 카테고리(한식/중식/일식/양식/카페) 클릭 부분 -->
-                        <a id="categoryLink0"  href="#" class="btn btn-primary btn-icon-split">
+                        <a id="categoryLink0" href="#" class="btn btn-primary btn-icon-split">
                             <input type="hidden" id="category0Id" th:value="${categoryList[0].getId()}"/>
                             <span class="text" th:text="${categoryList[0].getCategoryName()}"></span>
                         </a>
-                        <a id="categoryLink1"  href="#" class="btn btn-success btn-icon-split">
+                        <a id="categoryLink1" href="#" class="btn btn-success btn-icon-split">
                             <input type="hidden" id="category1Id" th:value="${categoryList[1].getId()}"/>
                             <span class="text" th:text="${categoryList[1].getCategoryName()}"></span>
                         </a>
-                        <a id="categoryLink2"  href="#" class="btn btn-info btn-icon-split">
+                        <a id="categoryLink2" href="#" class="btn btn-info btn-icon-split">
                             <input type="hidden" id="category2Id" th:value="${categoryList[2].getId()}"/>
                             <span class="text" th:text="${categoryList[2].getCategoryName()}"></span>
                         </a>
-                        <a id="categoryLink3"  href="#" class="btn btn-warning btn-icon-split">
+                        <a id="categoryLink3" href="#" class="btn btn-warning btn-icon-split">
                             <input type="hidden" id="category3Id" th:value="${categoryList[3].getId()}"/>
                             <span class="text" th:text="${categoryList[3].getCategoryName()}"></span>
                         </a>
-                        <a id="categoryLink4"  href="#" class="btn btn-danger btn-icon-split">
+                        <a id="categoryLink4" href="#" class="btn btn-danger btn-icon-split">
                             <input type="hidden" id="category4Id" th:value="${categoryList[4].getId()}"/>
                             <span class="text" th:text="${categoryList[4].getCategoryName()}"></span>
                         </a>
@@ -108,10 +153,13 @@
                         <!-- 도, 시군구 위치 선택 select 부분 END -->
                     </div>
                 </div>
-
+                <!-- 여기에 StoreDTO 출력 -->
+                <div class="row" id="storeDTOContainer" style="display: none; flex-wrap: wrap;">
+                    <!-- 여기에 ajax로 받아온 것 for문으로 출력(위의 script로 데이터 셋팅하기) -->
+                </div>
+                <!-- 여기에 StoreDTO 출력 END -->
             </div>
             <!-- /.container-fluid -->
-
         </div>
         <!-- End of Main Content -->
     </div>

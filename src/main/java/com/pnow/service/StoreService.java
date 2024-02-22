@@ -10,7 +10,9 @@ import com.pnow.repository.StoreRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -24,6 +26,7 @@ public class StoreService {
     private final CityRepository cityRepository;
     private final DistrictRepository districtRepository;
 
+    @Transactional(readOnly = true)
     public List<StoreDTO> findStoreDTOList(Long categoryId, Long cityId, Long districtId) {
         // 1. categoryId, districtId에 해당하는 Store 엔티티 가져오기
         List<Store> stores = storeRepository.findByCategoryIdAndDistrictIdOrderByStoreNameAsc(categoryId, districtId);
@@ -32,11 +35,9 @@ public class StoreService {
         Optional<City> cityOptional = cityRepository.findById(cityId);
         String cityName = cityOptional.map(City::getCityName).orElse(null);
 
-
         // 3. 전달받은 districtId에 해당하는 districtName 가져오기
         Optional<District> districtOptional = districtRepository.findById(districtId);
         String districtName = districtOptional.map(District::getDistrictName).orElse(null);
-
 
         // 4. List<Store>를 List<StoreDTO>로 변환
         return stores.stream()
@@ -44,11 +45,12 @@ public class StoreService {
                     StoreDTO storeDTO = new StoreDTO();
                     storeDTO.setId(store.getId());
                     storeDTO.setStoreName(store.getStoreName());
-                    storeDTO.setOpeningTime(store.getOpeningTime());
-                    storeDTO.setClosingTime(store.getClosingTime());
+                    storeDTO.setOpeningTime(store.getOpeningTime().format(DateTimeFormatter.ofPattern("HH:mm"))); //String으로 포맷
+                    storeDTO.setClosingTime(store.getClosingTime().format(DateTimeFormatter.ofPattern("HH:mm"))); //String으로 포맷
                     storeDTO.setCityName(cityName);
                     storeDTO.setDistrictName(districtName);
                     storeDTO.setDetailAddress(store.getDetailAddress());
+                    storeDTO.setPhoneNumber(store.getPhoneNumber());
                     log.info("storeDTO.getStoreName() = {}", storeDTO.getStoreName());
                     return storeDTO;
                 })
@@ -56,37 +58,4 @@ public class StoreService {
 
     }
 }
-
-
-//    @Transactional(readOnly = true)
-//    public List<StoreDTO> findStoreDTOList(Long categoryId, Long cityId, Long districtId) {
-//        // 여기서는 단순히 예시로 빈 리스트를 반환하도록 함
-//        return storeRepository.findStoresByCategoryCategoryNameAndDistrictCityCityNameAndDistrictDistrictName(categoryId, cityId, districtId)
-//                .stream()                     /*--repository에서 받아온 컬렉션(List<Store>)을 stream()으로 변환*/
-//                .map(this::convertToDTO)        /*--convertToDTO() 메소드와 매핑*/
-//                .collect(Collectors.toList());  /*--스트림의 요소를 컬렉션(List)으로 수집*/
-//
-//    }
-//
-//    // Store 엔티티를 StoreDTO로 변환하는 메소드
-//    private StoreDTO convertToDTO(Store store) {
-//        StoreDTO storeDTO = new StoreDTO();
-//        storeDTO.setId(store.getId());
-//        storeDTO.setStoreName(store.getStoreName());
-//        storeDTO.setOpeningTime(store.getOpeningTime());
-//        storeDTO.setClosingTime(store.getClosingTime());
-//        storeDTO.setCityName(store.getDistrict().getCity().getCityName());
-//        storeDTO.setDistrictName(store.getDistrict().getDistrictName());
-//        storeDTO.setDetailAddress(store.getDetailAddress());
-//        return storeDTO;
-//    }
-//    public List<Store> getStoreList(Long categoryId){
-//        List<Store> storeList = storeRepository.findByCategoryId(categoryId);
-//        if(storeList.isEmpty()){
-//            throw new DataNotFoundException("No store found for category with ID: " + categoryId);
-//        }
-//        return storeList;
-//
-//
-//    }
 

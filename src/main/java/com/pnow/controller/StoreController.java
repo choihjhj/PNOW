@@ -13,7 +13,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -32,7 +31,7 @@ public class StoreController {
      * return "/store/store"
      * */
     @GetMapping("/store")
-    public String store(Model model){
+    public String store(Model model) {
         log.info("/store get 메소드 진입");
 
         //category목록 조회 후 model에 데이터 저장
@@ -54,8 +53,8 @@ public class StoreController {
     @GetMapping("/store/list/{categoryId}/{cityId}/{districtId}")
     @ResponseBody
     public List<StoreDTO> storeListRead(@PathVariable("categoryId") Long categoryId,
-                                          @PathVariable("cityId") Long cityId,
-                                          @PathVariable("districtId") Long districtId) {
+                                        @PathVariable("cityId") Long cityId,
+                                        @PathVariable("districtId") Long districtId) {
         log.info("/store/list/{categoryId}/{cityId}'/{districtId} get 메소드 진입. " +
                 "categoryId = {}, cityId = {}, districtId = {}", categoryId, cityId, districtId);
         return storeService.findStoreDTOList(categoryId, cityId, districtId);
