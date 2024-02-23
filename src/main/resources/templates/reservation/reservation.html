@@ -3,7 +3,13 @@
 <head th:replace="home :: header"></head>
 <head>
     <style>
-
+        /* 선택된 시간 클릭시 표시 */
+        .time.selected {
+            background-color: yellow; /* 배경색을 노란색으로 변경 */
+            color: black; /* 텍스트 색상을 검정색으로 변경 */
+            font-weight: bold; /* 텍스트를 굵게 표시 */
+            border: 2px solid black; /* 테두리를 검정색으로 두껍게 설정 */
+        }
     </style>
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script th:inline="javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -12,7 +18,7 @@
 
         $(document).ready(function () {
             // 인원수 감소 버튼
-            $(".minus-btn").click(function(e) {
+            $(".minus-btn").click(function (e) {
                 e.preventDefault();
                 var value = parseInt($('#numberOfPeople').val(), 10);
                 value = isNaN(value) ? 1 : value; // 숫자가 아니면 기본값 1 사용
@@ -22,25 +28,23 @@
             });
 
             // 인원수 증가 버튼
-            $(".plus-btn").click(function(e) {
+            $(".plus-btn").click(function (e) {
                 e.preventDefault();
                 var value = parseInt($('#numberOfPeople').val(), 10);
                 value = isNaN(value) ? 1 : value; // 숫자가 아니면 기본값 1 사용
                 $('#numberOfPeople').val(value + 1);
             });
 
-            var selectedDate; // 선택된 날짜를 저장할 변수
-            var minDate = 0; // 기본적으로 오늘 날짜로 설정
-
-            // 가게 운영 시간 정보 가져오기
+            var selectedDate; // 선택된 날짜 저장 변수
+            var minDate = 0; // 달력 시작 날짜를 오늘 날짜로 default 설정
             var closingTime = $('#closingTime').val();
 
-            // 현재 시간 구하기
+            // 현재 시,분 구하기
             var currentTime = new Date();
             var currentHour = currentTime.getHours();
             var currentMinute = currentTime.getMinutes();
 
-            // 현재 시간과 운영 종료 시간(closingTime)을 비교하여 minDate 설정
+            // 현재 시간이 closingTime 이후면  달력의 예약 가능한 시작 날짜를 내일 날짜로 minDate 변경
             if (currentHour > parseInt(closingTime.split(':')[0]) ||
                 (currentHour === parseInt(closingTime.split(':')[0]) && currentMinute >= parseInt(closingTime.split(':')[1]))) {
                 // 현재 시간이 운영 종료 시간 이후면 다음날짜부터 선택 가능하도록 셋팅
@@ -49,25 +53,27 @@
                 minDate = tomorrow;
             }
 
+            <!-------------- 달력 셋팅 및 예약 가능 시간 ajax 요청 ----------->
             $("#datepicker").datepicker({
                 minDate: minDate, //날짜 셋팅
                 dateFormat: 'yy-mm-dd', // 날짜 형식 지정
-                onSelect: function(dateText, inst) {
+                onSelect: function (dateText, inst) {
                     var selectedDateObject = $(this).datepicker('getDate'); // 선택된 날짜를 Date 객체로 변환
                     selectedDate = $.datepicker.formatDate('yy-mm-dd', selectedDateObject); // "yyyy-MM-dd" 형식으로 포맷팅하여 저장
                     var storeId = $("#storeId").val(); // storeId 가져오기
                     var url = "/reservation/" + storeId + "/" + selectedDate; // URL 생성
 
+                    //ajax 요청한 뒤 예약가능시간 List받아와 출력
                     $.ajax({
                         type: "GET",
                         url: url,
-                        success: function(data) {
+                        success: function (data) {
                             // 이전 내용을 지우기
                             $('#ReservationAbleTimeDTOContainer').empty();
 
                             // 받아온 data를 문장 만들어 timeCard 변수에 저장해서 $('#ReservationAbleTimeDTOContainer') 추가하는 작업 반복수행
                             $.each(data, function (index, ableTimeDTO) {
-                                var timeCard = '<a id="time" href="#" class="btn btn-warning btn-icon-split" style="margin-right: 5px; margin-bottom: 5px; margin-top: 5px;">' +
+                                var timeCard = '<a class="time btn btn-warning btn-icon-split" style="margin-right: 5px; margin-bottom: 5px; margin-top: 5px;">' +
                                     '<span class="text" style="font-weight: bold;">' + ableTimeDTO.reservationTime + '</span>' +
                                     '</a>';
                                 $('#ReservationAbleTimeDTOContainer').append(timeCard);
@@ -76,12 +82,66 @@
                             console.log("Reservation request successful!");
                             console.log(data); // 받은 데이터 로깅
                         },
-                        error: function(xhr, status, error) {
+                        error: function (xhr, status, error) {
                             console.error("Error making reservation request:", error);
                         }
                     });
                 }
             });
+            <!-------------- 달력 셋팅 및 예약 가능 시간 ajax 요청 END ----------->
+
+            // 시간을 선택하는 클릭 이벤트 리스너 추가(기본 부트스트랩 작업 제거)
+            $(document).on('click', '.time', function () {
+                // 선택된 시간에 selected 클래스를 추가하고 이전에 선택된 시간의 클래스를 제거합니다.
+                $('.time').removeClass('selected');
+                $(this).addClass('selected');
+            });
+
+            <!-------------- 예약하기 버튼 클릭 시 ajax 요청 ----------->
+            $("#reservationButton").click(function (e) {
+                e.preventDefault();
+
+                // 날짜와 시간을 선택했는지 확인
+                var selectedDate = $("#datepicker").val();
+                var selectedTime = $("#ReservationAbleTimeDTOContainer").find(".selected").text();
+                var numberOfPeople = $("#numberOfPeople").val(); // 인원수 가져오기
+
+                // 선택되지 않은 경우 알림 표시
+                if (!selectedDate || !selectedTime) {
+                    alert("날짜, 시간을 모두 선택해주세요.");
+                    return;
+                }
+
+
+                var storeId = $("#storeId").val();
+                var url = "/reservation/" + storeId; //'/reservation/{storeId}' url 완성
+                var requestData = {
+                    selectedDate: selectedDate,
+                    selectedTime: selectedTime,
+                    numberOfPeople: numberOfPeople
+                };
+
+                //선택한 예약날짜, 예약시간, 인원수를 JSON으로 담아 '/reservation/{storeId}'로 POST 요청
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    contentType: "application/json",
+                    data: JSON.stringify(requestData),
+                    success: function (response) {
+                        console.log("Reservation request successful!");
+                        console.log(response); // 서버 응답 로깅
+
+                        //예약성공했다는 알림창과 함께 "/"로 링크 이동
+                        alert("예약이 성공적으로 완료되었습니다.");
+                        window.location.href = "/";
+                    },
+                    error: function (xhr, status, error) {
+                        // 요청이 실패한 경우 처리
+                        console.error("Error making reservation request:", error);
+                    }
+                });
+            });
+            <!-------------- 예약하기 버튼 클릭 시 ajax 요청 END -------->
         });
 
     </script>
@@ -115,9 +175,11 @@
                         <div class="d-sm-flex align-items-center justify-content-between mb-4">
                             <h1 class="h3 mb-0 text-gray-800" th:text="${store.storeName}">가게이름</h1>
                         </div>
-                        <img  th:src="'/img/' + ${store.storeName} + '.PNG'" alt="가게 이미지" style="max-width: 10%; height: auto;"><br><br>
+                        <img th:src="'/img/' + ${store.storeName} + '.PNG'" alt="가게 이미지"
+                             style="max-width: 10%; height: auto;"><br><br>
                         <span th:text="${store.categoryName}">카테고리 이름</span><br>
-                        <h6 id="storeStatus" class="m-0 font-weight-bold text-primary" th:text="${store.storeStatus}">영업상태</h6>
+                        <h6 id="storeStatus" class="m-0 font-weight-bold text-primary" th:text="${store.storeStatus}">
+                            영업상태</h6>
                         <span th:text="${store.cityName}+' '+${store.districtName}+' '+${store.detailAddress}">주소</span><br>
                         <span th:text="'&#128345;'+${store.openingTime}+'-'+${store.closingTime}">운영시간</span><br>
                         <input type="hidden" id="openingTime" th:value="${store.openingTime}"/>
@@ -127,7 +189,8 @@
                     <div class="card-body">
                         <p>날짜 선택</p>
                         <!-- Datepicker 추가 -->
-                        <input type="text" id="datepicker" name="datepicker" class="form-control" placeholder="날짜 선택" style="width: 300px; height: auto;">
+                        <input type="text" id="datepicker" name="datepicker" class="form-control" placeholder="날짜 선택"
+                               style="width: 300px; height: auto;">
                         <br>
                         <p>시간 선택</p>
                         <!-- 여기에 ReservationAbleTimeDTO 출력 -->
@@ -141,26 +204,19 @@
                             <div class="input-group-prepend">
                                 <button class="btn btn-outline-secondary minus-btn" type="button">-</button>
                             </div>
-                            <input type="text" class="form-control" id="numberOfPeople" value="1"  style="width: 30px;">
+                            <input type="text" class="form-control" id="numberOfPeople" value="1" style="width: 30px;">
                             <div class="input-group-append">
                                 <button class="btn btn-outline-secondary plus-btn" type="button">+</button>
                             </div>
                         </div>
-
                         <a href="#" id="reservationButton" class="btn btn-success btn-icon-split btn-lg">
                             <span class="icon text-white-50">
-                                            <i class="fas fa-check"></i>
-                                        </span>
-                            <span class="text" >&nbsp; 예약하기 &nbsp;</span>
+                                <i class="fas fa-check"></i>
+                            </span>
+                            <span class="text">&nbsp; 예약하기 &nbsp;</span>
                         </a>
-
                     </div>
-
                 </div>
-
-
-
-
                 <!-- /.container-fluid -->
             </div>
         </div>
