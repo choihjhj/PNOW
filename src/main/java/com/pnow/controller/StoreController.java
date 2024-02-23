@@ -14,12 +14,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
 import java.util.List;
 
 @RequiredArgsConstructor
 @Controller
 @Slf4j
+@RequestMapping("/store")
 public class StoreController {
 
     private final StoreService storeService;
@@ -32,7 +35,7 @@ public class StoreController {
      * GET /store
      * return "/store/store"
      * */
-    @GetMapping("/store")
+    @GetMapping
     public String store(Model model) {
         log.info("/store get 메소드 진입");
 
@@ -44,7 +47,7 @@ public class StoreController {
         List<City> cityList = cityService.findCityList();
         model.addAttribute("cityList", cityList);
 
-        return "/store/store";
+        return "store/store";
     }
 
     /*
@@ -52,7 +55,7 @@ public class StoreController {
      * GET /store/list/{categoryId}/{cityId}/{districtId}
      * return List<StoreDTO>
      * */
-    @GetMapping("/store/list/{categoryId}/{cityId}/{districtId}")
+    @GetMapping("/list/{categoryId}/{cityId}/{districtId}")
     @ResponseBody
     public List<StoreDTO> storeListRead(@PathVariable("categoryId") Long categoryId,
                                         @PathVariable("cityId") Long cityId,
@@ -70,14 +73,14 @@ public class StoreController {
      * GET /store/detail/{id}
      * return "/store/storeDetail"
      * */
-    @GetMapping("/store/detail/{id}")
+    @GetMapping("/detail/{id}")
     public String storeRead(Model model, @PathVariable("id") Long id, @LoginUser SessionUser user ){
         log.info("/store/detail/{id} get 메소드 진입 storeId = {}",id);
 
         StoreDTO storeDTO = storeService.findStoreDTO(id);
         model.addAttribute("store", storeDTO);
 
-        return "/store/storeDetail";
+        return "store/storeDetail";
     }
 
 
