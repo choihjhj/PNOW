@@ -52,7 +52,10 @@
                         <span th:text="'&#128222;'+${store.phoneNumber}">전화번호</span><br>
 
                         <a th:href="'/reservation/' + ${store.id}" id="reservationButton" class="btn btn-success btn-icon-split">
-                            <span class="text">예약하기</span>
+                            <span class="icon text-white-50">
+                                            <i class="fas fa-check"></i>
+                                        </span>
+                            <span class="text" >&nbsp; 예약하기 &nbsp;</span>
                         </a>
 
 

@@ -9,7 +9,6 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor  //기본생성자
 @AllArgsConstructor //모든생성자
-public class MenuDTO {
-    private String menuName;    //메뉴이름
-    private int price;          //메뉴가격
+public class ReservationAbleTimeDTO {
+    private String reservationTime; //예약가능시간
 }
