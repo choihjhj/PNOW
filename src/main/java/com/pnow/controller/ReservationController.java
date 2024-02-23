@@ -1,5 +1,6 @@
 package com.pnow.controller;
 
+import com.pnow.dto.ReservationAbleTimeDTO;
 import com.pnow.dto.StoreDTO;
 import com.pnow.service.ReservationService;
 import com.pnow.service.StoreService;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @RequiredArgsConstructor
 @Controller
@@ -47,10 +49,10 @@ public class ReservationController {
      * */
     @GetMapping("/{storeId}/{reservationDate}")
     @ResponseBody
-    public void reservationTimeRead(@PathVariable("storeId") Long storeId,
+    public List<ReservationAbleTimeDTO> reservationTimeRead(@PathVariable("storeId") Long storeId,
                                                             @PathVariable("reservationDate") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate reservationDate){
         log.info("/reservation/{storeId}/{reservationDate} get 메소드 진입 storeId = {}, reservationDate = {}",storeId,reservationDate);
-        /*List<ReservationAbleTimeDTO>*/
 
+        return reservationService.findReservationAbleTimeDTOList(storeId, reservationDate);
     }
 }
