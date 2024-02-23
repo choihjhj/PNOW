@@ -29,7 +29,7 @@ public class HomeController {
         log.info("root 메소드 진입 user = {}", user);
 
         return "home";
-//        return "temp2";
+//        return "temp";
     }
 
 }
