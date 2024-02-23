@@ -76,7 +76,6 @@ public class StoreController {
 
         StoreDTO storeDTO = storeService.findStoreDTO(id);
         model.addAttribute("store", storeDTO);
-        model.addAttribute("user", user);
 
         return "/store/storeDetail";
     }
