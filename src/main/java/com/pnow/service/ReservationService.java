@@ -51,10 +51,10 @@ public class ReservationService {
         List<ReservationAbleTimeDTO> availableTimes = new ArrayList<>();
 
         LocalTime startTime = openingTime; // 예약 가능한 시작시간을 오픈시간으로 초기화
+        LocalTime currentTime = LocalTime.now();
 
-        // 오늘 날짜인 경우 현재 시간을 기준으로 예약 가능한 시작시간을 조정
-        if (reservationDate.isEqual(LocalDate.now())) {
-            LocalTime currentTime = LocalTime.now();
+        //예약날짜가 오늘날짜인데 오픈시간이후면 startTime(예약가능 시작시간) 변경
+        if (reservationDate.isEqual(LocalDate.now()) && currentTime.isAfter(openingTime)) { //reservationDate.isEqual(LocalDate.now())만 하면 계속 현재시간부터 시작함
             int currentMinute = currentTime.getMinute();
             int currentHour = currentTime.getHour();
 
