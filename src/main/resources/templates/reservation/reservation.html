@@ -108,6 +108,7 @@
             $("#reservationButton").click(function (e) {
                 e.preventDefault();
 
+                var storeId = $("#storeId").val();
                 // 날짜와 시간을 선택했는지 확인
                 var selectedDate = $("#datepicker").val();
                 var selectedTime = $("#ReservationAbleTimeDTOContainer").find(".selected").text();
@@ -119,10 +120,8 @@
                     return;
                 }
 
-
-                var storeId = $("#storeId").val();
-                var url = "/reservation/" + storeId; //'/reservation/{storeId}' url 완성
                 var requestData = {
+                    storeId: storeId,
                     selectedDate: selectedDate,
                     selectedTime: selectedTime,
                     numberOfPeople: numberOfPeople
@@ -131,7 +130,7 @@
                 //선택한 예약날짜, 예약시간, 인원수를 JSON으로 담아 '/reservation/{storeId}'로 POST 요청
                 $.ajax({
                     type: "POST",
-                    url: url,
+                    url: "/reservation",
                     contentType: "application/json",
                     data: JSON.stringify(requestData),
                     success: function (response) {

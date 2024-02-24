@@ -5,12 +5,14 @@ import lombok.Getter;
 import java.io.Serializable;
 
 @Getter
-public class SessionUser implements Serializable {
+public class SessionUserDTO implements Serializable {
+    Long id;
     private String name;
     private String email;
     private String picture;
 
-    public SessionUser(User user) {
+    public SessionUserDTO(User user) {
+        this.id = user.getId();
         this.name = user.getName();
         this.email = user.getEmail();
         this.picture = user.getPicture();

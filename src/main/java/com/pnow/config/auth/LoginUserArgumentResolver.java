@@ -1,6 +1,6 @@
 package com.pnow.config.auth;
 
-import com.pnow.config.auth.dto.SessionUser;
+import com.pnow.config.auth.dto.SessionUserDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.MethodParameter;
 import org.springframework.stereotype.Component;
@@ -22,7 +22,7 @@ public class LoginUserArgumentResolver implements HandlerMethodArgumentResolver 
     @Override
     public boolean supportsParameter(MethodParameter parameter) { //컨트롤러 메소드의 특정 파라미터를 지원하는지 판단
         boolean isLoginUserAnnotation = parameter.getParameterAnnotation(LoginUser.class) != null; //@LoginUser 어노테이션이 붙어 있는지
-        boolean isUserClass = SessionUser.class.equals(parameter.getParameterType()); //파라미터 클래스 타입이 SessionUser.class인 경우 true 반환
+        boolean isUserClass = SessionUserDTO.class.equals(parameter.getParameterType()); //파라미터 클래스 타입이 SessionUser.class인 경우 true 반환
 
         return isLoginUserAnnotation && isUserClass;
     }

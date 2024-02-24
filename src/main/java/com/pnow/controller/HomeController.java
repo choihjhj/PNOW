@@ -1,7 +1,7 @@
 package com.pnow.controller;
 
 import com.pnow.config.auth.LoginUser;
-import com.pnow.config.auth.dto.SessionUser;
+import com.pnow.config.auth.dto.SessionUserDTO;
 import com.pnow.service.CategoryService;
 import com.pnow.service.CityService;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +25,7 @@ public class HomeController {
      * return "home"
      * */
     @GetMapping("/")
-    public String root(@LoginUser SessionUser user) {
+    public String root(@LoginUser SessionUserDTO user) {
         log.info("root 메소드 진입 user = {}", user);
 
         return "home";

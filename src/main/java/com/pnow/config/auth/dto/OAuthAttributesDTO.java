@@ -9,7 +9,7 @@ import java.util.Map;
 * 구글 소셜로그인 인증 후 OAuthAttributes dto에 셋팅해서 CustomOAuth2UserService에서 dto를 넘겨줄 것임
 * */
 @Getter
-public class OAuthAttributes {
+public class OAuthAttributesDTO {
     private Map<String, Object> attributes;
     private String nameAttributeKey;
     private String name;
@@ -17,7 +17,7 @@ public class OAuthAttributes {
     private String picture;
 
     @Builder
-    public OAuthAttributes(Map<String, Object> attributes, String nameAttributeKey, String name, String email, String picture) {
+    public OAuthAttributesDTO(Map<String, Object> attributes, String nameAttributeKey, String name, String email, String picture) {
         this.attributes = attributes;
         this.nameAttributeKey = nameAttributeKey;
         this.name = name;
@@ -26,13 +26,13 @@ public class OAuthAttributes {
     }
 
     // OAuth2User에서 반환하는 사용자 정보는 Map이기 때문에 값 하나하나를 변환
-    public static OAuthAttributes of(String registrationId, String userNameAttributeName, Map<String, Object> attributes) {
+    public static OAuthAttributesDTO of(String registrationId, String userNameAttributeName, Map<String, Object> attributes) {
         return ofGoogle(userNameAttributeName, attributes);
     }
 
     //구글 인증
-    private static OAuthAttributes ofGoogle(String userNameAttributeName, Map<String, Object> attributes) {
-        return OAuthAttributes.builder()
+    private static OAuthAttributesDTO ofGoogle(String userNameAttributeName, Map<String, Object> attributes) {
+        return OAuthAttributesDTO.builder()
                 .name( (String) attributes.get("name") )
                 .email( (String) attributes.get("email") )
                 .picture( (String) attributes.get("picture") )

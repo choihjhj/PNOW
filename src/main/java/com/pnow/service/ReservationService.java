@@ -1,11 +1,15 @@
 package com.pnow.service;
 
+import com.pnow.config.auth.dto.SessionUserDTO;
 import com.pnow.domain.Reservation;
 import com.pnow.domain.ReservationStatus;
 import com.pnow.domain.Store;
+import com.pnow.domain.user.User;
 import com.pnow.dto.ReservationAbleTimeDTO;
+import com.pnow.dto.ReservationRequestDTO;
 import com.pnow.repository.ReservationRepository;
 import com.pnow.repository.StoreRepository;
+import com.pnow.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -25,6 +29,7 @@ import java.util.Set;
 public class ReservationService {
     private final ReservationRepository reservationRepository;
     private final StoreRepository storeRepository;
+    private final UserRepository userRepository;
 
     @Transactional(readOnly = true)
     public List<ReservationAbleTimeDTO> findReservationAbleTimeDTOList(Long storeId, LocalDate reservationDate) {
@@ -71,4 +76,28 @@ public class ReservationService {
 
         return availableTimes;
     }
+
+
+    @Transactional
+    public void makeReservation(ReservationRequestDTO requestDTO, SessionUserDTO sessionUserDTO) {
+        Store store = storeRepository.findById(requestDTO.getStoreId())
+                .orElseThrow(() -> new IllegalArgumentException("Store not found with id: " + requestDTO.getStoreId()));
+        User user = userRepository.findById(sessionUserDTO.getId())
+                .orElseThrow(() -> new IllegalArgumentException("User not found with id: " + sessionUserDTO.getId()));
+
+
+        //Reservation 엔티티 셋팅
+        Reservation reservation = new Reservation();
+        reservation.setReservationDate(requestDTO.getSelectedDate());
+        reservation.setReservationTime(requestDTO.getSelectedTime());
+        reservation.setGuestCount(requestDTO.getNumberOfPeople());
+        reservation.setUser(user);
+        reservation.setStore(store);
+
+        //예약 저장
+        reservationRepository.save(reservation);
+
+//        log.info("예약이 성공적으로 저장되었습니다. 예약 정보: {}", reservation);
+    }
+
 }

@@ -1,7 +1,7 @@
 package com.pnow.config.auth;
 
-import com.pnow.config.auth.dto.OAuthAttributes;
-import com.pnow.config.auth.dto.SessionUser;
+import com.pnow.config.auth.dto.OAuthAttributesDTO;
+import com.pnow.config.auth.dto.SessionUserDTO;
 import com.pnow.domain.user.User;
 import com.pnow.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -37,11 +37,11 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         String userNameAttributeName = userRequest.getClientRegistration().getProviderDetails().getUserInfoEndpoint().getUserNameAttributeName();
 
         //-------- OAuth2UserService를 통해 가져온 OAuth2User의 attribute를 담을 클래스
-        OAuthAttributes attributes = OAuthAttributes.of(registrationId, userNameAttributeName, oAuth2User.getAttributes());
+        OAuthAttributesDTO attributes = OAuthAttributesDTO.of(registrationId, userNameAttributeName, oAuth2User.getAttributes());
 
         User user = saveOrUpdate(attributes); //소셜로그인 인증한 OAuthAttributes dto를 User 엔티티에 저장
 
-        httpSession.setAttribute("user", new SessionUser(user)); // SessionUser dto에 User 엔티티를 담아서 세션에 "user"로 저장
+        httpSession.setAttribute("user", new SessionUserDTO(user)); // SessionUser dto에 User 엔티티를 담아서 세션에 "user"로 저장
         //User 엔티티를 세션에 저장하면 직렬화 구현하지 않았다는 에러 발생, 직렬화기능을 가진 세션 DTO를 만들어 유지보수함
 
         return new DefaultOAuth2User(
@@ -49,7 +49,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
                 attributes.getAttributes(),
                 attributes.getNameAttributeKey());
     }
-    private User saveOrUpdate(OAuthAttributes attributes) {
+    private User saveOrUpdate(OAuthAttributesDTO attributes) {
         User user = userRepository.findByEmail(attributes.getEmail())
                 .map(entity -> entity.update(attributes.getName(), attributes.getPicture()))
                 .orElse(attributes.toEntity());

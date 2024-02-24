@@ -1,7 +1,7 @@
 package com.pnow.controller;
 
 import com.pnow.config.auth.LoginUser;
-import com.pnow.config.auth.dto.SessionUser;
+import com.pnow.config.auth.dto.SessionUserDTO;
 import com.pnow.domain.Category;
 import com.pnow.domain.City;
 import com.pnow.dto.StoreDTO;
@@ -74,7 +74,7 @@ public class StoreController {
      * return "/store/storeDetail"
      * */
     @GetMapping("/detail/{id}")
-    public String storeRead(Model model, @PathVariable("id") Long id, @LoginUser SessionUser user ){
+    public String storeRead(Model model, @PathVariable("id") Long id, @LoginUser SessionUserDTO user ){
         log.info("/store/detail/{id} get 메소드 진입 storeId = {}",id);
 
         StoreDTO storeDTO = storeService.findStoreDTO(id);

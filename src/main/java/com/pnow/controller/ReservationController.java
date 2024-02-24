@@ -1,5 +1,7 @@
 package com.pnow.controller;
 
+import com.pnow.config.auth.LoginUser;
+import com.pnow.config.auth.dto.SessionUserDTO;
 import com.pnow.dto.ReservationAbleTimeDTO;
 import com.pnow.dto.ReservationRequestDTO;
 import com.pnow.dto.StoreDTO;
@@ -11,7 +13,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
 import java.time.LocalDate;
 import java.util.List;
 
@@ -40,7 +41,6 @@ public class ReservationController {
     }
 
     /*
-     *
      * 예약 가능 시간 조회
      * GET /reservation/{storeId}/{reservationDate}
      * return List<ReservationAbleTimeDTO>
@@ -56,13 +56,16 @@ public class ReservationController {
 
     /*
      * 예약 작성
-     * POST /reservation/{storeId}
+     * POST /reservation
      *
      * */
-    @PostMapping("/{storeId}")
+    @PostMapping
     @ResponseBody
-    public void makeReservation(@PathVariable("storeId") Long storeId, @RequestBody ReservationRequestDTO requestDto) {
-        log.info("예약 작성 메서드 진입 storeId={}, 예약날짜={}, 예약시간={}, 인원수={}",storeId,requestDto.getSelectedDate(),requestDto.getSelectedTime(), requestDto.getNumberOfPeople());
+    public void makeReservation(@RequestBody ReservationRequestDTO requestDto, @LoginUser SessionUserDTO user) {
+        log.info("로그인 객체 user = {}", user);
+        log.info("예약 작성 메서드 진입 storeId={}, 예약날짜={}, 예약시간={}, 인원수={}",requestDto.getStoreId(),requestDto.getSelectedDate(),requestDto.getSelectedTime(), requestDto.getNumberOfPeople());
 
+        reservationService.makeReservation(requestDto, user);
     }
+
 }
