@@ -129,9 +129,6 @@ public class ReservationService {
 
         return dto;
     }
-    private String formatTime(LocalDateTime time) {
-
-        return time.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
-    }
+    private String formatTime(LocalDateTime time) { return time.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")); }
 
 }

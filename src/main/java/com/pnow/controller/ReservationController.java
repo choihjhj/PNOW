@@ -50,7 +50,7 @@ public class ReservationController {
      * */
     @GetMapping("/{storeId}/{reservationDate}")
     @ResponseBody
-    public List<ReservationAbleTimeDTO> reservationTimeRead(@PathVariable("storeId") Long storeId,
+    public List<ReservationAbleTimeDTO> getReservationTime(@PathVariable("storeId") Long storeId,
                                                             @PathVariable("reservationDate") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate reservationDate,
                                                             @LoginUser SessionUserDTO user) {
         if (user != null) {
@@ -68,7 +68,7 @@ public class ReservationController {
      * */
     @PostMapping
     @ResponseBody
-    public void makeReservation(@RequestBody ReservationRequestDTO requestDto, @LoginUser SessionUserDTO user) {
+    public void createReservation(@RequestBody ReservationRequestDTO requestDto, @LoginUser SessionUserDTO user) {
         log.info("로그인 객체 user = {}", user);
         log.info("예약 작성 메서드 진입 storeId={}, 예약날짜={}, 예약시간={}, 인원수={}", requestDto.getStoreId(), requestDto.getSelectedDate(), requestDto.getSelectedTime(), requestDto.getNumberOfPeople());
 
@@ -79,4 +79,17 @@ public class ReservationController {
         }
     }
 
+    /*
+     * 예약 목록 조회
+     * GET /reservations/list
+     * return "/reservations/reservationList"
+     * */
+    @GetMapping("/list")
+    public  String getReservation(@LoginUser SessionUserDTO user, Model model){
+        log.info("root 메소드 진입 user = {}", user);
+        if(user != null){
+            model.addAttribute("ReservationDetailDTO",reservationService.findReservation(user));
+        }
+        return "reservations/reservationList";
+    }
 }

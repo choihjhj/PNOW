@@ -4,16 +4,15 @@ import com.pnow.domain.Menu;
 import com.pnow.domain.Store;
 import com.pnow.dto.MenuDTO;
 import com.pnow.dto.StoreDTO;
-import com.pnow.exception.DataNotFoundException;
 import com.pnow.repository.StoreRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -23,7 +22,7 @@ public class StoreService {
 
     private final StoreRepository storeRepository;
 
-
+    //가게 목록 조회
     @Transactional(readOnly = true)
     public List<StoreDTO> findStoreDTOList(Long categoryId, Long cityId, Long districtId) {
         List<Store> stores = storeRepository.findByCategoryIdAndDistrictIdOrderByStoreNameAsc(categoryId, districtId);
@@ -56,13 +55,13 @@ public class StoreService {
         return time.format(DateTimeFormatter.ofPattern("HH:mm"));
     }
 
+    //가게 조회
     @Transactional(readOnly = true)
     public StoreDTO findStoreDTO(Long id){
-        Optional<Store> store = storeRepository.findById(id);
-        if (!store.isPresent()) {
-            throw new DataNotFoundException("store not found");
-        }
-        return mapToDetailedStoreDTO(store.get());
+        Store store = storeRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Store not found with id: " + id));
+
+        return mapToDetailedStoreDTO(store);
     }
 
     private StoreDTO mapToDetailedStoreDTO(Store store) {

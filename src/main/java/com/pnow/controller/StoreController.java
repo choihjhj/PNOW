@@ -57,7 +57,7 @@ public class StoreController {
      * */
     @GetMapping("/list/{categoryId}/{cityId}/{districtId}")
     @ResponseBody
-    public List<StoreDTO> storeListRead(@PathVariable("categoryId") Long categoryId,
+    public List<StoreDTO> getStoreList(@PathVariable("categoryId") Long categoryId,
                                         @PathVariable("cityId") Long cityId,
                                         @PathVariable("districtId") Long districtId) {
         log.info("/store/list/{categoryId}/{cityId}'/{districtId} get 메소드 진입. " +
@@ -74,7 +74,7 @@ public class StoreController {
      * return "/stores/storeDetail"
      * */
     @GetMapping("/detail/{id}")
-    public String storeRead(Model model, @PathVariable("id") Long id, @LoginUser SessionUserDTO user ){
+    public String getStore(Model model, @PathVariable("id") Long id, @LoginUser SessionUserDTO user ){
         log.info("/store/detail/{id} get 메소드 진입 storeId = {}",id);
 
         StoreDTO storeDTO = storeService.findStoreDTO(id);
@@ -83,31 +83,4 @@ public class StoreController {
         return "stores/storeDetail";
     }
 
-
-
-
-/*
-    @GetMapping("/store/list/{categoryId}")
-    public String storeListRead(Model model, @PathVariable("categoryId") Long categoryId, HttpSession httpSession) {
-        // 전달받은 categoryId에 해당하는 store 리스트 모델에 저장
-        List<Store> storeList = storeService.getStoreList(categoryId);
-        model.addAttribute("storeList", storeList);
-
-        // 세션이 존재하고 cityId 속성이 존재하는 경우에만 모델에 추가
-        if (httpSession != null && httpSession.getAttribute("cityId") != null) {
-            model.addAttribute("cityId", httpSession.getAttribute("cityId"));
-        }
-
-        // categoryId에 해당하는 CategoryType의 이름을 가져와서 모델에 추가, enum 활용
-        CategoryType categoryType = CategoryType.values()[categoryId.intValue() - 1]; // categoryId를 이용하여 CategoryType을 가져옴, 배열은 0번지부터시작, enum은 1번지부터 시작
-        model.addAttribute("categoryName", categoryType.name()); // CategoryType의 이름을 모델에 추가
-
-        return "store/storeList";
-    }
-
-    @GetMapping ("/store/detail/{id}")
-    public String storeDetail(Model model, @PathVariable("id") Long id){
-        return "store/storeDetail";
-    }
-*/
 }
