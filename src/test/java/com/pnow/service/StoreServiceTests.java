@@ -1,14 +1,14 @@
-package com.pnow.repository;
+package com.pnow.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalTime;
-
-@SpringBootTest
 @Slf4j
-public class UserRepositoryTests {
+@SpringBootTest()
+public class StoreServiceTests {
+
     @Test
     public void test(){
         LocalTime now = LocalTime.of(11, 10, 00);
@@ -25,25 +25,4 @@ public class UserRepositoryTests {
             log.info("영업준비중");
         }
     }
-
-
-
-    //@Autowired
-    //private UserRepository userRepository;
-
-    //save() 저장,업데이트
-//    @Transactional
-//    @Test
-//    public void save() {
-//    }
-//
-//    //findAll() 조회
-//    @Test
-//    public void findAll() {
-//    }
-//
-//    //findById() id로 조회
-//    @Test
-//    public void findById() {
-//    }
 }

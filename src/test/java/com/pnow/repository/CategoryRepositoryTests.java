@@ -7,14 +7,13 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
+import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@SpringBootTest()
 @Slf4j
-//@ExtendWith(SpringExtension.class) //JUnit5 버전
-@SpringBootTest() //자동으로 h2 데이터베이스 실행함
 public class CategoryRepositoryTests {
     @Autowired
     private CategoryRepository categoryRepository;
@@ -25,11 +24,12 @@ public class CategoryRepositoryTests {
     }
 
     @Test
+    @Transactional
     public void 카테고리저장_불러오기() {
         //given
-        for (CategoryType category: CategoryType.values()) {
-            log.info("category : {}",category);
-            categoryRepository.save(Category.builder().categoryName(category).build());
+        for (CategoryType categoryType: CategoryType.values()) {
+            log.info("categoryType : {}",categoryType);
+            categoryRepository.save(Category.builder().categoryName(categoryType).build());
         }
 
         //when
@@ -40,8 +40,4 @@ public class CategoryRepositoryTests {
         assertEquals(CategoryType.한식, category.getCategoryName());
 
     }
-
-
 }
-
-

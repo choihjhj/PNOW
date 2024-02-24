@@ -1,7 +1,9 @@
 package com.pnow.domain;
 
 import com.pnow.domain.user.User;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 
@@ -12,6 +14,7 @@ import java.time.LocalTime;
 @Getter
 @Entity
 @DynamicInsert //@ColumnDefault 사용하려고
+@NoArgsConstructor //기본생성자, JUnit test에서 @Builder사용하려고
 public class Reservation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,4 +43,16 @@ public class Reservation {
     @Enumerated(EnumType.STRING)
     @Column //(nullable = false)
     private ReservationStatus reservationStatus; // 예약 상태:WAITING,COMPLETE 기본값은 'WAITING'
+
+    @Builder
+    public Reservation(User user, Store store, LocalDate reservationDate, LocalTime reservationTime, int guestCount, ReservationStatus reservationStatus){
+        this.user=user;
+        this.store=store;
+        this.reservationDate=reservationDate;
+        this.reservationTime=reservationTime;
+        this.guestCount=guestCount;
+        this.reservationStatus=reservationStatus;
+
+    }
+
 }
