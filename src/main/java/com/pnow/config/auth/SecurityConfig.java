@@ -23,7 +23,11 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
                 .antMatchers("/bookmark/**", "/reservaion/**").hasRole(Role.USER.name()) //지정된 옵션에는 전체 열람 권한 부여 => 권한이 ROLE_USER인 경우
                 .anyRequest().authenticated() //로그인 한 사용자들에게 허용
                 .and()
-                .logout().logoutSuccessUrl("/") //로그아웃 성공시 "/"주소로 이동
+                .logout()
+                .logoutSuccessUrl("/") // 로그아웃 성공 시 이동할 페이지
+                .invalidateHttpSession(true) // HTTP 세션 파기 여부
+                .clearAuthentication(true) // 인증정보 삭제 여부
+                .deleteCookies("JSESSIONID") // 삭제할 쿠키 지정
                 .and()
                 .oauth2Login() //OAuth2 로그인 기능에 대한 여러 설정의 진입점
                 .userInfoEndpoint() //OAuth2 로그인 성공 이후 사용자 정보 가져올 때의 설정 담당
