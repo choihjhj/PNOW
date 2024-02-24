@@ -171,25 +171,27 @@
                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fas fa-bell fa-fw"></i>
                                 <!-- Counter - Alerts -->
-                                <span th:if="${#session.getAttribute('user')}" class="badge badge-danger badge-counter">3+</span>
+                                <span th:if="${#session.getAttribute('user')}" class="badge badge-danger badge-counter" th:text="${#session.getAttribute('reservationList').size()}+' +'">3+</span>
                             </a>
                             <!-- Dropdown - Alerts -->
                             <div th:if="${#session.getAttribute('user')}" class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                  aria-labelledby="alertsDropdown">
                                 <h6 class="dropdown-header">
-                                    Alerts Center
+                                    Reservation list
                                 </h6>
-                                <a class="dropdown-item d-flex align-items-center">
+                                <a class="dropdown-item d-flex align-items-center" th:each="reservation : ${#session.getAttribute('reservationList')}">
                                     <div class="mr-3">
                                         <div class="icon-circle bg-primary">
                                             <i class="fas fa-file-alt text-white"></i>
                                         </div>
                                     </div>
                                     <div>
-                                        <div class="small text-gray-500">December 12, 2019</div>
-                                        <span class="font-weight-bold">예약내용</span>
+                                        <div class="small text-gray-500" th:text="${reservation.createdDate}">예약접수일</div>
+                                        <span class="font-weight-bold" th:text="${reservation.storeName}">가게이름</span><br>
+                                        <span class="font-weight-bold" th:text="${reservation.selectedDate} + ', ' + ${reservation.selectedTime} + ', ' + ${reservation.numberOfPeople} + '명'">예약날짜 예약시간 인원수</span>
                                     </div>
                                 </a>
+
                                 <a class="dropdown-item text-center small text-gray-500"
                                    th:href="@{/reservaion/{userId}}">Show All Alerts</a>
                             </div>

@@ -44,7 +44,7 @@ public class ReservationController {
     }
 
     /*
-     * 예약 가능 시간 조회
+     * 예약 가능 시간 목록 조회
      * GET /reservation/{storeId}/{reservationDate}
      * return List<ReservationAbleTimeDTO>
      * */

@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -19,4 +20,5 @@ public class ReservationDetailDTO {
     private LocalTime selectedTime;    //예약 시간
     private int numberOfPeople;        //인원수
     private ReservationStatus reservationStatus; //예약상태
+    private String createdDate; //예약접수일
 }

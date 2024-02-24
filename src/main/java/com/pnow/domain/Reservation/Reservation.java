@@ -1,5 +1,6 @@
 package com.pnow.domain.Reservation;
 
+import com.pnow.domain.BaseTimeEntity;
 import com.pnow.domain.Store;
 import com.pnow.domain.user.User;
 import lombok.Builder;
@@ -17,7 +18,7 @@ import java.time.LocalTime;
 @Entity
 @DynamicInsert //@ColumnDefault 사용하려고
 @NoArgsConstructor //기본생성자, JUnit test에서 @Builder사용하려고
-public class Reservation {
+public class Reservation extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "reservation_id")
