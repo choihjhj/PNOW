@@ -1,8 +1,8 @@
 package com.pnow.service;
 
 import com.pnow.config.auth.dto.SessionUserDTO;
-import com.pnow.domain.Reservation;
-import com.pnow.domain.ReservationStatus;
+import com.pnow.domain.Reservation.Reservation;
+import com.pnow.domain.Reservation.ReservationStatus;
 import com.pnow.domain.Store;
 import com.pnow.domain.user.User;
 import com.pnow.dto.ReservationAbleTimeDTO;

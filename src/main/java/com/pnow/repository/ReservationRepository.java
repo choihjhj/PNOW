@@ -1,7 +1,7 @@
 package com.pnow.repository;
 
-import com.pnow.domain.Reservation;
-import com.pnow.domain.ReservationStatus;
+import com.pnow.domain.Reservation.Reservation;
+import com.pnow.domain.Reservation.ReservationStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

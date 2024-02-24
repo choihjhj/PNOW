@@ -2,7 +2,7 @@ package com.pnow.domain.user;
 
 import com.pnow.domain.BaseTimeEntity;
 import com.pnow.domain.Bookmark;
-import com.pnow.domain.Reservation;
+import com.pnow.domain.Reservation.Reservation;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

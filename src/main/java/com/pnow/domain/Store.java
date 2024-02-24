@@ -1,5 +1,7 @@
 package com.pnow.domain;
 
+import com.pnow.domain.Reservation.Reservation;
+import com.pnow.domain.category.Category;
 import lombok.Getter;
 import javax.persistence.*;
 import java.time.LocalTime;

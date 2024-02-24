@@ -1,6 +1,6 @@
 package com.pnow.repository;
 
-import com.pnow.domain.Category;
+import com.pnow.domain.category.Category;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

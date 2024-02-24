@@ -1,6 +1,6 @@
 package com.pnow.dto;
 
-import com.pnow.domain.CategoryType;
+import com.pnow.domain.category.CategoryType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

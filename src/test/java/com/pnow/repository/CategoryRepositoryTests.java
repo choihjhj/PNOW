@@ -1,7 +1,7 @@
 package com.pnow.repository;
 
-import com.pnow.domain.Category;
-import com.pnow.domain.CategoryType;
+import com.pnow.domain.category.Category;
+import com.pnow.domain.category.CategoryType;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;

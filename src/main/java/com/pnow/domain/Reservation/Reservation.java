@@ -1,5 +1,6 @@
-package com.pnow.domain;
+package com.pnow.domain.Reservation;
 
+import com.pnow.domain.Store;
 import com.pnow.domain.user.User;
 import lombok.Builder;
 import lombok.Getter;

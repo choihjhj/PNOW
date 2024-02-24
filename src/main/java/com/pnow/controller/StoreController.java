@@ -2,7 +2,7 @@ package com.pnow.controller;
 
 import com.pnow.config.auth.LoginUser;
 import com.pnow.config.auth.dto.SessionUserDTO;
-import com.pnow.domain.Category;
+import com.pnow.domain.category.Category;
 import com.pnow.domain.City;
 import com.pnow.dto.StoreDTO;
 import com.pnow.service.CategoryService;

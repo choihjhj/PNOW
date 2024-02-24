@@ -1,6 +1,6 @@
 package com.pnow.service;
 
-import com.pnow.domain.Category;
+import com.pnow.domain.category.Category;
 import com.pnow.repository.CategoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

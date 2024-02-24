@@ -1,5 +1,6 @@
-package com.pnow.domain;
+package com.pnow.domain.category;
 
+import com.pnow.domain.Store;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
