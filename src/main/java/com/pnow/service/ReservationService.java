@@ -35,7 +35,7 @@ public class ReservationService {
     public List<ReservationAbleTimeDTO> findReservationAbleTimeDTOList(Long storeId, LocalDate reservationDate) {
         // 오픈 시간, 종료 시간
         Store store = storeRepository.findById(storeId)
-                .orElseThrow(() -> new RuntimeException("Store not found"));
+                .orElseThrow(() -> new IllegalArgumentException("Store not found with id: " + storeId));
 
         LocalTime openingTime = store.getOpeningTime();
         LocalTime closingTime = store.getClosingTime();
@@ -97,7 +97,6 @@ public class ReservationService {
         //예약 저장
         reservationRepository.save(reservation);
 
-//        log.info("예약이 성공적으로 저장되었습니다. 예약 정보: {}", reservation);
     }
 
 }
