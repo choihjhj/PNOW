@@ -13,6 +13,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpSession;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -23,6 +25,7 @@ import java.util.List;
 public class ReservationController {
     private final ReservationService reservationService;
     private final StoreService storeService;
+    private final HttpSession httpSession;
 
     /*
      * reservation.html 예약 페이지 접속
@@ -86,10 +89,25 @@ public class ReservationController {
      * */
     @GetMapping("/list")
     public  String getReservation(@LoginUser SessionUserDTO user, Model model){
-        log.info("root 메소드 진입 user = {}", user);
+        log.info("예약 목록 조회 메소드 진입 user = {}", user);
         if(user != null){
-            model.addAttribute("ReservationDetailDTO",reservationService.findReservation(user));
+            httpSession.setAttribute("reservationList",reservationService.findReservation(user));
         }
         return "reservations/reservationList";
+    }
+
+    /*
+     * 예약 삭제
+     * DELETE /reservations/{id}
+     *
+     * */
+    @DeleteMapping("/{id}")
+    @ResponseBody
+    public void deleteReservation( @PathVariable("id") Long id, @LoginUser SessionUserDTO user){
+        log.info("예약 삭제 메소드 진입 reservationId = {}", id);
+        if(user != null){
+            reservationService.cancelReservation(id);
+        }
+
     }
 }

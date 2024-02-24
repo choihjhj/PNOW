@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityNotFoundException;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -59,7 +60,7 @@ public class StoreService {
     @Transactional(readOnly = true)
     public StoreDTO findStoreDTO(Long id){
         Store store = storeRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Store not found with id: " + id));
+                .orElseThrow(() -> new EntityNotFoundException("Store not found" + id));
 
         return mapToDetailedStoreDTO(store);
     }

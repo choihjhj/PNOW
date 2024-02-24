@@ -16,6 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityNotFoundException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -39,7 +40,7 @@ public class ReservationService {
     public List<ReservationAbleTimeDTO> findReservationAbleTimeDTOList(Long storeId, LocalDate reservationDate) {
         // 오픈 시간, 종료 시간
         Store store = storeRepository.findById(storeId)
-                .orElseThrow(() -> new IllegalArgumentException("Store not found with id: " + storeId));
+                .orElseThrow(() -> new EntityNotFoundException("Store not found" + storeId));
 
         LocalTime openingTime = store.getOpeningTime();
         LocalTime closingTime = store.getClosingTime();
@@ -85,9 +86,9 @@ public class ReservationService {
     @Transactional
     public void makeReservation(ReservationRequestDTO requestDTO, SessionUserDTO sessionUserDTO) {
         Store store = storeRepository.findById(requestDTO.getStoreId())
-                .orElseThrow(() -> new IllegalArgumentException("Store not found with id: " + requestDTO.getStoreId()));
+                .orElseThrow(() -> new EntityNotFoundException("Store not found" + requestDTO.getStoreId()));
         User user = userRepository.findById(sessionUserDTO.getId())
-                .orElseThrow(() -> new IllegalArgumentException("User not found with id: " + sessionUserDTO.getId()));
+                .orElseThrow(() -> new EntityNotFoundException("User not found" + sessionUserDTO.getId()));
 
 
         //Reservation 엔티티 셋팅
@@ -108,7 +109,7 @@ public class ReservationService {
     public List<ReservationDetailDTO> findReservation(SessionUserDTO sessionUserDTO){
 
         User user = userRepository.findById(sessionUserDTO.getId())
-                .orElseThrow(() -> new IllegalArgumentException("User not found with id: " + sessionUserDTO.getId()));
+                .orElseThrow(() -> new EntityNotFoundException("User not found" + sessionUserDTO.getId()));
 
         //user에 해당하는 예약 목록 조회
         List<Reservation> reservationList = reservationRepository.findAllByUserAndReservationStatusOrderByCreatedDateDesc(user, ReservationStatus.WAITING);
@@ -129,6 +130,13 @@ public class ReservationService {
 
         return dto;
     }
-    private String formatTime(LocalDateTime time) { return time.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")); }
+    private String formatTime(LocalDateTime time) { return time.format(DateTimeFormatter.ofPattern("yyyy-MM-dd, HH:mm")); }
+
+    //예약 삭제
+    @Transactional
+    public void cancelReservation(Long id){
+        Reservation reservation = reservationRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Reservation not found"));
+        reservationRepository.delete(reservation);
+    }
 
 }

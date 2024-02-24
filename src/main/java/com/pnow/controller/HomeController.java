@@ -31,7 +31,11 @@ public class HomeController {
             httpSession.setAttribute("reservationList",reservationService.findReservation(user));
         }
         return "home";
-//        return "temp";
+    }
+
+    @GetMapping("/temp")
+    public  String temp(){
+        return "temp";
     }
 
 }
