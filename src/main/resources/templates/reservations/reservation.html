@@ -68,7 +68,7 @@
                     var selectedDateObject = $(this).datepicker('getDate'); // 선택된 날짜를 Date 객체로 변환
                     selectedDate = $.datepicker.formatDate('yy-mm-dd', selectedDateObject); // "yyyy-MM-dd" 형식으로 포맷팅하여 저장
                     var storeId = $("#storeId").val(); // storeId 가져오기
-                    var url = "/reservation/" + storeId + "/" + selectedDate; // URL 생성
+                    var url = "/reservations/" + storeId + "/" + selectedDate; // URL 생성
 
                     //ajax 요청한 뒤 예약가능시간 List받아와 출력
                     $.ajax({
@@ -127,10 +127,10 @@
                     numberOfPeople: numberOfPeople
                 };
 
-                //선택한 예약날짜, 예약시간, 인원수를 JSON으로 담아 '/reservation/{storeId}'로 POST 요청
+                //선택한 예약날짜, 예약시간, 인원수를 JSON으로 담아 '/reservations/{storeId}'로 POST 요청
                 $.ajax({
                     type: "POST",
-                    url: "/reservation",
+                    url: "/reservations",
                     contentType: "application/json",
                     data: JSON.stringify(requestData),
                     success: function (response) {

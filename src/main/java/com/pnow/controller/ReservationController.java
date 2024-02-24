@@ -18,7 +18,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @Controller
-@RequestMapping("/reservation")
+@RequestMapping("/reservations")
 @Slf4j
 public class ReservationController {
     private final ReservationService reservationService;
@@ -27,8 +27,8 @@ public class ReservationController {
     /*
      * reservation.html 예약 페이지 접속
      * - 가게 조회 후 model에 저장
-     * GET /reservation/{storeId}
-     * return "/reservation/reservation"
+     * GET /reservations/{storeId}
+     * return "/reservations/reservation"
      * */
     @GetMapping("/{storeId}")
     public String reservation( @PathVariable("storeId") Long storeId, Model model, @LoginUser SessionUserDTO user){
@@ -37,7 +37,7 @@ public class ReservationController {
         if (user != null) {
             StoreDTO storeDTO = storeService.findStoreDTO(storeId);
             model.addAttribute("store", storeDTO);
-            return "reservation/reservation";
+            return "reservations/reservation";
         } else {
             throw new IllegalStateException("예약 가능 시간 조회를 위해서는 로그인이 필요합니다.");
         }
@@ -45,7 +45,7 @@ public class ReservationController {
 
     /*
      * 예약 가능 시간 목록 조회
-     * GET /reservation/{storeId}/{reservationDate}
+     * GET /reservations/{storeId}/{reservationDate}
      * return List<ReservationAbleTimeDTO>
      * */
     @GetMapping("/{storeId}/{reservationDate}")
@@ -63,7 +63,7 @@ public class ReservationController {
 
     /*
      * 예약 작성
-     * POST /reservation
+     * POST /reservations
      *
      * */
     @PostMapping

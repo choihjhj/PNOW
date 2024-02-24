@@ -16,7 +16,7 @@
                 var selectedCityId = $(this).val();
                 $.ajax({
                     type: 'GET',
-                    url: '/district/list/' + selectedCityId,
+                    url: '/districts/list/' + selectedCityId,
                     success: function (data) {
                         var options = '';
                         $.each(data, function (index, district) {
@@ -46,7 +46,7 @@
                 var selectedDistrictId = $('#sigungu').val();
                 $.ajax({
                     type: 'GET',
-                    url: '/store/list/' + categoryId + '/' + selectedCityId + '/' + selectedDistrictId,
+                    url: '/stores/list/' + categoryId + '/' + selectedCityId + '/' + selectedDistrictId,
                     success: function (data) {
                         // 이전 내용을 지우기
                         $('#storeDTOContainer').empty();
@@ -59,14 +59,14 @@
                                 '<div class="row no-gutters align-items-center">' +
                                 '<div class="col mr-2">' +
                                 '<div class="text-xs font-weight-bold text-warning text-uppercase mb-1">' + storeDTO.storeStatus + '</div>' +
-                                '<a href="/store/detail/' + storeDTO.id + '">' +
+                                '<a href="/stores/detail/' + storeDTO.id + '">' +
                                 '<div class="h5 mb-0 font-weight-bold text-gray-800">' + storeDTO.storeName + '</div>' +
                                 '</a>' +
                                 '<div class="text-xs font-weight-bold text-primary text-uppercase mb-1">' + storeDTO.cityName + ' ' + storeDTO.districtName + ' ' + storeDTO.detailAddress + '</div>' +
                                 '<div class="text-xs font-weight-bold text-success text-uppercase mb-1">' + storeDTO.openingTime + '-' + storeDTO.closingTime + '</div>' +
                                 '</div>' +
                                 '<div class="col-auto">' +
-                                '<a href="/store/detail/' + storeDTO.id + '">' +
+                                '<a href="/stores/detail/' + storeDTO.id + '">' +
                                 '<img src="/img/' + storeDTO.storeName + '.PNG" alt="가게 이미지" style="width: 50px; height: auto;">' +
                                 '</a>' +
                                 '</div>' +

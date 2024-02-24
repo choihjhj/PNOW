@@ -20,6 +20,7 @@ public class HomeController {
 
     /*
      * 홈 접속
+     * - 세션에 로그인한 유저 예약리스트 저장
      * GET /
      * return "home"
      * */

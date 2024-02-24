@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-@RequestMapping("/district")
+@RequestMapping("/districts")
 @RequiredArgsConstructor
 @RestController
 @Slf4j
@@ -20,7 +20,7 @@ public class DistrictController {
 
     /*
      * 지역 조회
-     * GET /district/list/{cityId}
+     * GET /districts/list/{cityId}
      * return List<DistrictDTO>
      * */
     @GetMapping("/list/{cityId}")

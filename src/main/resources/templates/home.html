@@ -75,19 +75,19 @@
             </li>
             <!-- Nav Item - Tables 맛집 카테고리-->
             <li class="nav-item">
-                <a class="nav-link" th:href="@{/store}">
+                <a class="nav-link" th:href="@{/stores}">
                     <i class="fas fa-fw fa-chart-area"></i>
                     <span>맛집 카테고리</span></a>
             </li>
             <!-- Nav Item - Tables 예약목록-->
             <li class="nav-item">
-                <a class="nav-link" th:href="@{/reservation}" id="reservationLink">
+                <a class="nav-link" th:href="@{/reservations/list}" id="reservationLink">
                     <i class="fas fa-fw fa-table"></i>
                     <span>예약목록</span></a>
             </li>
             <!-- Nav Item - Charts 즐겨찾기-->
             <li class="nav-item">
-                <a class="nav-link" th:href="@{/bookmark}" id="bookmarkLink">
+                <a class="nav-link" th:href="@{/bookmarks/list}" id="bookmarkLink">
                     <i class="fas fa-fw fa-chart-area"></i>
                     <span>즐겨찾기</span></a>
             </li>
@@ -128,7 +128,7 @@
                         <i class="fa fa-bars"></i>
                     </button>
                     <!-- Topbar Search -->
-                    <form th:action="@{/store/search/{keyword}(keyword=${searchKeyword})}" method="get"
+                    <form th:action="@{/stores/search/{keyword}(keyword=${searchKeyword})}" method="get"
                           class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
                         <div class="input-group">
                             <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
@@ -171,7 +171,11 @@
                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fas fa-bell fa-fw"></i>
                                 <!-- Counter - Alerts -->
-                                <span th:if="${#session.getAttribute('user')}" class="badge badge-danger badge-counter" th:text="${#session.getAttribute('reservationList').size()}+' +'">3+</span>
+                                <span th:if="${#session.getAttribute('user') != null and #session.getAttribute('reservationList') != null}"
+                                      class="badge badge-danger badge-counter"
+                                      th:text="${#session.getAttribute('reservationList').size()} + ' +'">3+</span>
+
+
                             </a>
                             <!-- Dropdown - Alerts -->
                             <div th:if="${#session.getAttribute('user')}" class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -193,7 +197,7 @@
                                 </a>
 
                                 <a class="dropdown-item text-center small text-gray-500"
-                                   th:href="@{/reservaion/{userId}}">Show All Alerts</a>
+                                   th:href="@{/reservaions/{userId}}">Show All Alerts</a>
                             </div>
                         </li>
                         <div class="topbar-divider d-none d-sm-block"></div>

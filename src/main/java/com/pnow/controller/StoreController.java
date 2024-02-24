@@ -22,7 +22,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Controller
 @Slf4j
-@RequestMapping("/store")
+@RequestMapping("/stores")
 public class StoreController {
 
     private final StoreService storeService;
@@ -32,8 +32,8 @@ public class StoreController {
     /*
      * store.html 접속
      * -카테고리, 지역 조회 후 model에 저장
-     * GET /store
-     * return "/store/store"
+     * GET /stores
+     * return "/stores/store"
      * */
     @GetMapping
     public String store(Model model) {
@@ -47,12 +47,12 @@ public class StoreController {
         List<City> cityList = cityService.findCityList();
         model.addAttribute("cityList", cityList);
 
-        return "store/store";
+        return "stores/store";
     }
 
     /*
      * 가게 목록 조회
-     * GET /store/list/{categoryId}/{cityId}/{districtId}
+     * GET /stores/list/{categoryId}/{cityId}/{districtId}
      * return List<StoreDTO>
      * */
     @GetMapping("/list/{categoryId}/{cityId}/{districtId}")
@@ -70,8 +70,8 @@ public class StoreController {
      * storeDetail.html 접속
      * 가게 조회
      * - 메뉴,가격도 담은 storeDTO model에 저장
-     * GET /store/detail/{id}
-     * return "/store/storeDetail"
+     * GET /stores/detail/{id}
+     * return "/stores/storeDetail"
      * */
     @GetMapping("/detail/{id}")
     public String storeRead(Model model, @PathVariable("id") Long id, @LoginUser SessionUserDTO user ){
@@ -80,7 +80,7 @@ public class StoreController {
         StoreDTO storeDTO = storeService.findStoreDTO(id);
         model.addAttribute("store", storeDTO);
 
-        return "store/storeDetail";
+        return "stores/storeDetail";
     }
 
 
