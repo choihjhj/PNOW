@@ -37,6 +37,7 @@
 
             var selectedDate; // 선택된 날짜 저장 변수
             var minDate = 0; // 달력 시작 날짜를 오늘 날짜로 default 설정
+
             var closingTime = $('#closingTime').val();
 
             // 현재 시,분 구하기
@@ -44,10 +45,16 @@
             var currentHour = currentTime.getHours();
             var currentMinute = currentTime.getMinutes();
 
-            // 현재 시간이 closingTime 이후면  달력의 예약 가능한 시작 날짜를 내일 날짜로 minDate 변경
-            if (currentHour > parseInt(closingTime.split(':')[0]) ||
-                (currentHour === parseInt(closingTime.split(':')[0]) && currentMinute >= parseInt(closingTime.split(':')[1]))) {
-                // 현재 시간이 운영 종료 시간 이후면 다음날짜부터 선택 가능하도록 셋팅
+            // 클로징 시간 이후 30분 전 시간 계산
+            var closingHour = parseInt(closingTime.split(':')[0]);
+            var closingMinute = parseInt(closingTime.split(':')[1]);
+            var closingMinus30 = new Date();
+            closingMinus30.setHours(closingHour);
+            closingMinus30.setMinutes(closingMinute - 30);
+
+            // 현재 시간이 (클로징시간-30분) 이후면 예약가능한 시작날짜를 다음날 날짜로 설정
+            if (currentTime >= closingMinus30) {
+                // 다음날 날짜로 설정
                 var tomorrow = new Date();
                 tomorrow.setDate(tomorrow.getDate() + 1);
                 minDate = tomorrow;

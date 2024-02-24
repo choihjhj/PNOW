@@ -15,8 +15,9 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
+import java.util.Set;
 
 @RequiredArgsConstructor
 @Service
@@ -28,34 +29,44 @@ public class ReservationService {
     @Transactional(readOnly = true)
     public List<ReservationAbleTimeDTO> findReservationAbleTimeDTOList(Long storeId, LocalDate reservationDate) {
         // 오픈 시간, 종료 시간
-        Optional<Store> store = storeRepository.findById(storeId);
-        LocalTime openingTime = store.get().getOpeningTime();
-        LocalTime closingTime = store.get().getClosingTime();
+        Store store = storeRepository.findById(storeId)
+                .orElseThrow(() -> new RuntimeException("Store not found"));
 
-        // 해당 날짜에 예약한 시간들
+        LocalTime openingTime = store.getOpeningTime();
+        LocalTime closingTime = store.getClosingTime();
+
+        // 해당 날짜에 예약한 시간들을 HashSet에 저장,  시간복잡도: O(1)
         List<Reservation> reservations = reservationRepository.findByStoreIdAndReservationDateAndReservationStatus(storeId, reservationDate, ReservationStatus.WAITING);
+        Set<LocalTime> reservedTimes = new HashSet<>();
+        for (Reservation reservation : reservations) {
+            reservedTimes.add(reservation.getReservationTime());
+        }
 
-        List<ReservationAbleTimeDTO> availableTimes = new ArrayList<>(); // 예약 가능 시간 저장할 List
+        // 예약 가능한 시간을 저장할 List
+        List<ReservationAbleTimeDTO> availableTimes = new ArrayList<>();
 
-        LocalTime startTime = openingTime; //예약가능한 시작시간 오픈시간으로 default
+        LocalTime startTime = openingTime; // 예약 가능한 시작시간을 오픈시간으로 초기화
 
-        if (reservationDate.isEqual(LocalDate.now())) { //예약한 날짜가 오늘 날짜이면 startTime 변경
+        // 오늘 날짜인 경우 현재 시간을 기준으로 예약 가능한 시작시간을 조정
+        if (reservationDate.isEqual(LocalDate.now())) {
             LocalTime currentTime = LocalTime.now();
-            int currentHour = currentTime.getHour();     //현재 시
-            int currentMinute = currentTime.getMinute(); //현재 분
+            int currentMinute = currentTime.getMinute();
+            int currentHour = currentTime.getHour();
 
-            //현재 분이 0분~29분이면 예약가능한시간을 현재시:30 으로 셋팅
+            // 현재 분이 0분~29분이면 예약 가능한 시간을 현재시:30 으로 설정
             if (currentMinute >= 0 && currentMinute < 30) {
                 startTime = LocalTime.of(currentHour, 30);
-            } else {    //현재분이 30분~59분이면 예약가능한시간을 현재시+1:00 으로 셋팅
+            } else { // 현재 분이 30분~59분이면 예약 가능한 시간을 (현재시+1):00 으로 설정
                 startTime = LocalTime.of(currentHour + 1, 0);
             }
         }
 
-
-        while (startTime.isBefore(closingTime)) { // 클로징 시간-30분 까지만 예약 가능시간에 add
-            availableTimes.add(new ReservationAbleTimeDTO(startTime.format(DateTimeFormatter.ofPattern("HH:mm"))));
-            startTime = startTime.plusMinutes(30);
+        // 예약 가능한 시간을 계산하여 availableTimes에 추가
+        while (startTime.isBefore(closingTime)) { //HashSet contains로 List보다 더 시간복잡도 줄임
+            if (!reservedTimes.contains(startTime)) {
+                availableTimes.add(new ReservationAbleTimeDTO(startTime.format(DateTimeFormatter.ofPattern("HH:mm"))));
+            }
+            startTime = startTime.plusMinutes(30); // 다음 시간으로 이동
         }
 
         return availableTimes;
