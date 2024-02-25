@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="home :: header"></head>
+<head>
+    <!-- jQuery CDN -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script th:inline="javascript">
+        $(document).ready(function () {
+
+        });
+    </script>
+    <style>
+        .profile-picture {
+            width: 200px; /* 프로필 사진 크기 조정 */
+            height: 200px;
+            border-radius: 50%; /* 큰 동그라미 프로필 사진 스타일 */
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            font-weight: bold;
+        }
+
+        .btn-container {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body id="page-top" th:classappend="${bodyClass}">
+<!-- Page Wrapper -->
+<div id="wrapper">
+    <!-- Sidebar -->
+    <div th:replace="home :: sidebar"/>
+    <!-- End of Sidebar -->
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+        <!-- Main Content -->
+        <div id="content">
+            <!-- Topbar -->
+            <div th:replace="home :: topbar"/>
+            <!-- End of Topbar -->
+
+            <!-- Begin Page Content -->
+            <div class="container-fluid">
+                <!-- Page Heading -->
+                <div class="row">
+                    <div class="col-lg-7">
+                        <div class="p-5">
+                            <div class="text-center">
+                                <img th:src="${user.picture}" class="profile-picture">
+                                <h1 class="h4 text-gray-900 mb-4" th:text="${user.name}+'님 반갑습니다!'"></h1>
+                            </div>
+                            <form class="user">
+                                <label class="font-weight-bold" th:text="가입일"></label><br>
+                                <div class="form-group">
+                                    <input type="createdDate" class="form-control form-control-user" id="createdDate"
+                                           th:placeholder="${user.createdDate}" readonly>
+                                </div>
+                                <label class="font-weight-bold" th:text="이름"></label><br>
+                                <div class="form-group">
+                                    <input type="name" class="form-control form-control-user" id="name"
+                                           th:placeholder="${user.name}" >
+                                </div>
+                                <label class="font-weight-bold" th:text="이메일"></label><br>
+                                <div class="form-group">
+                                    <input type="email" class="form-control form-control-user" id="email"
+                                           th:placeholder="${user.email}" >
+                                </div>
+
+                                <hr>
+
+                                <div class="btn-container">
+                                    <a href="/" class="btn btn-secondary btn-icon-split">
+                                        <span class="text">취소</span>
+                                    </a>
+                                    <a id="categoryLink0" href="#" class="btn btn-primary btn-icon-split">
+                                        <span class="text" th:text="수정완료"></span>
+                                    </a>
+                                    <a id="categoryLink4" href="#" class="btn btn-danger btn-icon-split">
+                                        <span class="text" th:text="회원탈퇴"></span>
+                                    </a>
+                                </div>
+
+
+                            </form>
+
+
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+            <!-- /.container-fluid -->
+
+        </div>
+        <!-- End of Main Content -->
+    </div>
+    <!-- End of Content Wrapper -->
+</div>
+<!-- End of Page Wrapper -->
+<div th:replace="home :: footer"/>
+<!-- Script to set selected cityId and districtId -->
+
+</body>
+</html>
