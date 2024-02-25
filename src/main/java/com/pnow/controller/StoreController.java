@@ -2,8 +2,9 @@ package com.pnow.controller;
 
 import com.pnow.config.auth.LoginUser;
 import com.pnow.config.auth.dto.SessionUserDTO;
-import com.pnow.domain.category.Category;
 import com.pnow.domain.City;
+import com.pnow.domain.Store;
+import com.pnow.domain.category.Category;
 import com.pnow.dto.StoreDTO;
 import com.pnow.service.BookmarkService;
 import com.pnow.service.CategoryService;
@@ -13,10 +14,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -88,5 +86,15 @@ public class StoreController {
 
         return "stores/storeDetail";
     }
+    @GetMapping("/search")
+    public String searchStore(@RequestParam("keyword") String keyword, Model model){
+        log.info("가게이름 검색 메소드 진입 keyword={}",keyword);
+        model.addAttribute("keyword", keyword);
+        List<Store> storeList =storeService.findSearchStore(keyword);
+        log.info("storeList {}",storeList);
+        model.addAttribute("storeList",storeList);
+        return "stores/storeSearch";
+    }
+
 
 }

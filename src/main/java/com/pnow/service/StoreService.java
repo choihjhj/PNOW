@@ -79,6 +79,13 @@ public class StoreService {
                 .collect(Collectors.toList());
     }
 
+    //가게 이름 검색
+    @Transactional(readOnly = true)
+    public  List<Store> findSearchStore(String keyword){
+        return storeRepository.findKeyword(keyword);
+
+    }
+
 
 }
 
