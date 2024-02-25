@@ -65,7 +65,7 @@
                                     <th>예약취소</th>
                                 </tr>
                                 </thead>
-                                <tbody th:if="${#session.getAttribute('reservationList')}">
+                                <tbody th:if="${#session.getAttribute('reservationList') != null}">
                                 <tr th:each="reservation : ${#session.getAttribute('reservationList')}">
                                     <td th:text="${#session.getAttribute('reservationList').size() - reservationStat.index}">번호</td>
                                     <td th:text="${reservation.storeName}">가게이름</td>

@@ -5,6 +5,7 @@ import com.pnow.config.auth.dto.SessionUserDTO;
 import com.pnow.domain.category.Category;
 import com.pnow.domain.City;
 import com.pnow.dto.StoreDTO;
+import com.pnow.service.BookmarkService;
 import com.pnow.service.CategoryService;
 import com.pnow.service.CityService;
 import com.pnow.service.StoreService;
@@ -28,6 +29,7 @@ public class StoreController {
     private final StoreService storeService;
     private final CategoryService categoryService;
     private final CityService cityService;
+    private final BookmarkService bookmarkService;
 
     /*
      * store.html 접속
@@ -70,6 +72,7 @@ public class StoreController {
      * storeDetail.html 접속
      * 가게 조회
      * - 메뉴,가격도 담은 storeDTO model에 저장
+     * - 로그인했으면 로그인한유저가 해당 가게를 즐겨찾기 했는지 Bookmark model에 저장
      * GET /stores/detail/{id}
      * return "/stores/storeDetail"
      * */
@@ -79,6 +82,9 @@ public class StoreController {
 
         StoreDTO storeDTO = storeService.findStoreDTO(id);
         model.addAttribute("store", storeDTO);
+        if(user != null){
+            model.addAttribute("bookmark", bookmarkService.findBookmarkWithUserIdAndStoreId(user.getId(),id));
+        }
 
         return "stores/storeDetail";
     }

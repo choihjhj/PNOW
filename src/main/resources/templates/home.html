@@ -178,7 +178,7 @@
 
                             </a>
                             <!-- Dropdown - Alerts -->
-                            <div th:if="${#session.getAttribute('user')}" class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                            <div th:if="${#session.getAttribute('user') != null}" class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                  aria-labelledby="alertsDropdown">
                                 <h6 class="dropdown-header">
                                     Reservation list
@@ -209,7 +209,7 @@
                                 <a th:href="@{/oauth2/authorization/google}" class="btn btn-success active"
                                    role="button">Google</a>
                             </div>
-                            <div th:if="${#session.getAttribute('user')}">
+                            <div th:if="${#session.getAttribute('user') != null}">
                                 <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <span class="mr-2 d-none d-lg-inline text-gray-600 small"

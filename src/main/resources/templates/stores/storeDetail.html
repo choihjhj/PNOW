@@ -3,18 +3,36 @@
 <head th:replace="home :: header"></head>
 <head>
     <script th:inline="javascript">
-        $(document).ready(function() {
-            // 공통 함수: 로그인 여부 확인
-            function checkLogin(e) {
-                var userSession = $('#user').val();
-                if (!userSession) {
-                    alert('로그인 후 이용 가능합니다.');
-                    e.preventDefault();
-                }
-            }
+        $(document).ready(function () {
+            // storeId 설정
+            var storeId = /*[[${store.id}]]*/ null;
 
-            // 예약목록, 즐겨찾기, 내정보 링크 클릭 시
-            $('#reservationButton, #bookmarkButton').click(checkLogin);
+            <!-- 즐겨찾기 버튼 클릭 이벤트 핸들러 -->
+            $('.bookmarkButton').click(function (e) {
+                e.preventDefault();
+
+                // 로그인 여부 확인
+                var isLoggedIn = /*[[${#session.getAttribute('user') != null}]]*/ false;
+                if (!isLoggedIn) {
+                    alert('로그인 후 이용 가능합니다.');
+                    return;
+                }
+
+                var isBookmarked = $(this).hasClass('bookmarkOnButton'); // 즐겨찾기 했는지 확인 변수
+
+                // 즐겨찾기 추가 또는 삭제 요청 보내기
+                $.ajax({
+                    type: isBookmarked ? "DELETE" : "POST", // 즐겨찾기 상태에 따라 요청 방식 결정
+                    url: "/bookmarks/" + storeId,
+                    success: function (response) {
+                        window.location.href="/stores/detail/"+storeId; //새로고침
+                    },
+                    error: function (xhr, status, error) {
+                        console.error(xhr.responseText);
+                    }
+                });
+            });
+            <!-- 즐겨찾기 버튼 클릭 이벤트 핸들러 END -->
         });
     </script>
 </head>
@@ -31,38 +49,35 @@
             <!-- Topbar -->
             <div th:replace="home :: topbar"/>
             <!-- End of Topbar -->
-
             <!-- Begin Page Content -->
             <div class="container-fluid">
                 <div class="card shadow mb-4">
                     <div class="card-header py-3">
                         <!-- 카드 안에 내용 시작 -->
-
                         <div class="d-sm-flex align-items-center justify-content-between mb-4">
                             <h1 class="h3 mb-0 text-gray-800" th:text="${store.storeName}">가게이름</h1>
-<!--                        <img src="/img/색칠별.png" alt="즐겨찾기했을 때" style="width: 50px; height: auto;">-->
-                        <a id="bookmarkButton" href="#"><img src="/img/빈별.png" alt="즐겨찾기안했을 때" style="width: 50px; height: auto;"></a>
+                            <a th:if="${#session.getAttribute('user') != null && bookmark != null}" class="bookmarkButton bookmarkOnButton" href="#">
+                                <img src="/img/색칠별.png" alt="즐겨찾기했을 때" style="width: 50px; height: auto;">
+                            </a>
+                            <a th:unless="${#session.getAttribute('user') != null && bookmark != null}" class="bookmarkButton bookmarkOffButton" href="#">
+                                <img src="/img/빈별.png" alt="즐겨찾기안했을 때" style="width: 50px; height: auto;">
+                            </a>
                         </div>
-                        <img  th:src="'/img/' + ${store.storeName} + '.PNG'" alt="가게 이미지" style="max-width: 100%; height: auto;"><br><br>
+                        <img th:src="'/img/' + ${store.storeName} + '.PNG'" alt="가게 이미지"
+                             style="max-width: 100%; height: auto;"><br><br>
                         <h6 class="m-0 font-weight-bold text-primary" th:text="${store.storeStatus}">영업상태</h6>
-                    <span th:text="${store.categoryName}">카테고리 이름</span><br>
+                        <span th:text="${store.categoryName}">카테고리 이름</span><br>
                         <span th:text="${store.cityName}+' '+${store.districtName}+' '+${store.detailAddress}">주소</span><br>
-
                         <span th:text="'&#128345;'+${store.openingTime}+'-'+${store.closingTime}">운영시간</span><br>
                         <span th:text="'&#128222;'+${store.phoneNumber}">전화번호</span><br>
-
-                        <a th:href="'/reservations/' + ${store.id}" id="reservationButton" class="btn btn-success btn-icon-split">
+                        <a th:href="'/reservations/' + ${store.id}" id="reservationButton"
+                           class="btn btn-success btn-icon-split">
                             <span class="icon text-white-50">
-                                            <i class="fas fa-check"></i>
-                                        </span>
-                            <span class="text" >&nbsp; 예약하기 &nbsp;</span>
+                                <i class="fas fa-check"></i>
+                            </span>
+                            <span class="text">&nbsp; 예약하기 &nbsp;</span>
                         </a>
-
-
-
                     </div>
-
-
                     <div class="card-body">
                         <p>메뉴 가격</p>
                         <ul>
@@ -73,13 +88,9 @@
                             </li>
                         </ul>
                     </div>
-
                 </div>
-
-
             </div>
             <!-- /.container-fluid -->
-
         </div>
         <!-- End of Main Content -->
     </div>
