@@ -86,13 +86,24 @@ public class StoreController {
 
         return "stores/storeDetail";
     }
+
+    /*
+     * storeSearch.html 접속
+     * 가게 이름 조회
+     * - keywork model에 저장
+     * - 키워드에 해당하는 가게들 model에 저장
+     * GET /stores/search?keyword=
+     * return "/stores/storeSearch"
+     * */
     @GetMapping("/search")
     public String searchStore(@RequestParam("keyword") String keyword, Model model){
         log.info("가게이름 검색 메소드 진입 keyword={}",keyword);
         model.addAttribute("keyword", keyword);
+
         List<Store> storeList =storeService.findSearchStore(keyword);
         log.info("storeList {}",storeList);
         model.addAttribute("storeList",storeList);
+
         return "stores/storeSearch";
     }
 
