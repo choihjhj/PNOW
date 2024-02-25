@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="home :: header"></head>
+<head>
+    <!-- jQuery CDN -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script th:inline="javascript">
+        $(document).ready(function () {
+            <!-- 즐겨찾기 별 클릭했을 때 delete ajax 요청 -->
+            $(".bookmark-btn").click(function () {
+                var bookmarkId = $('#bookmarkId').val();
+                if (confirm("즐겨찾기를 취소하시겠습니까?")) {
+                    $.ajax({
+                        type: "DELETE",
+                        url: "/bookmarks/" + bookmarkId ,
+                        success: function (response) {
+                            window.location.href="/bookmarks/list"//새로고침
+                        },
+                        error: function (xhr, status, error) {
+                            console.error(xhr.responseText);
+                        }
+
+                    });
+                }
+            });
+            <!-- 즐겨찾기 별 클릭했을 때 delete ajax 요청 END -->
+
+            // 별 이미지에 마우스를 가져다 댔을 때 손 모양으로 변경
+            $(".bookmark-btn img").hover(function () {
+                $(this).css('cursor', 'pointer');
+            }, function () {
+                $(this).css('cursor', 'auto');
+            });
+        });
+    </script>
+</head>
+<body id="page-top" th:classappend="${bodyClass}">
+<!-- Page Wrapper -->
+<div id="wrapper">
+    <!-- Sidebar -->
+    <div th:replace="home :: sidebar"/>
+    <!-- End of Sidebar -->
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+        <!-- Main Content -->
+        <div id="content">
+            <!-- Topbar -->
+            <div th:replace="home :: topbar"/>
+            <!-- End of Topbar -->
+
+            <!-- Begin Page Content -->
+            <div class="container-fluid">
+                <!-- Page Heading -->
+                <h1 class="h3 mb-2 text-gray-800">즐겨찾기 목록 페이지</h1>
+                <div class="row">
+                    <div class="col-xl-3 col-md-6 mb-4" th:each="bookmark : ${bookmarkList}">
+                        <div class="card border-left-primary shadow h-100 py-2">
+                            <div class="card-body d-flex justify-content-between">
+                                <div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800" th:text="${bookmark.store.storeName}"></div>
+                                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1" th:text="${bookmark.store.district.city.cityName}+' '+${bookmark.store.district.districtName}+' '+${bookmark.store.detailAddress}"></div>
+                                    <div class="text-xs font-weight-bold text-success text-uppercase mb-1" th:text="'🕙 '+${bookmark.store.openingTime}+'-'+${bookmark.store.closingTime}"></div>
+                                </div>
+                                <div class="align-self-end">
+                                    <a src="#"  class="bookmark-btn">
+                                        <input hidden id="bookmarkId" th:value="${bookmark.id}">
+                                        <img src="/img/별.png" alt="즐겨찾기" style="width: 50px; height: auto;">
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /.container-fluid -->
+
+        </div>
+        <!-- End of Main Content -->
+    </div>
+    <!-- End of Content Wrapper -->
+</div>
+<!-- End of Page Wrapper -->
+<div th:replace="home :: footer"/>
+<!-- Script to set selected cityId and districtId -->
+
+</body>
+</html>

@@ -4,7 +4,8 @@
 <head>
     <script th:inline="javascript">
         $(document).ready(function () {
-            // storeId 설정
+            // bookmarkId와 storeId 설정
+            var bookmarkId = /*[[${bookmark?.id}]]*/ null;
             var storeId = /*[[${store.id}]]*/ null;
 
             <!-- 즐겨찾기 버튼 클릭 이벤트 핸들러 -->
@@ -23,9 +24,9 @@
                 // 즐겨찾기 추가 또는 삭제 요청 보내기
                 $.ajax({
                     type: isBookmarked ? "DELETE" : "POST", // 즐겨찾기 상태에 따라 요청 방식 결정
-                    url: "/bookmarks/" + storeId,
+                    url: isBookmarked ? "/bookmarks/" + bookmarkId : "/bookmarks/" + storeId,
                     success: function (response) {
-                        window.location.href="/stores/detail/"+storeId; //새로고침
+                        window.location.href = "/stores/detail/" + storeId; //새로고침
                     },
                     error: function (xhr, status, error) {
                         console.error(xhr.responseText);
@@ -56,10 +57,12 @@
                         <!-- 카드 안에 내용 시작 -->
                         <div class="d-sm-flex align-items-center justify-content-between mb-4">
                             <h1 class="h3 mb-0 text-gray-800" th:text="${store.storeName}">가게이름</h1>
-                            <a th:if="${#session.getAttribute('user') != null && bookmark != null}" class="bookmarkButton bookmarkOnButton" href="#">
-                                <img src="/img/색칠별.png" alt="즐겨찾기했을 때" style="width: 50px; height: auto;">
+                            <a th:if="${#session.getAttribute('user') != null && bookmark != null}"
+                               class="bookmarkButton bookmarkOnButton" href="#">
+                                <img src="/img/별.png" alt="즐겨찾기했을 때" style="width: 50px; height: auto;">
                             </a>
-                            <a th:unless="${#session.getAttribute('user') != null && bookmark != null}" class="bookmarkButton bookmarkOffButton" href="#">
+                            <a th:unless="${#session.getAttribute('user') != null && bookmark != null}"
+                               class="bookmarkButton bookmarkOffButton" href="#">
                                 <img src="/img/빈별.png" alt="즐겨찾기안했을 때" style="width: 50px; height: auto;">
                             </a>
                         </div>

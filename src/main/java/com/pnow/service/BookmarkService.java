@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.List;
 
 @RequiredArgsConstructor
 @Service
@@ -22,18 +23,18 @@ public class BookmarkService {
 
     //userId, storeId 해당하는 즐겨찾기 조회
     @Transactional(readOnly = true)
-    public Bookmark findBookmarkWithUserIdAndStoreId(Long userId, Long storeId){
+    public Bookmark findBookmarkWithUserIdAndStoreId(Long userId, Long storeId) {
         return bookmarkRepository.findByUserIdAndStoreId(userId, storeId);
 
     }
 
     //즐겨찾기 삭제
     @Transactional
-    public void cancelBookmark(Long storeId, Long userId){
-        Bookmark bookmark = bookmarkRepository.findByUserIdAndStoreId(userId, storeId);
-        if (bookmark != null) {
-            bookmarkRepository.delete(bookmark);
-        }
+    public void cancelBookmark(Long bookmarkId) {
+        Bookmark bookmark = bookmarkRepository.findById(bookmarkId)
+                .orElseThrow(() -> new EntityNotFoundException("Bookmark not found" + bookmarkId));
+
+        bookmarkRepository.delete(bookmark);
 
     }
 
@@ -52,6 +53,15 @@ public class BookmarkService {
 
         //즐겨찾기 저장
         bookmarkRepository.save(bookmark);
+    }
+
+    //userId에 해당하는 즐겨찾기 목록 조회
+    @Transactional(readOnly = true)
+    public List<Bookmark> findBookmarkWithUserId(SessionUserDTO userDTO){
+        User user = userRepository.findById(userDTO.getId())
+                .orElseThrow(() -> new EntityNotFoundException("User not found" + userDTO.getId()));
+        return bookmarkRepository.findAllByUser(user);
+
     }
 
 

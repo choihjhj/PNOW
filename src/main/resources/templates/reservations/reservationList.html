@@ -13,7 +13,7 @@
                 if (confirm("정말로 예약을 취소하시겠습니까?")) {
                     $.ajax({
                         type: "DELETE",
-                        url: "/reservations/" + reservationId , // 예약 취소를 처리하는 엔드포인트 URL
+                        url: "/reservations/" + reservationId, // 예약 취소를 처리하는 엔드포인트 URL
                         success: function (response) {
                             // 성공적으로 예약을 취소한 경우 페이지 새로고침하여 예약 목록 페이지로 이동
                             window.location.href = "/reservations/list";
@@ -67,14 +67,17 @@
                                 </thead>
                                 <tbody th:if="${#session.getAttribute('reservationList') != null}">
                                 <tr th:each="reservation : ${#session.getAttribute('reservationList')}">
-                                    <td th:text="${#session.getAttribute('reservationList').size() - reservationStat.index}">번호</td>
+                                    <td th:text="${#session.getAttribute('reservationList').size() - reservationStat.index}">
+                                        번호
+                                    </td>
                                     <td th:text="${reservation.storeName}">가게이름</td>
                                     <td th:text="${reservation.selectedDate}">예약날짜</td>
                                     <td th:text="${reservation.selectedTime}">예약시간</td>
                                     <td th:text="${reservation.numberOfPeople}+' 명'">인원수</td>
                                     <td th:text="${reservation.createdDate}">예약접수일</td>
                                     <td>
-                                        <button class="btn btn-danger btn-icon-split cancel-button" type="button" th:attr="data-reservation-id=${reservation.id}">
+                                        <button class="btn btn-danger btn-icon-split cancel-button" type="button"
+                                                th:attr="data-reservation-id=${reservation.id}">
                                             <span class="text">예약 취소</span>
                                         </button>
                                     </td>
