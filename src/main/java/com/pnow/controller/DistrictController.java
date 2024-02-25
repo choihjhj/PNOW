@@ -25,7 +25,7 @@ public class DistrictController {
      * */
     @GetMapping("/list/{cityId}")
     public List<DistrictDTO> getDistrictList(@PathVariable("cityId") Long cityId){
-        log.info("/district/list/{cityId} get 메소드 진입. cityId = {}", cityId);
+        log.info("지역 목록 조회 get 메소드 진입. cityId = {}", cityId);
         return districtService.findDistrictsWithCityId(cityId);
     }
 
