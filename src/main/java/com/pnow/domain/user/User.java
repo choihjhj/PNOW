@@ -6,6 +6,7 @@ import com.pnow.domain.Reservation.Reservation;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.List;
@@ -14,6 +15,7 @@ import java.util.List;
 @Table(name = "users") //user는 예약어라서 쓰면 안되니까 users라고 테이블명 셋팅
 @Entity
 @Getter
+@Setter
 public class User extends BaseTimeEntity {
 
     @Id

@@ -6,7 +6,64 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script th:inline="javascript">
         $(document).ready(function () {
+            var userId = $('#userId').val();
 
+            <!--로그인 했을 때만 수정완료, 회원탈퇴 가능하도록 한번더 체크-->
+            if (userId) {
+                <!-- 수정완료 버튼 클릭시 변경한 name, email ajax로 요청 -->
+                $('#editButton').click(function (e) {
+                    e.preventDefault();
+                    var name = $('#name').val();
+                    var confirmMessage = `
+이름: ${name}
+
+변경하시겠습니까?
+`;
+                    if (confirm(confirmMessage)) {
+                        var requestData = {
+                            name: name,
+                        };
+                        $.ajax({
+                            type: "PUT",
+                            url: "/users/" + userId,
+                            contentType: "application/json",
+                            data: JSON.stringify(requestData),
+                            success: function (response) {
+                                console.log("수정완료");
+                                window.location.href = "/";
+                            },
+                            error: function (xhr, status, error) {
+                                console.error("Error making reservation request:", error);
+                            }
+                        });
+
+                    }
+                    ;
+                });
+                <!-- 수정완료 버튼 클릭시 변경한 name, email ajax로 요청 END -->
+
+                <!-- 회원탈퇴 버튼 클릭시 ajax로 요청 -->
+                $('#deleteButton').click(function (e) {
+                    e.preventDefault();
+                    if (confirm("정말로 회원탈퇴 하시겠습니까?")) {
+                        $.ajax({
+                            type: "DELETE",
+                            url: "/users/" + userId,
+                            success: function (response) {
+                                console.log("탈퇴완료");
+                                window.location.href = "/";
+                            },
+                            error: function (xhr, status, error) {
+                                console.error("Error making reservation request:", error);
+                            }
+                        });
+
+                    }
+                    ;
+                });
+                <!-- 회원탈퇴 버튼 클릭시 ajax로 요청 END -->
+            }
+            <!--로그인 했을 때만 수정완료, 회원탈퇴 가능하도록 한번더 체크 END -->
         });
     </script>
     <style>
@@ -51,6 +108,7 @@
                                 <h1 class="h4 text-gray-900 mb-4" th:text="${user.name}+'님 반갑습니다!'"></h1>
                             </div>
                             <form class="user">
+                                <input hidden id="userId" th:value="${user.id}">
                                 <label class="font-weight-bold" th:text="가입일"></label><br>
                                 <div class="form-group">
                                     <input type="createdDate" class="form-control form-control-user" id="createdDate"
@@ -59,12 +117,12 @@
                                 <label class="font-weight-bold" th:text="이름"></label><br>
                                 <div class="form-group">
                                     <input type="name" class="form-control form-control-user" id="name"
-                                           th:placeholder="${user.name}" >
+                                           th:value="${user.name}" >
                                 </div>
                                 <label class="font-weight-bold" th:text="이메일"></label><br>
                                 <div class="form-group">
                                     <input type="email" class="form-control form-control-user" id="email"
-                                           th:placeholder="${user.email}" >
+                                           th:value="${user.email}" readonly>
                                 </div>
 
                                 <hr>
@@ -73,10 +131,10 @@
                                     <a href="/" class="btn btn-secondary btn-icon-split">
                                         <span class="text">취소</span>
                                     </a>
-                                    <a id="categoryLink0" href="#" class="btn btn-primary btn-icon-split">
+                                    <a id="editButton" href="#" class="btn btn-primary btn-icon-split">
                                         <span class="text" th:text="수정완료"></span>
                                     </a>
-                                    <a id="categoryLink4" href="#" class="btn btn-danger btn-icon-split">
+                                    <a id="deleteButton" href="#" class="btn btn-danger btn-icon-split">
                                         <span class="text" th:text="회원탈퇴"></span>
                                     </a>
                                 </div>
