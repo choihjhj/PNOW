@@ -30,14 +30,21 @@ public class HomeController {
     @GetMapping("/")
     public String root(@LoginUser SessionUserDTO user, Model model) {
         log.info("root 메소드 진입 user = {}", user);
+
+        //예약테이블의 오늘 날짜현재시간 지난 거 reservationStatus = ReservationStatus.COMPLETE 처리
+        reservationService.updateUserReservationStatus();
+
         if(user != null){
+
             // 업데이트된 사용자 정보 가져오기
             User updatedUser = userService.findUser(user);
             // 세션에 업데이트된 사용자 정보 저장
             httpSession.setAttribute("user", new SessionUserDTO(updatedUser));
-            // 세션에 로그인한 유저 예약리스트 저장
+
+            // 세션에 로그인한 유저 예약리스트 업데이트 저장(home.html에서 fragment로 예약목록 topbar 사용할거라서)
             httpSession.setAttribute("reservationList",reservationService.findReservation(user));
         }
+
         return "home";
     }
 }

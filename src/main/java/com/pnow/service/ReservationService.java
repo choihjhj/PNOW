@@ -35,6 +35,22 @@ public class ReservationService {
     private final StoreRepository storeRepository;
     private final UserRepository userRepository;
 
+    @Transactional
+    public void updateUserReservationStatus(){
+        log.info("예약상태 업데이트 서비스 진입");
+        LocalDate currentDate = LocalDate.now();
+        LocalTime currentTime = LocalTime.now();
+
+        // 현재 날짜와 시간 이전의 예약목록 가져와서 예약 상태 변경
+        List<Reservation> reservationsToUpdate = reservationRepository
+                .findByReservationDateBeforeOrReservationDateAndReservationTimeBeforeAndReservationStatus(
+                currentDate, currentDate, currentTime, ReservationStatus.WAITING);
+
+        reservationsToUpdate.forEach(reservation -> reservation.setReservationStatus(ReservationStatus.COMPLETE));
+
+        reservationRepository.saveAll(reservationsToUpdate);
+    }
+
     //선택한 날짜에 예약 가능 시간 목록 조회
     @Transactional(readOnly = true)
     public List<ReservationAbleTimeDTO> findReservationAbleTimeDTOList(Long storeId, LocalDate reservationDate) {
@@ -112,7 +128,7 @@ public class ReservationService {
                 .orElseThrow(() -> new EntityNotFoundException("User not found" + sessionUserDTO.getId()));
 
         //user에 해당하는 예약 목록 조회
-        List<Reservation> reservationList = reservationRepository.findAllByUserAndReservationStatusOrderByCreatedDateDesc(user, ReservationStatus.WAITING);
+        List<Reservation> reservationList = reservationRepository.findAllByUserAndReservationStatusOrderByReservationDateAscReservationTimeAsc(user, ReservationStatus.WAITING);
         return reservationList.stream().map(this::mapToReservationDetailDTO)
                 .collect(Collectors.toList());
 
