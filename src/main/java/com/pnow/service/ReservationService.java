@@ -121,14 +121,15 @@ public class ReservationService {
     }
 
     //회원의 예약 목록 조회
+    //회원의 지난 예약 목록 조회
     @Transactional(readOnly = true)
-    public List<ReservationDetailDTO> findReservation(SessionUserDTO sessionUserDTO){
+    public List<ReservationDetailDTO> findReservation(SessionUserDTO sessionUserDTO, ReservationStatus status){
 
         User user = userRepository.findById(sessionUserDTO.getId())
                 .orElseThrow(() -> new EntityNotFoundException("User not found" + sessionUserDTO.getId()));
 
         //user에 해당하는 예약 목록 조회
-        List<Reservation> reservationList = reservationRepository.findAllByUserAndReservationStatusOrderByReservationDateAscReservationTimeAsc(user, ReservationStatus.WAITING);
+        List<Reservation> reservationList = reservationRepository.findAllByUserAndReservationStatusOrderByReservationDateAscReservationTimeAsc(user, status);
         return reservationList.stream().map(this::mapToReservationDetailDTO)
                 .collect(Collectors.toList());
 
@@ -142,6 +143,7 @@ public class ReservationService {
         dto.setSelectedTime(reservation.getReservationTime());          //예약시간
         dto.setNumberOfPeople(reservation.getGuestCount());             //인원수
         dto.setReservationStatus(reservation.getReservationStatus());   //예약상태
+        log.info("예약상태: {}",dto.getReservationStatus());
         dto.setCreatedDate(formatTime(reservation.getCreatedDate()));   //예약접수일
 
         return dto;
@@ -154,5 +156,8 @@ public class ReservationService {
         Reservation reservation = reservationRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Reservation not found"));
         reservationRepository.delete(reservation);
     }
+
+
+
 
 }

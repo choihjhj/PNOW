@@ -45,9 +45,6 @@ public class Store {
     @OneToMany(mappedBy = "store", cascade = CascadeType.REMOVE)
     private List<Reservation> reservationList;
 
-//    @OneToMany(mappedBy = "restaurant", cascade = CascadeType.REMOVE)
-//    private List<Review> reviewList;
-
     @OneToMany(mappedBy = "store", cascade = CascadeType.REMOVE)
     private List<Menu> menuList;
 

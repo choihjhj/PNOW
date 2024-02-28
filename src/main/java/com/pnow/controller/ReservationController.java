@@ -2,6 +2,7 @@ package com.pnow.controller;
 
 import com.pnow.config.auth.LoginUser;
 import com.pnow.config.auth.dto.SessionUserDTO;
+import com.pnow.domain.Reservation.ReservationStatus;
 import com.pnow.dto.ReservationAbleTimeDTO;
 import com.pnow.dto.ReservationRequestDTO;
 import com.pnow.dto.StoreDTO;
@@ -91,7 +92,7 @@ public class ReservationController {
     public  String getReservation(@LoginUser SessionUserDTO user, Model model){
         log.info("예약 목록 조회 메소드 진입 user = {}", user);
         if(user != null){
-            httpSession.setAttribute("reservationList",reservationService.findReservation(user));
+            httpSession.setAttribute("reservationList",reservationService.findReservation(user, ReservationStatus.WAITING));
         }
         return "reservations/reservationList";
     }
@@ -109,5 +110,19 @@ public class ReservationController {
             reservationService.cancelReservation(id);
         }
 
+    }
+
+    /*
+     * 예약 완료 목록 조회
+     * GET /reservations/past
+     * return "/reservations/reservationPastList"
+     * */
+    @GetMapping("/past")
+    public String getPastReservation(@LoginUser SessionUserDTO user, Model model){
+        log.info("지난 예약 목록 조회 메소드 진입 user = {}", user.getName());
+        if(user != null){
+           model.addAttribute("reservationPastList",reservationService.findReservation(user, ReservationStatus.COMPLETE));
+        }
+        return "reservations/reservationPastList";
     }
 }

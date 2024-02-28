@@ -2,6 +2,7 @@ package com.pnow.controller;
 
 import com.pnow.config.auth.LoginUser;
 import com.pnow.config.auth.dto.SessionUserDTO;
+import com.pnow.domain.Reservation.ReservationStatus;
 import com.pnow.domain.user.User;
 import com.pnow.service.ReservationService;
 import com.pnow.service.UserService;
@@ -42,7 +43,7 @@ public class HomeController {
             httpSession.setAttribute("user", new SessionUserDTO(updatedUser));
 
             // 세션에 로그인한 유저 예약리스트 업데이트 저장(home.html에서 fragment로 예약목록 topbar 사용할거라서)
-            httpSession.setAttribute("reservationList",reservationService.findReservation(user));
+            httpSession.setAttribute("reservationList",reservationService.findReservation(user, ReservationStatus.WAITING));
         }
 
         return "home";
