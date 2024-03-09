@@ -4,6 +4,18 @@
 <head>
     <script th:inline="javascript">
         $(document).ready(function () {
+            var isLoggedIn = /*[[${#session.getAttribute('user') != null}]]*/ false;
+            // 공통 함수: 로그인 여부 확인
+            function checkLogin(e) {
+                if (!isLoggedIn) {
+                    alert('로그인 후 이용 가능합니다.');
+                    e.preventDefault();
+                }
+            }
+
+            // 예약하기, 즐겨찾기 버튼 클릭 시 로그인 여부 체크
+            $('#reservationButton, .bookmarkButton').click(checkLogin);
+
             // bookmarkId와 storeId 설정
             var bookmarkId = /*[[${bookmark?.id}]]*/ null;
             var storeId = /*[[${store.id}]]*/ null;
@@ -11,13 +23,6 @@
             <!-- 즐겨찾기 버튼 클릭 이벤트 핸들러 -->
             $('.bookmarkButton').click(function (e) {
                 e.preventDefault();
-
-                // 로그인 여부 확인
-                var isLoggedIn = /*[[${#session.getAttribute('user') != null}]]*/ false;
-                if (!isLoggedIn) {
-                    alert('로그인 후 이용 가능합니다.');
-                    return;
-                }
 
                 var isBookmarked = $(this).hasClass('bookmarkOnButton'); // 즐겨찾기 했는지 확인 변수
 
