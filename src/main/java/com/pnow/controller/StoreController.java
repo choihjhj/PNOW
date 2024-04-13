@@ -96,16 +96,23 @@ public class StoreController {
      * return "/stores/storeSearch"
      * */
     @GetMapping("/search")
-    public String searchStore(@RequestParam("keyword") String keyword, Model model){
-        log.info("가게이름 검색 메소드 진입 keyword={}",keyword);
+    public String searchStore(@RequestParam(value = "keyword", required = true) String keyword, Model model){
+        log.info("가게이름 검색 메소드 진입 keyword={}", keyword);
+
+        // 키워드가 비어있는지 또는 null인지 검사
+        if (keyword == null || keyword.isEmpty()) {
+            throw new IllegalArgumentException("키워드는 비어있을 수 없습니다.");
+        }
+
         model.addAttribute("keyword", keyword);
 
-        List<Store> storeList =storeService.findSearchStore(keyword);
-        log.info("storeList {}",storeList);
-        model.addAttribute("storeList",storeList);
+        List<Store> storeList = storeService.findSearchStore(keyword);
+        log.info("storeList {}", storeList);
+        model.addAttribute("storeList", storeList);
 
         return "stores/storeSearch";
     }
+
 
 
 }
