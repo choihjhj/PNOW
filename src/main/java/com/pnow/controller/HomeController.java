@@ -9,7 +9,6 @@ import com.pnow.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import javax.servlet.http.HttpSession;
@@ -29,7 +28,7 @@ public class HomeController {
      * return "home"
      * */
     @GetMapping("/")
-    public String root(@LoginUser SessionUserDTO user, Model model) {
+    public String root(@LoginUser SessionUserDTO user) {
         log.info("root 메소드 진입 user = {}", user);
 
         //예약테이블의 오늘 날짜현재시간 지난 거 reservationStatus = ReservationStatus.COMPLETE 처리
