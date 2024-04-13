@@ -37,14 +37,9 @@ public class ReservationController {
     @GetMapping("/{storeId}")
     public String reservation( @PathVariable("storeId") Long storeId, Model model, @LoginUser SessionUserDTO user){
         log.info("예약페이지로 이동하는 /reservation/{storeId} get 메소드 진입 storeId = {}", storeId);
-
-        if (user != null) {
-            StoreDTO storeDTO = storeService.findStoreDTO(storeId);
-            model.addAttribute("store", storeDTO);
-            return "reservations/reservation";
-        } else {
-            throw new IllegalStateException("예약 가능 시간 조회를 위해서는 로그인이 필요합니다.");
-        }
+        StoreDTO storeDTO = storeService.findStoreDTO(storeId);
+        model.addAttribute("store", storeDTO);
+        return "reservations/reservation";
     }
 
     /*
@@ -57,12 +52,8 @@ public class ReservationController {
     public List<ReservationAbleTimeDTO> getReservationTime(@PathVariable("storeId") Long storeId,
                                                             @PathVariable("reservationDate") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate reservationDate,
                                                             @LoginUser SessionUserDTO user) {
-        if (user != null) {
-            log.info("예약 가능 시간 조회 메소드 진입 storeId = {}, reservationDate = {}", storeId, reservationDate);
-            return reservationService.findReservationAbleTimeDTOList(storeId, reservationDate);
-        } else {
-            throw new IllegalStateException("예약 가능 시간 조회를 위해서는 로그인이 필요합니다.");
-        }
+        log.info("예약 가능 시간 조회 메소드 진입 storeId = {}, reservationDate = {}", storeId, reservationDate);
+        return reservationService.findReservationAbleTimeDTOList(storeId, reservationDate);
     }
 
     /*
@@ -75,12 +66,7 @@ public class ReservationController {
     public void createReservation(@RequestBody ReservationRequestDTO requestDto, @LoginUser SessionUserDTO user) {
         log.info("로그인 객체 user = {}", user);
         log.info("예약 작성 메서드 진입 storeId={}, 예약날짜={}, 예약시간={}, 인원수={}", requestDto.getStoreId(), requestDto.getSelectedDate(), requestDto.getSelectedTime(), requestDto.getNumberOfPeople());
-
-        if (user != null) {
-            reservationService.makeReservation(requestDto, user);
-        } else {
-            throw new IllegalStateException("예약을 위해서는 로그인이 필요합니다.");
-        }
+        reservationService.makeReservation(requestDto, user);
     }
 
     /*
@@ -89,11 +75,9 @@ public class ReservationController {
      * return "/reservations/reservationList"
      * */
     @GetMapping("/list")
-    public  String getReservation(@LoginUser SessionUserDTO user, Model model){
+    public  String getReservation(@LoginUser SessionUserDTO user){
         log.info("예약 목록 조회 메소드 진입 user = {}", user);
-        if(user != null){
-            httpSession.setAttribute("reservationList",reservationService.findReservation(user, ReservationStatus.WAITING));
-        }
+        httpSession.setAttribute("reservationList",reservationService.findReservation(user, ReservationStatus.WAITING));
         return "reservations/reservationList";
     }
 
@@ -106,10 +90,7 @@ public class ReservationController {
     @ResponseBody
     public void deleteReservation( @PathVariable("id") Long id, @LoginUser SessionUserDTO user){
         log.info("예약 삭제 메소드 진입 reservationId = {}", id);
-        if(user != null){
-            reservationService.cancelReservation(id);
-        }
-
+        reservationService.cancelReservation(id);
     }
 
     /*
@@ -120,9 +101,7 @@ public class ReservationController {
     @GetMapping("/past")
     public String getPastReservation(@LoginUser SessionUserDTO user, Model model){
         log.info("지난 예약 목록 조회 메소드 진입 user = {}", user.getName());
-        if(user != null){
-           model.addAttribute("reservationPastList",reservationService.findReservation(user, ReservationStatus.COMPLETE));
-        }
+        model.addAttribute("reservationPastList",reservationService.findReservation(user, ReservationStatus.COMPLETE));
         return "reservations/reservationPastList";
     }
 }

@@ -35,6 +35,7 @@ public class ReservationService {
     private final StoreRepository storeRepository;
     private final UserRepository userRepository;
 
+    //시간 지난 예약들의 status 업데이트(WAITING->COMPLETE)
     @Transactional
     public void updateUserReservationStatus(){
         log.info("예약상태 업데이트 서비스 진입");
@@ -120,8 +121,7 @@ public class ReservationService {
 
     }
 
-    //회원의 예약 목록 조회
-    //회원의 지난 예약 목록 조회
+    //전달된 ReservationStatus status에 해당하는 회원의 예약 목록 조회(WAITING, COMPLETE)
     @Transactional(readOnly = true)
     public List<ReservationDetailDTO> findReservation(SessionUserDTO sessionUserDTO, ReservationStatus status){
 
@@ -143,7 +143,6 @@ public class ReservationService {
         dto.setSelectedTime(reservation.getReservationTime());          //예약시간
         dto.setNumberOfPeople(reservation.getGuestCount());             //인원수
         dto.setReservationStatus(reservation.getReservationStatus());   //예약상태
-        log.info("예약상태: {}",dto.getReservationStatus());
         dto.setCreatedDate(formatTime(reservation.getCreatedDate()));   //예약접수일
 
         return dto;
