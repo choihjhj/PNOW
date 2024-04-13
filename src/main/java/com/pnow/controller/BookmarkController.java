@@ -25,9 +25,7 @@ public class BookmarkController {
     @ResponseBody
     public void deleteBookmark(@PathVariable("id") Long id, @LoginUser SessionUserDTO user){
         log.info("즐겨찾기 삭제 메소드 진입 bookmarkId = {}", id);
-        if(user != null){
-            bookmarkService.cancelBookmark(id);
-        }
+        bookmarkService.cancelBookmark(id);
     }
 
     /*
@@ -39,11 +37,7 @@ public class BookmarkController {
     @ResponseBody
     public void createBookmark(@PathVariable("storeId") Long storeId, @LoginUser SessionUserDTO userDTO){
         log.info("즐겨찾기 등록 메소드 진입 storeId = {}", storeId);
-        if (userDTO != null) {
-            bookmarkService.makeBookmark(storeId, userDTO);
-        } else {
-            throw new IllegalStateException("즐겨찾기를 위해서는 로그인이 필요합니다.");
-        }
+        bookmarkService.makeBookmark(storeId, userDTO);
     }
 
     /*
@@ -54,9 +48,7 @@ public class BookmarkController {
     @GetMapping("/list")
     public String getBookmarkList(@LoginUser SessionUserDTO userDTO, Model model){
         log.info("즐겨찾기 목록 조회 메소드 진입 user = {}", userDTO);
-        if(userDTO != null){
-            model.addAttribute("bookmarkList",bookmarkService.findBookmarkWithUserId(userDTO));
-        }
+        model.addAttribute("bookmarkList",bookmarkService.findBookmarkWithUserId(userDTO));
         return "bookmarks/bookmarkList";
     }
 }
