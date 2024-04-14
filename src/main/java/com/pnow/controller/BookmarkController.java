@@ -23,7 +23,7 @@ public class BookmarkController {
      * */
     @DeleteMapping("/{id}")
     @ResponseBody
-    public void deleteBookmark(@PathVariable("id") Long id, @LoginUser SessionUserDTO user){
+    public void deleteBookmark(@PathVariable("id") Long id){
         log.info("즐겨찾기 삭제 메소드 진입 bookmarkId = {}", id);
         bookmarkService.cancelBookmark(id);
     }
@@ -35,9 +35,9 @@ public class BookmarkController {
      * */
     @PostMapping("/stores/{storeId}")
     @ResponseBody
-    public void createBookmark(@PathVariable("storeId") Long storeId, @LoginUser SessionUserDTO userDTO){
+    public void createBookmark(@PathVariable("storeId") Long storeId, @LoginUser SessionUserDTO user){
         log.info("즐겨찾기 등록 메소드 진입 storeId = {}", storeId);
-        bookmarkService.makeBookmark(storeId, userDTO);
+        bookmarkService.makeBookmark(storeId, user);
     }
 
     /*
@@ -46,9 +46,9 @@ public class BookmarkController {
      * return "/bookmarks/bookmarkList"
      * */
     @GetMapping
-    public String getBookmarkList(@LoginUser SessionUserDTO userDTO, Model model){
-        log.info("즐겨찾기 목록 조회 메소드 진입 user = {}", userDTO);
-        model.addAttribute("bookmarkList",bookmarkService.findBookmarkWithUserId(userDTO));
+    public String getBookmarkList(@LoginUser SessionUserDTO user, Model model){
+        log.info("즐겨찾기 목록 조회 메소드 진입 user = {}", user);
+        model.addAttribute("bookmarkList",bookmarkService.findBookmarkWithUserId(user));
         return "bookmarks/bookmarkList";
     }
 }
