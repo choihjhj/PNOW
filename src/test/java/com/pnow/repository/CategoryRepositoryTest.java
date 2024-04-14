@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest()
 @Slf4j
-public class CategoryRepositoryTests {
+public class CategoryRepositoryTest {
     @Autowired
     private CategoryRepository categoryRepository;
 

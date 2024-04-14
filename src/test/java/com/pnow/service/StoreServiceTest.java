@@ -7,7 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.time.LocalTime;
 @Slf4j
 @SpringBootTest()
-public class StoreServiceTests {
+public class StoreServiceTest {
 
     @Test
     public void test(){

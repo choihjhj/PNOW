@@ -4,10 +4,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest()
+@SpringBootTest
 @Slf4j
-public class CategoryServiceTests {
+public class ReservationServiceTest {
     @Autowired
-    private CategoryService categoryService;
-
+    private ReservationService reservationService;
 }

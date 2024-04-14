@@ -8,7 +8,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 @DataJpaTest
 @Slf4j
-public class ReservationRepositoryTests {
+public class ReservationRepositoryTest {
     @Autowired
     private ReservationRepository reservationRepository;
 
