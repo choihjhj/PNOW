@@ -2,7 +2,7 @@ package com.pnow.controller;
 
 import com.pnow.config.auth.LoginUser;
 import com.pnow.config.auth.dto.SessionUserDTO;
-import com.pnow.dto.UserRequestDTO;
+import com.pnow.dto.UserUpdateDto;
 import com.pnow.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 
 @RequestMapping("/users")
 @RequiredArgsConstructor
@@ -43,11 +44,10 @@ public class UserController {
      * */
     @PutMapping("/{id}")
     public ResponseEntity<String> editUser(@PathVariable("id") Long id,
-                                           @RequestBody UserRequestDTO userRequestDTO,
-                                           @LoginUser SessionUserDTO user) {
-        log.info("내정보 수정 메소드 진입 id={}", id);
-        userService.updateUser(id, userRequestDTO);
-        return ResponseEntity.ok("사용자 정보가 업데이트되었습니다.");
+                                           @Valid @RequestBody UserUpdateDto userUpdateDto) {
+        log.info("내정보 수정 메소드 진입 id={}, data={}", id, userUpdateDto.getName());
+        userService.updateUser(id, userUpdateDto);
+        return ResponseEntity.ok("회원 정보가 업데이트되었습니다.");
     }
 
     /*
@@ -56,7 +56,6 @@ public class UserController {
      * */
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteUser(@PathVariable("id") Long id,
-                                             @LoginUser SessionUserDTO user,
                                              HttpServletRequest request,
                                              HttpServletResponse response) {
         log.info("회원 탈퇴 메소드 진입 id={}", id);

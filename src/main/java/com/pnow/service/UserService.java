@@ -2,7 +2,7 @@ package com.pnow.service;
 
 import com.pnow.config.auth.dto.SessionUserDTO;
 import com.pnow.domain.user.User;
-import com.pnow.dto.UserRequestDTO;
+import com.pnow.dto.UserUpdateDto;
 import com.pnow.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -24,13 +24,13 @@ public class UserService {
     }
     //회원 정보 수정
     @Transactional
-    public void updateUser(Long id, UserRequestDTO userRequestDTO) {
+    public void updateUser(Long id, UserUpdateDto userUpdateDto) {
         // 회원 정보 조회
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("해당 id의 사용자를 찾을 수 없습니다: " + id));
+                .orElseThrow(() -> new EntityNotFoundException("User not found" + id));
 
         //name 업데이트
-        user.setName(userRequestDTO.getName());
+        user.setName(userUpdateDto.getName());
         userRepository.save(user);
 
     }
@@ -40,7 +40,7 @@ public class UserService {
     public  void deleteUser(Long id){
         // 회원 정보 조회
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("해당 id의 사용자를 찾을 수 없습니다: " + id));
+                .orElseThrow(() -> new EntityNotFoundException("User not found" + id));
 
         // 회원 삭제
         userRepository.delete(user);

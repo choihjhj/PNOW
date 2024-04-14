@@ -17,7 +17,7 @@
                     var confirmMessage = `
 이름: ${name}
 
-변경하시겠습니까?
+으로 변경하시겠습니까?
 `;
                     if (confirm(confirmMessage)) {
                         var requestData = {
@@ -33,12 +33,14 @@
                                 window.location.href = "/";
                             },
                             error: function (xhr, status, error) {
-                                console.error("Error making reservation request:", error);
+                                var errorMessage = xhr.responseJSON.errors[0]; // 서버에서 전달된 에러 메시지
+                                $('#name').after('<div class="text-danger">' + errorMessage + '</div>');
+                                // alert(errorMessage);
+
                             }
                         });
 
-                    }
-                    ;
+                    };
                 });
                 <!-- 수정완료 버튼 클릭시 변경한 name, email ajax로 요청 END -->
 
