@@ -25,7 +25,7 @@ public class StoreService {
 
     //가게 목록 조회
     @Transactional(readOnly = true)
-    public List<StoreDTO> findStoreDTOList(Long categoryId, Long cityId, Long districtId) {
+    public List<StoreDTO> findStoreDTOList(Long categoryId, Long districtId) {
         List<Store> stores = storeRepository.findByCategoryIdAndDistrictIdOrderByStoreNameAsc(categoryId, districtId);
         return stores.stream()
                 .map(this::mapToStoreDTO)

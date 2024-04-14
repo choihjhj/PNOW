@@ -48,9 +48,9 @@ http://localhost:9091/swagger-ui/index.html
 **STORE**    
 |HTTP|URI|설명|   
 |:------:|:---:|:---:|   
-|GET|/stores|가게 페이지 조회|   
+|GET|/stores|맛집 카테고리 페이지 조회|   
 |GET|/stores/detail/{id}|가게 조회|   
-|GET|/stores/list/{categoryId}/{cityId}/{districtId}|가게 목록 조회|    
+|GET|/stores/category/{categoryId}/city/{cityId}/district/{districtId}|가게 목록 조회|    
 |GET|/stores/search|가게 검색 조회|   
       
       

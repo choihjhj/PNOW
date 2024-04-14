@@ -42,11 +42,14 @@
                 <!-- 클릭한 한중일양카 a 태그 css 적용 END -->
 
                 var categoryId = $(this).find('input[type="hidden"]').val();
-                var selectedCityId = $('#sido').val();
                 var selectedDistrictId = $('#sigungu').val();
+
+                // 새로운 URI 구성
+                var newUrl = '/stores/category/' + categoryId + '/district/' + selectedDistrictId;
+
                 $.ajax({
                     type: 'GET',
-                    url: '/stores/list/' + categoryId + '/' + selectedCityId + '/' + selectedDistrictId,
+                    url: newUrl,
                     success: function (data) {
                         // 이전 내용을 지우기
                         $('#storeDTOContainer').empty();

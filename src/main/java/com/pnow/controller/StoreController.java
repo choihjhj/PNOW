@@ -30,7 +30,7 @@ public class StoreController {
     private final BookmarkService bookmarkService;
 
     /*
-     * store.html 접속
+     * 맛집 카테고리 페이지 이동 store.html
      * -카테고리, 지역 조회 후 model에 저장
      * GET /stores
      * return "/stores/store"
@@ -52,17 +52,16 @@ public class StoreController {
 
     /*
      * 가게 목록 조회
-     * GET /stores/list/{categoryId}/{cityId}/{districtId}
+     * GET /stores/category/{categoryId}/district/{districtId}
      * return List<StoreDTO>
      * */
-    @GetMapping("/list/{categoryId}/{cityId}/{districtId}")
+    @GetMapping("/category/{categoryId}/district/{districtId}")
     @ResponseBody
     public List<StoreDTO> getStoreList(@PathVariable("categoryId") Long categoryId,
-                                        @PathVariable("cityId") Long cityId,
                                         @PathVariable("districtId") Long districtId) {
-        log.info("/store/list/{categoryId}/{cityId}'/{districtId} get 메소드 진입. " +
-                "categoryId = {}, cityId = {}, districtId = {}", categoryId, cityId, districtId);
-        return storeService.findStoreDTOList(categoryId, cityId, districtId);
+        log.info("/stores/category/{categoryId}/district/{districtId} get 메소드 진입. " +
+                "categoryId = {}, districtId = {}", categoryId, districtId);
+        return storeService.findStoreDTOList(categoryId, districtId);
 
     }
 

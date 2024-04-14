@@ -55,7 +55,8 @@
                                 window.location.href = "/";
                             },
                             error: function (xhr, status, error) {
-                                console.error("Error making reservation request:", error);
+                                var errorMessage = xhr.responseJSON.errors[0]; // 서버에서 전달된 에러 메시지
+                                console.log(errorMessage);
                             }
                         });
 
