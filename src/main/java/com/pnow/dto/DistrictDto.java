@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor  //기본생성자
 @AllArgsConstructor //모든생성자
-public class DistrictDTO {
+public class DistrictDto {
     private Long id;             //지역ID
     private String districtName; //지역이름
 }

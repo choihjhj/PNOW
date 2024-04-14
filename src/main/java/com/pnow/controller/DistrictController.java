@@ -1,6 +1,6 @@
 package com.pnow.controller;
 
-import com.pnow.dto.DistrictDTO;
+import com.pnow.dto.DistrictDto;
 import com.pnow.service.DistrictService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,7 +24,7 @@ public class DistrictController {
      * return List<DistrictDTO>
      * */
     @GetMapping("/city/{cityId}")
-    public List<DistrictDTO> getDistrictList(@PathVariable("cityId") Long cityId){
+    public List<DistrictDto> getDistrictList(@PathVariable("cityId") Long cityId){
         log.info("지역 목록 조회 get 메소드 진입. cityId = {}", cityId);
         return districtService.findDistrictsWithCityId(cityId);
     }

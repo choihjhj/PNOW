@@ -1,6 +1,6 @@
 package com.pnow.service;
 
-import com.pnow.dto.DistrictDTO;
+import com.pnow.dto.DistrictDto;
 import com.pnow.repository.DistrictRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,8 +16,8 @@ public class DistrictService {
 
     //지역 목록 조회
     @Transactional(readOnly = true)
-    public List<DistrictDTO> findDistrictsWithCityId(Long cityId) {
-        List<DistrictDTO> districtList = districtRepository.findDistrictDTOsByCityId(cityId);
+    public List<DistrictDto> findDistrictsWithCityId(Long cityId) {
+        List<DistrictDto> districtList = districtRepository.findDistrictDTOsByCityId(cityId);
         if (districtList.isEmpty()) {
             throw new EntityNotFoundException("CityId not found : " + cityId);
         }

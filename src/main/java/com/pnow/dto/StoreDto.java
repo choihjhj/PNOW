@@ -27,7 +27,7 @@ public class StoreDto {
     private String detailAddress;       //상세 주소
     private String phoneNumber;         //전화 번호
     private CategoryType categoryName;  //카테고리 이름
-    private List<MenuDTO> menuList;     //메뉴가격리스트
+    private List<MenuDto> menuList;     //메뉴가격리스트
     private String storeStatus;         //영업상태(영업중, 영업준비중)
 
     public StoreDto(Store store) {
@@ -54,9 +54,9 @@ public class StoreDto {
         return time.format(DateTimeFormatter.ofPattern("HH:mm"));
     }
 
-    private List<MenuDTO> mapToMenuDTOList(List<Menu> menuList) {
+    private List<MenuDto> mapToMenuDTOList(List<Menu> menuList) {
         return menuList.stream()
-                .map(menu -> new MenuDTO(menu.getMenuName(), menu.getPrice()))
+                .map(menu -> new MenuDto(menu.getMenuName(), menu.getPrice()))
                 .collect(Collectors.toList());
     }
 
