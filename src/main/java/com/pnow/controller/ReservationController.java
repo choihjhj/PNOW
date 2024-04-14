@@ -5,7 +5,7 @@ import com.pnow.config.auth.dto.SessionUserDTO;
 import com.pnow.domain.Reservation.ReservationStatus;
 import com.pnow.dto.ReservationAbleTimeDTO;
 import com.pnow.dto.ReservationRequestDTO;
-import com.pnow.dto.StoreDTO;
+import com.pnow.dto.StoreDto;
 import com.pnow.service.ReservationService;
 import com.pnow.service.StoreService;
 import lombok.RequiredArgsConstructor;
@@ -37,7 +37,7 @@ public class ReservationController {
     @GetMapping("/{storeId}")
     public String reservation( @PathVariable("storeId") Long storeId, Model model, @LoginUser SessionUserDTO user){
         log.info("예약페이지로 이동하는 /reservation/{storeId} get 메소드 진입 storeId = {}", storeId);
-        StoreDTO storeDTO = storeService.findStoreDTO(storeId);
+        StoreDto storeDTO = storeService.findStoreDTO(storeId);
         model.addAttribute("store", storeDTO);
         return "reservations/reservation";
     }

@@ -5,7 +5,7 @@ import com.pnow.config.auth.dto.SessionUserDTO;
 import com.pnow.domain.City;
 import com.pnow.domain.Store;
 import com.pnow.domain.category.Category;
-import com.pnow.dto.StoreDTO;
+import com.pnow.dto.StoreDto;
 import com.pnow.service.BookmarkService;
 import com.pnow.service.CategoryService;
 import com.pnow.service.CityService;
@@ -57,8 +57,8 @@ public class StoreController {
      * */
     @GetMapping("/category/{categoryId}/district/{districtId}")
     @ResponseBody
-    public List<StoreDTO> getStoreList(@PathVariable("categoryId") Long categoryId,
-                                        @PathVariable("districtId") Long districtId) {
+    public List<StoreDto> getStoreList(@PathVariable("categoryId") Long categoryId,
+                                       @PathVariable("districtId") Long districtId) {
         log.info("/stores/category/{categoryId}/district/{districtId} get 메소드 진입. " +
                 "categoryId = {}, districtId = {}", categoryId, districtId);
         return storeService.findStoreDTOList(categoryId, districtId);
@@ -77,7 +77,7 @@ public class StoreController {
     public String getStore(Model model, @PathVariable("id") Long id, @LoginUser SessionUserDTO user ){
         log.info("/store/detail/{id} get 메소드 진입 storeId = {}",id);
 
-        StoreDTO storeDTO = storeService.findStoreDTO(id);
+        StoreDto storeDTO = storeService.findStoreDTO(id);
         model.addAttribute("store", storeDTO);
         if(user != null){
             model.addAttribute("bookmark", bookmarkService.findBookmarkWithUserIdAndStoreId(user.getId(),id));
