@@ -1,6 +1,7 @@
-### 서비스 소개
+### [ 서비스 소개 ]
 플레이스나우(PNOW)는 실시간으로 지역별 한식/중식/일식/양식/카페 검색, 즐겨찾기, 예약 서비스를 제공하는 웹 사이트입니다. 
-### 개발 환경
+      
+### [ 개발 환경 ]
 - **Java** : java 11
 - **Editor** : Intellij IDEA
 - **Build** : Gradle 8.3
@@ -19,25 +20,31 @@
   - Validation 
   - Swagger 
   - Thymeleaf
-
-### ERD
-
-### Swagger
+      
+      
+### [ ERD ]
+      
+      
+### [ Swagger ]
 http://localhost:9091/swagger-ui/index.html       
-  
-### Endpoints
+      
+      
+### [ Endpoints ]
+      
 **HOME**    
 |HTTP|URI|설명|   
 |:------:|:---:|:---:|   
 |GET|/|홈페이지 조회|    
-  
+      
+      
 **USER**    
 |HTTP|URI|설명|   
 |:------:|:---:|:---:|   
 |GET|/users|회원 정보 조회|   
 |PUT|/users/{id}|회원 정보 수정|   
 |DELETE|/users/{id}|회원 탈퇴|     
-
+      
+      
 **STORE**    
 |HTTP|URI|설명|   
 |:------:|:---:|:---:|   
@@ -45,7 +52,8 @@ http://localhost:9091/swagger-ui/index.html
 |GET|/stores/detail/{id}|가게 조회|   
 |GET|/stores/list/{categoryId}/{cityId}/{districtId}|가게 목록 조회|    
 |GET|/stores/search|가게 검색 조회|   
-
+      
+      
 **RESERVATION**    
 |HTTP|URI|설명|   
 |:------:|:---:|:---:|   
@@ -55,15 +63,16 @@ http://localhost:9091/swagger-ui/index.html
 |GET|/reservations/{storeId}/{reservationDate}|예약 가능 시간 목록 조회|   
 |GET|/reservations/list|예약 목록 조회|    
 |GET|/reservations/past|지난 예약 목록 조회|
-
+      
+      
 **BOOKMARK**    
 |HTTP|URI|설명|   
 |:------:|:---:|:---:|   
 |DELETE|/bookmarks/{id}|즐겨찾기 삭제|   
 |POST|/bookmarks/{storeId}|즐겨찾기 등록|   
 |GET|/bookmarks/list|즐겨찾기 목록 조회|    
-
-
+      
+      
 **DISTRICT**    
 |HTTP|URI|설명|   
 |:------:|:---:|:---:|   
