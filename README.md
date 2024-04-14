@@ -5,7 +5,7 @@
 - **Java** : java 11
 - **Editor** : Intellij IDEA
 - **Build** : Gradle 8.3
-- **server port** : 9091
+- **Server Port Number** : 9091
 - **Framework** : Springboot 2.7.17
 - **Database** : h2 database(test용), AWS RDS MariaDB
 - **CI & CD** : GitHub Actions
