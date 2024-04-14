@@ -8,7 +8,8 @@
         $(document).ready(function () {
             <!-- 즐겨찾기 별 클릭했을 때 delete ajax 요청 -->
             $(".bookmark-btn").click(function () {
-                var bookmarkId = $('#bookmarkId').val();
+                var bookmarkId = $(this).find('input[type=hidden]').val();
+                var storeId = $('#storeId').val();
                 if (confirm("즐겨찾기를 취소하시겠습니까?")) {
                     $.ajax({
                         type: "DELETE",
@@ -64,10 +65,13 @@
                                     <div class="text-xs font-weight-bold text-success text-uppercase mb-1" th:text="'🕙 '+${bookmark.store.openingTime}+'-'+${bookmark.store.closingTime}"></div>
                                 </div>
                                 <div class="align-self-end">
-                                    <a src="#"  class="bookmark-btn">
-                                        <input hidden id="bookmarkId" th:value="${bookmark.id}">
-                                        <img src="/img/별.png" alt="즐겨찾기" style="width: 50px; height: auto;">
+                                    <a th:id="'bookmark-' + ${bookmark.id}"
+                                    class="bookmark-btn"
+                                    href="#">
+                                    <img src="/img/별.png" alt="즐겨찾기" style="width: 50px; height: auto;">
+                                    <input type="hidden" th:value="${bookmark.id}" th:id="'bookmarkId-' + ${bookmark.id}" /> <!-- 각 별 이미지에 hidden input 추가하여 bookmark.id 값을 저장 -->
                                     </a>
+
                                 </div>
                             </div>
                         </div>
