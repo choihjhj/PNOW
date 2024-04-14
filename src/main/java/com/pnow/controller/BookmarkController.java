@@ -42,10 +42,10 @@ public class BookmarkController {
 
     /*
      * 즐겨찾기 목록 조회
-     * GET /bookmarks/list
+     * GET /bookmarks
      * return "/bookmarks/bookmarkList"
      * */
-    @GetMapping("/list")
+    @GetMapping
     public String getBookmarkList(@LoginUser SessionUserDTO userDTO, Model model){
         log.info("즐겨찾기 목록 조회 메소드 진입 user = {}", userDTO);
         model.addAttribute("bookmarkList",bookmarkService.findBookmarkWithUserId(userDTO));
