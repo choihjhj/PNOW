@@ -1,7 +1,7 @@
-### [ 서비스 소개 ]
+### 서비스 소개 
 플레이스나우(PNOW)는 실시간으로 지역별 한식/중식/일식/양식/카페 검색, 즐겨찾기, 예약 서비스를 제공하는 웹 사이트입니다. 
       
-### [ 개발 환경 ]
+### 개발 환경 
 - **Java** : java 11
 - **Editor** : Intellij IDEA
 - **Build** : Gradle 8.3
@@ -22,14 +22,14 @@
   - Thymeleaf
       
       
-### [ ERD ]
+### ERD 
       
-      
-### [ Swagger ]
+
+### Swagger 
 http://localhost:9091/swagger-ui/index.html       
       
       
-### [ Endpoints ]
+### Endpoints 
       
 **HOME**    
 |HTTP|URI|설명|   
