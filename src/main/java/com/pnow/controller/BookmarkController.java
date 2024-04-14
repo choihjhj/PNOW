@@ -30,10 +30,10 @@ public class BookmarkController {
 
     /*
      * 즐겨찾기 등록
-     * POST /bookmarks/{storeId}
+     * POST /bookmarks/stores/{storeId}
      *
      * */
-    @PostMapping("/{storeId}")
+    @PostMapping("/stores/{storeId}")
     @ResponseBody
     public void createBookmark(@PathVariable("storeId") Long storeId, @LoginUser SessionUserDTO userDTO){
         log.info("즐겨찾기 등록 메소드 진입 storeId = {}", storeId);

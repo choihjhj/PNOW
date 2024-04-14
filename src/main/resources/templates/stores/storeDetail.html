@@ -29,7 +29,7 @@
                 // 즐겨찾기 추가 또는 삭제 요청 보내기
                 $.ajax({
                     type: isBookmarked ? "DELETE" : "POST", // 즐겨찾기 상태에 따라 요청 방식 결정
-                    url: isBookmarked ? "/bookmarks/" + bookmarkId : "/bookmarks/" + storeId,
+                    url: isBookmarked ? "/bookmarks/" + bookmarkId : "/bookmarks/stores/" + storeId,
                     success: function (response) {
                         window.location.href = "/stores/detail/" + storeId; //새로고침
                     },
