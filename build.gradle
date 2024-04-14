@@ -47,6 +47,9 @@ dependencies {
 	// 유효성 검사
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 
+	// Swagger
+	implementation 'io.springfox:springfox-boot-starter:3.0.0'
+
 	//spring-session-jdbc 등록(데이터베이스를 세션 저장소로 사용하기)
 //	implementation 'org.springframework.session:spring-session-jdbc'
 
