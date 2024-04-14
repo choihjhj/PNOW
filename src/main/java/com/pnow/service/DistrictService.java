@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -16,6 +17,11 @@ public class DistrictService {
     //지역 목록 조회
     @Transactional(readOnly = true)
     public List<DistrictDTO> findDistrictsWithCityId(Long cityId) {
-        return districtRepository.findDistrictDTOsByCityId(cityId);
+        List<DistrictDTO> districtList = districtRepository.findDistrictDTOsByCityId(cityId);
+        if (districtList.isEmpty()) {
+            throw new EntityNotFoundException("CityId not found : " + cityId);
+        }
+        return districtList;
     }
+
 }

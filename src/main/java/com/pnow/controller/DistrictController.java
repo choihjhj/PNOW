@@ -19,11 +19,11 @@ public class DistrictController {
     private final DistrictService districtService;
 
     /*
-     * 지역 조회
-     * GET /districts/list/{cityId}
+     * 지역 목록 조회
+     * GET /districts/city/{cityId}
      * return List<DistrictDTO>
      * */
-    @GetMapping("/list/{cityId}")
+    @GetMapping("/city/{cityId}")
     public List<DistrictDTO> getDistrictList(@PathVariable("cityId") Long cityId){
         log.info("지역 목록 조회 get 메소드 진입. cityId = {}", cityId);
         return districtService.findDistrictsWithCityId(cityId);

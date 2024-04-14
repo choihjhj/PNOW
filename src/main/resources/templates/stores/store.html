@@ -16,16 +16,13 @@
                 var selectedCityId = $(this).val();
                 $.ajax({
                     type: 'GET',
-                    url: '/districts/list/' + selectedCityId,
+                    url: '/districts/city/' + selectedCityId,
                     success: function (data) {
                         var options = '';
                         $.each(data, function (index, district) {
                             options += '<option value="' + district.id + '">' + district.districtName + '</option>';
                         });
                         $('#sigungu').html(options);
-                    },
-                    error: function (xhr, status, error) {
-                        console.error('Failed to retrieve district list:', error);
                     }
                 });
             });

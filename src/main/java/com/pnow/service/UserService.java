@@ -19,7 +19,7 @@ public class UserService {
     @Transactional(readOnly = true)
     public User findUser(SessionUserDTO user){
         return userRepository.findById(user.getId())
-                .orElseThrow(() -> new EntityNotFoundException("User not found" + user.getId()));
+                .orElseThrow(() -> new EntityNotFoundException("UserId not found : " + user.getId()));
 
     }
     //회원 정보 수정
@@ -27,7 +27,7 @@ public class UserService {
     public void updateUser(Long id, UserUpdateDto userUpdateDto) {
         // 회원 정보 조회
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("User not found" + id));
+                .orElseThrow(() -> new EntityNotFoundException("UserId not found : " + id));
 
         //name 업데이트
         user.setName(userUpdateDto.getName());
@@ -40,7 +40,7 @@ public class UserService {
     public  void deleteUser(Long id){
         // 회원 정보 조회
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("User not found" + id));
+                .orElseThrow(() -> new EntityNotFoundException("UserId not found : " + id));
 
         // 회원 삭제
         userRepository.delete(user);
