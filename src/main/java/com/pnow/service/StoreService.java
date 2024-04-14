@@ -56,11 +56,11 @@ public class StoreService {
         return time.format(DateTimeFormatter.ofPattern("HH:mm"));
     }
 
-    //가게 조회
+    //가게 세부 정보 조회
     @Transactional(readOnly = true)
     public StoreDTO findStoreDTO(Long id){
         Store store = storeRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Store not found" + id));
+                .orElseThrow(() -> new EntityNotFoundException("StoreId not found : " + id));
 
         return mapToDetailedStoreDTO(store);
     }

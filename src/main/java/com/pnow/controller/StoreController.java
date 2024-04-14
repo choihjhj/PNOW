@@ -67,7 +67,7 @@ public class StoreController {
 
     /*
      * storeDetail.html 접속
-     * 가게 조회
+     * 가게 세부 정보 조회
      * - 메뉴,가격도 담은 storeDTO model에 저장
      * - 로그인했으면 로그인한유저가 해당 가게를 즐겨찾기 했는지 Bookmark model에 저장
      * GET /stores/detail/{id}
