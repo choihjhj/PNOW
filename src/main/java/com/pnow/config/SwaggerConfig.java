@@ -24,8 +24,8 @@ public class SwaggerConfig {
 
     public ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("SpringBoot Rest API Documentation")
-                .description("API")
+                .title("PNOW SpringBoot Rest API Documentation")
+                .description("PLACENOW API DOCUMENTATION - HYEJI -")
                 .version("1.0.0")
                 .build();
     }
