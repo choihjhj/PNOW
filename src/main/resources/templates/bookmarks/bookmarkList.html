@@ -64,11 +64,9 @@
                                     <div class="text-xs font-weight-bold text-success text-uppercase mb-1" th:text="'🕙 '+${bookmark.store.openingTime}+'-'+${bookmark.store.closingTime}"></div>
                                 </div>
                                 <div class="align-self-end">
-                                    <a th:id="'bookmark-' + ${bookmark.id}"
-                                    class="bookmark-btn"
-                                    href="#">
-                                    <img src="/img/별.png" alt="즐겨찾기" style="width: 50px; height: auto;">
-                                    <input type="hidden" th:value="${bookmark.id}" th:id="'bookmarkId-' + ${bookmark.id}" /> <!-- 각 별 이미지에 hidden input 추가하여 bookmark.id 값을 저장 -->
+                                    <a class="bookmark-btn" href="#">
+                                        <img src="/img/별.png" alt="즐겨찾기" style="width: 50px; height: auto;">
+                                        <input type="hidden" th:value="${bookmark.id}" th:id="'bookmarkId-' + ${bookmark.id}" /> <!-- 각 별 이미지에 hidden input 추가하여 bookmark.id 값을 저장 -->
                                     </a>
 
                                 </div>
