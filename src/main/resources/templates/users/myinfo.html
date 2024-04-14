@@ -35,7 +35,6 @@
                             error: function (xhr, status, error) {
                                 var errorMessage = xhr.responseJSON.errors[0]; // 서버에서 전달된 에러 메시지
                                 $('#name').after('<div class="text-danger">' + errorMessage + '</div>');
-                                // alert(errorMessage);
 
                             }
                         });

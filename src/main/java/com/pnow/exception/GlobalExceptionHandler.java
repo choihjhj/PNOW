@@ -43,7 +43,7 @@ public class GlobalExceptionHandler {
         List<String> errors = fieldErrors.stream()
                 .map(
                         fieldError ->
-                                fieldError.getField() + ", " + fieldError.getDefaultMessage()
+                                "(" + fieldError.getField() + ") " + fieldError.getDefaultMessage()
                 )
                 .collect(Collectors.toList());
 
