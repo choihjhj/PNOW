@@ -5,7 +5,7 @@ import com.pnow.domain.Reservation.Reservation;
 import com.pnow.domain.Reservation.ReservationStatus;
 import com.pnow.domain.Store;
 import com.pnow.domain.user.User;
-import com.pnow.dto.ReservationAbleTimeDTO;
+import com.pnow.dto.ReservationAbleTimeDto;
 import com.pnow.dto.ReservationDto;
 import com.pnow.dto.ReservationRequestDTO;
 import com.pnow.repository.ReservationRepository;
@@ -54,7 +54,7 @@ public class ReservationService {
 
     //선택한 날짜에 예약 가능 시간 목록 조회
     @Transactional(readOnly = true)
-    public List<ReservationAbleTimeDTO> findReservationAbleTimeDTOList(Long storeId, LocalDate reservationDate) {
+    public List<ReservationAbleTimeDto> findReservationAbleTimeDTOList(Long storeId, LocalDate reservationDate) {
         // 오픈 시간, 종료 시간
         Store store = findByIdOrThrow(storeRepository, storeId, "StoreId");
 
@@ -69,7 +69,7 @@ public class ReservationService {
         }
 
         // 예약 가능한 시간을 저장할 List
-        List<ReservationAbleTimeDTO> availableTimes = new ArrayList<>();
+        List<ReservationAbleTimeDto> availableTimes = new ArrayList<>();
 
         LocalTime startTime = openingTime; // 예약 가능한 시작시간을 오픈시간으로 초기화
         LocalTime currentTime = LocalTime.now();
@@ -90,7 +90,7 @@ public class ReservationService {
         // 예약 가능한 시간을 계산하여 availableTimes에 추가
         while (startTime.isBefore(closingTime)) {
             if (!reservedTimes.contains(startTime)) { //HashSet contains로 List보다 더 시간복잡도  줄임 O(1)
-                availableTimes.add(new ReservationAbleTimeDTO(startTime.format(DateTimeFormatter.ofPattern("HH:mm"))));
+                availableTimes.add(new ReservationAbleTimeDto(startTime.format(DateTimeFormatter.ofPattern("HH:mm"))));
             }
             startTime = startTime.plusMinutes(30); // 다음 시간으로 이동
         }

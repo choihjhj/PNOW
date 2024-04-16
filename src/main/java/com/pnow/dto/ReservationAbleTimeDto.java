@@ -9,6 +9,6 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor  //기본생성자
 @AllArgsConstructor //모든생성자
-public class ReservationAbleTimeDTO {
+public class ReservationAbleTimeDto {
     private String reservationTime; //예약가능시간
 }
