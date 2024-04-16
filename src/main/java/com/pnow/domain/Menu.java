@@ -20,5 +20,5 @@ public class Menu {
     private String menuName; //메뉴명
 
     @Column(nullable = false)
-    private int price; //메뉴가격
+    private int price; //메뉴가격, null값 안 받으려고 Integer 대신 int 타입
 }
