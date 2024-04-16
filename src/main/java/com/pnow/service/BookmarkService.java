@@ -44,9 +44,10 @@ public class BookmarkService {
         User user = findByIdOrThrow(userRepository, userDTO.getId(), "UserId");
 
         //Bookmark 엔티티 생성
-        Bookmark bookmark =new Bookmark();
-        bookmark.setUser(user);
-        bookmark.setStore(store);
+        Bookmark bookmark = Bookmark.builder()
+                .user(user)
+                .store(store)
+                .build();
 
         //즐겨찾기 저장
         bookmarkRepository.save(bookmark);

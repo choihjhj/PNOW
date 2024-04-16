@@ -1,11 +1,13 @@
 package com.pnow.domain;
 
 import com.pnow.domain.user.User;
+import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-@Setter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Entity
 public class Bookmark {
@@ -22,4 +24,10 @@ public class Bookmark {
     @ManyToOne
     @JoinColumn(name = "store_id")
     private Store store;
+
+    @Builder
+    public Bookmark(User user, Store store){
+        this.user=user;
+        this.store=store;
+    }
 }
