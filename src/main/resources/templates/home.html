@@ -95,7 +95,7 @@
             </li>
             <!-- Nav Item - Tables 예약목록-->
             <li class="nav-item">
-                <a class="nav-link" th:href="@{/reservations/list}" id="reservationLink">
+                <a class="nav-link" th:href="@{/reservations/status/WAITING}" id="reservationLink">
                     <i class="fas fa-fw fa-table"></i>
                     <span>예약목록</span></a>
             </li>
@@ -117,7 +117,7 @@
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Custom Utilities:</h6>
                         <a class="collapse-item" href="/users" id="userInfoLink">내정보</a>
-                        <a class="collapse-item" href="/reservations/past" id="userReservationLink">지난 예약 목록</a>
+                        <a class="collapse-item" href="/reservations/status/COMPLETE" id="userReservationLink">지난 예약 목록</a>
                     </div>
                 </div>
             </li>
@@ -198,7 +198,7 @@
                                 <h6 class="dropdown-header">
                                     Reservation list
                                 </h6>
-                                <a th:href="@{/reservations/list}" class="dropdown-item d-flex align-items-center" th:each="reservation : ${#session.getAttribute('reservationList')}">
+                                <a th:href="@{/reservations/status/WAITING}" class="dropdown-item d-flex align-items-center" th:each="reservation : ${#session.getAttribute('reservationList')}">
                                     <div class="mr-3">
                                         <div class="icon-circle bg-primary">
                                             <i class="fas fa-file-alt text-white"></i>
@@ -212,7 +212,7 @@
                                 </a>
 
                                 <a class="dropdown-item text-center small text-gray-500"
-                                   th:href="@{/reservations/list}">Show All Alerts</a>
+                                   th:href="@{/reservations/status/WAITING}">Show All Alerts</a>
                             </div>
                         </li>
                         <div class="topbar-divider d-none d-sm-block"></div>

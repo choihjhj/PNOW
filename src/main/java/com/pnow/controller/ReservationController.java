@@ -71,14 +71,24 @@ public class ReservationController {
 
     /*
      * 예약 목록 조회
-     * GET /reservations/list
-     * return "/reservations/reservationList"
+     * GET /reservations/status/{status}
+     * status가 WAITING이면 return "/reservations/reservationList"
+     * status가 COMPLETE이면 return "reservations/reservationPastList"
      * */
-    @GetMapping("/list")
-    public  String getReservation(@LoginUser SessionUserDTO user){
-        log.info("예약 목록 조회 메소드 진입 user = {}", user);
-        httpSession.setAttribute("reservationList",reservationService.findReservation(user, ReservationStatus.WAITING));
-        return "reservations/reservationList";
+    @GetMapping("/status/{status}")
+    public String getReservationList(@PathVariable("status") ReservationStatus status, @LoginUser SessionUserDTO user, Model model) {
+        log.info("예약 목록 조회 메소드 진입 user = {}, status = {}", user, status);
+
+        switch (status) {
+            case WAITING:
+                httpSession.setAttribute("reservationList", reservationService.findReservation(user, status));
+                return "reservations/reservationList";
+            case COMPLETE:
+                model.addAttribute("reservationPastList", reservationService.findReservation(user, status));
+                return "reservations/reservationPastList";
+            default:
+                throw new IllegalArgumentException("Unsupported reservation status : " + status);
+        }
     }
 
     /*
@@ -93,15 +103,4 @@ public class ReservationController {
         reservationService.cancelReservation(id);
     }
 
-    /*
-     * 예약 완료 목록 조회
-     * GET /reservations/past
-     * return "/reservations/reservationPastList"
-     * */
-    @GetMapping("/past")
-    public String getPastReservation(@LoginUser SessionUserDTO user, Model model){
-        log.info("지난 예약 목록 조회 메소드 진입 user = {}", user.getName());
-        model.addAttribute("reservationPastList",reservationService.findReservation(user, ReservationStatus.COMPLETE));
-        return "reservations/reservationPastList";
-    }
 }
