@@ -1,6 +1,6 @@
 package com.pnow.repository;
 
-import com.pnow.dto.ReservationRequestDTO;
+import com.pnow.dto.ReservationRequestDto;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +16,7 @@ public class ReservationRepositoryTest {
     @Test
     void 예약조회테스트(){
         //given
-        ReservationRequestDTO dto=new ReservationRequestDTO();
+        ReservationRequestDto dto=new ReservationRequestDto();
         //dto.setStoreId(1);
         //dto.setSelectedDate();
         //dto.getSelectedTime();

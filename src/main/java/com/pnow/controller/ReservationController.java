@@ -4,7 +4,7 @@ import com.pnow.config.auth.LoginUser;
 import com.pnow.config.auth.dto.SessionUserDTO;
 import com.pnow.domain.Reservation.ReservationStatus;
 import com.pnow.dto.ReservationAbleTimeDto;
-import com.pnow.dto.ReservationRequestDTO;
+import com.pnow.dto.ReservationRequestDto;
 import com.pnow.dto.StoreDto;
 import com.pnow.service.ReservationService;
 import com.pnow.service.StoreService;
@@ -16,6 +16,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -56,15 +57,15 @@ public class ReservationController {
     }
 
     /*
-     * 예약 작성
+     * 예약 등록
      * POST /reservations
      *
      * */
     @PostMapping
     @ResponseBody
-    public void createReservation(@RequestBody ReservationRequestDTO requestDto, @LoginUser SessionUserDTO user) {
+    public void createReservation(@Valid @RequestBody ReservationRequestDto requestDto, @LoginUser SessionUserDTO user) {
         log.info("로그인 객체 user = {}", user);
-        log.info("예약 작성 메서드 진입 storeId={}, 예약날짜={}, 예약시간={}, 인원수={}", requestDto.getStoreId(), requestDto.getSelectedDate(), requestDto.getSelectedTime(), requestDto.getNumberOfPeople());
+        log.info("예약 등록 메서드 진입 storeId={}, 예약날짜={}, 예약시간={}, 인원수={}", requestDto.getStoreId(), requestDto.getSelectedDate(), requestDto.getSelectedTime(), requestDto.getNumberOfPeople());
         reservationService.makeReservation(requestDto, user);
     }
 

@@ -7,7 +7,7 @@ import com.pnow.domain.Store;
 import com.pnow.domain.user.User;
 import com.pnow.dto.ReservationAbleTimeDto;
 import com.pnow.dto.ReservationDto;
-import com.pnow.dto.ReservationRequestDTO;
+import com.pnow.dto.ReservationRequestDto;
 import com.pnow.repository.ReservationRepository;
 import com.pnow.repository.StoreRepository;
 import com.pnow.repository.UserRepository;
@@ -100,22 +100,23 @@ public class ReservationService {
 
     //예약 추가
     @Transactional
-    public void makeReservation(ReservationRequestDTO requestDTO, SessionUserDTO sessionUserDTO) {
+    public void makeReservation(ReservationRequestDto requestDTO, SessionUserDTO sessionUserDTO) {
         Store store = findByIdOrThrow(storeRepository, requestDTO.getStoreId(), "StoreId");
         User user = findByIdOrThrow(userRepository, sessionUserDTO.getId(), "UserId");
 
+        //예약 저장
+        reservationRepository.save(toEntity(requestDTO, user, store));
 
-        //Reservation 엔티티 셋팅
+    }
+
+    private Reservation toEntity(ReservationRequestDto requestDto, User user, Store store) {
         Reservation reservation = new Reservation();
-        reservation.setReservationDate(requestDTO.getSelectedDate());
-        reservation.setReservationTime(requestDTO.getSelectedTime());
-        reservation.setGuestCount(requestDTO.getNumberOfPeople());
+        reservation.setReservationDate(requestDto.getSelectedDate());
+        reservation.setReservationTime(requestDto.getSelectedTime());
+        reservation.setGuestCount(requestDto.getNumberOfPeople());
         reservation.setUser(user);
         reservation.setStore(store);
-
-        //예약 저장
-        reservationRepository.save(reservation);
-
+        return reservation;
     }
 
     //전달된 ReservationStatus status에 해당하는 회원의 예약 목록 조회(WAITING, COMPLETE)
