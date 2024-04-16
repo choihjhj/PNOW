@@ -35,7 +35,7 @@ public class ReservationController {
      * return "/reservations/reservation"
      * */
     @GetMapping("/{storeId}")
-    public String reservation( @PathVariable("storeId") Long storeId, Model model, @LoginUser SessionUserDTO user){
+    public String reservation( @PathVariable("storeId") Long storeId, Model model){
         log.info("예약페이지로 이동하는 /reservation/{storeId} get 메소드 진입 storeId = {}", storeId);
         StoreDto storeDTO = storeService.findStoreDTO(storeId);
         model.addAttribute("store", storeDTO);
@@ -50,8 +50,7 @@ public class ReservationController {
     @GetMapping("/{storeId}/availability/{reservationDate}")
     @ResponseBody
     public List<ReservationAbleTimeDTO> getReservationTime(@PathVariable("storeId") Long storeId,
-                                                            @PathVariable("reservationDate") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate reservationDate,
-                                                            @LoginUser SessionUserDTO user) {
+                                                            @PathVariable("reservationDate") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate reservationDate) {
         log.info("예약 가능 시간 조회 메소드 진입 storeId = {}, reservationDate = {}", storeId, reservationDate);
         return reservationService.findReservationAbleTimeDTOList(storeId, reservationDate);
     }
@@ -88,7 +87,7 @@ public class ReservationController {
      * */
     @DeleteMapping("/{id}")
     @ResponseBody
-    public void deleteReservation( @PathVariable("id") Long id, @LoginUser SessionUserDTO user){
+    public void deleteReservation( @PathVariable("id") Long id){
         log.info("예약 삭제 메소드 진입 reservationId = {}", id);
         reservationService.cancelReservation(id);
     }

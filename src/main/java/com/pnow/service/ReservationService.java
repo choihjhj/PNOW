@@ -6,7 +6,7 @@ import com.pnow.domain.Reservation.ReservationStatus;
 import com.pnow.domain.Store;
 import com.pnow.domain.user.User;
 import com.pnow.dto.ReservationAbleTimeDTO;
-import com.pnow.dto.ReservationDetailDTO;
+import com.pnow.dto.ReservationDto;
 import com.pnow.dto.ReservationRequestDTO;
 import com.pnow.repository.ReservationRepository;
 import com.pnow.repository.StoreRepository;
@@ -19,7 +19,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -121,30 +120,17 @@ public class ReservationService {
 
     //전달된 ReservationStatus status에 해당하는 회원의 예약 목록 조회(WAITING, COMPLETE)
     @Transactional(readOnly = true)
-    public List<ReservationDetailDTO> findReservation(SessionUserDTO sessionUserDTO, ReservationStatus status){
+    public List<ReservationDto> findReservation(SessionUserDTO sessionUserDTO, ReservationStatus status){
 
         User user = findByIdOrThrow(userRepository, sessionUserDTO.getId(), "UserId");
 
         //user에 해당하는 예약 목록 조회
         List<Reservation> reservationList = reservationRepository.findAllByUserAndReservationStatusOrderByReservationDateAscReservationTimeAsc(user, status);
-        return reservationList.stream().map(this::mapToReservationDetailDTO)
+
+        return reservationList.stream().map(ReservationDto::new)
                 .collect(Collectors.toList());
 
     }
-
-    private ReservationDetailDTO mapToReservationDetailDTO(Reservation reservation) {
-        ReservationDetailDTO dto = new ReservationDetailDTO();
-        dto.setId(reservation.getId());                                 //예약id
-        dto.setStoreName(reservation.getStore().getStoreName());        //가게이름
-        dto.setSelectedDate(reservation.getReservationDate());          //예약날짜
-        dto.setSelectedTime(reservation.getReservationTime());          //예약시간
-        dto.setNumberOfPeople(reservation.getGuestCount());             //인원수
-        dto.setReservationStatus(reservation.getReservationStatus());   //예약상태
-        dto.setCreatedDate(formatTime(reservation.getCreatedDate()));   //예약접수일
-
-        return dto;
-    }
-    private String formatTime(LocalDateTime time) { return time.format(DateTimeFormatter.ofPattern("yyyy-MM-dd, HH:mm")); }
 
     //예약 삭제
     @Transactional
