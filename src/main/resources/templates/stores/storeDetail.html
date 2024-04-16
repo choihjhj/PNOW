@@ -78,7 +78,7 @@
                         <span th:text="${store.cityName}+' '+${store.districtName}+' '+${store.detailAddress}">주소</span><br>
                         <span th:text="'&#128345;'+${store.openingTime}+'-'+${store.closingTime}">운영시간</span><br>
                         <span th:text="'&#128222;'+${store.phoneNumber}">전화번호</span><br>
-                        <a th:href="'/reservations/' + ${store.id}" id="reservationButton"
+                        <a th:href="'/reservations/stores/' + ${store.id}" id="reservationButton"
                            class="btn btn-success btn-icon-split">
                             <span class="icon text-white-50">
                                 <i class="fas fa-check"></i>

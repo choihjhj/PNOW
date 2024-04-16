@@ -30,14 +30,14 @@ public class ReservationController {
     private final HttpSession httpSession;
 
     /*
-     * reservation.html 예약 페이지 접속
+     * reservation.html 예약 페이지 이동
      * - 가게 조회 후 model에 저장
-     * GET /reservations/{storeId}
+     * GET /reservations/stores/{storeId}
      * return "/reservations/reservation"
      * */
-    @GetMapping("/{storeId}")
+    @GetMapping("/stores/{storeId}")
     public String reservation( @PathVariable("storeId") Long storeId, Model model){
-        log.info("예약페이지로 이동하는 /reservation/{storeId} get 메소드 진입 storeId = {}", storeId);
+        log.info("예약페이지로 이동하는 /reservation/stores/{storeId} get 메소드 진입 storeId = {}", storeId);
         StoreDto storeDTO = storeService.findStoreDTO(storeId);
         model.addAttribute("store", storeDTO);
         return "reservations/reservation";
