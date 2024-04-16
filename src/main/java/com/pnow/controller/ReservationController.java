@@ -44,10 +44,10 @@ public class ReservationController {
 
     /*
      * 예약 가능 시간 목록 조회
-     * GET /reservations/{storeId}/{reservationDate}
+     * GET /reservations/{storeId}/availability/{reservationDate}
      * return List<ReservationAbleTimeDTO>
      * */
-    @GetMapping("/{storeId}/{reservationDate}")
+    @GetMapping("/{storeId}/availability/{reservationDate}")
     @ResponseBody
     public List<ReservationAbleTimeDTO> getReservationTime(@PathVariable("storeId") Long storeId,
                                                             @PathVariable("reservationDate") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate reservationDate,
