@@ -1,6 +1,7 @@
 package com.pnow.domain.category;
 
 import com.pnow.domain.Store;
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,7 +10,7 @@ import javax.persistence.*;
 import java.util.List;
 @Getter
 @Entity
-@NoArgsConstructor //기본생성자, JUnit test에서 @Builder사용하려고
+@NoArgsConstructor(access = AccessLevel.PROTECTED) //기본생성자, JUnit test에서 @Builder사용하려고
 public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
