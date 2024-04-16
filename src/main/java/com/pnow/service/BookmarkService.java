@@ -42,15 +42,10 @@ public class BookmarkService {
     public void makeBookmark(Long storeId, SessionUserDTO userDTO){
         Store store = findByIdOrThrow(storeRepository, storeId, "StoreId");
         User user = findByIdOrThrow(userRepository, userDTO.getId(), "UserId");
-
-        //Bookmark 엔티티 생성
-        Bookmark bookmark = Bookmark.builder()
+        bookmarkRepository.save(Bookmark.builder()
                 .user(user)
                 .store(store)
-                .build();
-
-        //즐겨찾기 저장
-        bookmarkRepository.save(bookmark);
+                .build());
     }
 
     //userId에 해당하는 즐겨찾기 목록 조회
