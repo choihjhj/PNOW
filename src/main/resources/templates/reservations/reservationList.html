@@ -70,9 +70,9 @@
                                     <td th:text="${#session.getAttribute('reservationList').size() - reservationStat.index}">
                                         번호
                                     </td>
-<!--                                    <a th:href="@{/stores/detail/{storeId}(storeId=${reservation.store.id})}">-->
-                                    <td th:text="${reservation.storeName}">가게이름</td>
-<!--                                    </a>-->
+                                    <td>
+                                        <a th:href="'/reservations/stores/' + ${reservation.storeId}" th:text="${reservation.storeName}">가게이름</a>
+                                    </td>
                                     <td th:text="${reservation.selectedDate}">예약날짜</td>
                                     <td th:text="${reservation.selectedTime}">예약시간</td>
                                     <td th:text="${reservation.numberOfPeople}+' 명'">인원수</td>

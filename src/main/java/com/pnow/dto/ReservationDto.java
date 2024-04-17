@@ -18,6 +18,7 @@ import java.time.format.DateTimeFormatter;
 @AllArgsConstructor //모든생성자
 public class ReservationDto {
     private Long id;                   //예약 id
+    private Long storeId;              //가게 id
     private String storeName;          //가게 이름
     private LocalDate selectedDate;    //예약 날짜
     private LocalTime selectedTime;    //예약 시간
@@ -27,6 +28,7 @@ public class ReservationDto {
 
     public ReservationDto(Reservation reservation){
         this.id=reservation.getId();
+        this.storeId=reservation.getStore().getId();
         this.storeName=reservation.getStore().getStoreName();
         this.selectedDate=reservation.getReservationDate();
         this.selectedTime=reservation.getReservationTime();
