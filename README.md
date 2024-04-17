@@ -59,18 +59,17 @@ http://localhost:9091/swagger-ui/index.html
 |:------:|:---:|:---:|   
 |POST|/reservations|예약 등록|    
 |DELETE|/reservations/{id}|예약 삭제|    
-|GET|/reservations/{storeId}|예약 페이지 조회|   
-|GET|/reservations/{storeId}/{reservationDate}|예약 가능 시간 목록 조회|   
-|GET|/reservations/list|예약 목록 조회|    
-|GET|/reservations/past|지난 예약 목록 조회|
+|GET|/reservations/stores/{storeId}|예약 페이지 조회|   
+|GET|/reservations/{storeId}/availability/{reservationDate}|예약 가능 시간 목록 조회|   
+|GET|/reservations/status/{status}|예약 목록 조회|
       
       
 **BOOKMARK**    
 |HTTP|URI|설명|   
 |:------:|:---:|:---:|   
 |DELETE|/bookmarks/{id}|즐겨찾기 삭제|   
-|POST|/bookmarks/{storeId}|즐겨찾기 등록|   
-|GET|/bookmarks/list|즐겨찾기 목록 조회|    
+|POST|/bookmarks/stores/{storeId}|즐겨찾기 등록|   
+|GET|/bookmarks|즐겨찾기 목록 조회|    
       
       
 **DISTRICT**    
