@@ -16,7 +16,7 @@
                         url: "/reservations/" + reservationId, // 예약 취소를 처리하는 엔드포인트 URL
                         success: function (response) {
                             // 성공적으로 예약을 취소한 경우 페이지 새로고침하여 예약 목록 페이지로 이동
-                            window.location.href = "/reservations/list";
+                            window.location.href = "/reservations/status/WAITING";
                         },
                         error: function (xhr, status, error) {
                             console.error(xhr.responseText);
