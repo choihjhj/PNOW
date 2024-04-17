@@ -55,9 +55,8 @@ public class ReservationService {
     //선택한 날짜에 예약 가능 시간 목록 조회
     @Transactional(readOnly = true)
     public List<ReservationAbleTimeDto> findReservationAbleTimeDTOList(Long storeId, LocalDate reservationDate) {
-        // 오픈 시간, 종료 시간
-        Store store = findByIdOrThrow(storeRepository, storeId, "StoreId");
 
+        Store store = findByIdOrThrow(storeRepository, storeId, "StoreId");
         LocalTime openingTime = store.getOpeningTime();
         LocalTime closingTime = store.getClosingTime();
 

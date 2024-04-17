@@ -38,3 +38,6 @@ out/
 
 # 스프링 oauth 보안 설정 제외
 application-oauth.properties
+
+# ERD
+ERD.png
