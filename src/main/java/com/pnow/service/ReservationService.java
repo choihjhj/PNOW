@@ -22,7 +22,6 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -60,13 +59,16 @@ public class ReservationService {
         LocalTime openingTime = store.getOpeningTime();
         LocalTime closingTime = store.getClosingTime();
 
+        Set<LocalTime> reservedTimes = getReservedTimes(storeId, reservationDate); //예약날짜에 예약된 시간들 저장
+        return calculateAvailableTimes(openingTime, closingTime, reservedTimes,reservationDate); //예약날짜에 예약안 된 시간들 계산해서 저장
+    }
 
+    private Set<LocalTime> getReservedTimes(Long storeId, LocalDate reservationDate){
         List<Reservation> reservations = reservationRepository.findByStoreIdAndReservationDateAndReservationStatus(storeId, reservationDate, ReservationStatus.WAITING);
-        Set<LocalTime> reservedTimes = new HashSet<>();
-        for (Reservation reservation : reservations) { // 레포지토리에서 받아온 해당 날짜에 이미 예약한 시간들을 HashSet에 따로 저장(아래에서 예약가능시간에서 제외시킬것임)
-            reservedTimes.add(reservation.getReservationTime());
-        }
+        return reservations.stream().map(Reservation::getReservationTime).collect(Collectors.toSet());
+    }
 
+    private List<ReservationAbleTimeDto> calculateAvailableTimes(LocalTime openingTime, LocalTime closingTime, Set<LocalTime> reservedTimes, LocalDate reservationDate) {
         // 예약 가능한 시간을 저장할 List
         List<ReservationAbleTimeDto> availableTimes = new ArrayList<>();
 
@@ -86,6 +88,7 @@ public class ReservationService {
             }
         }
 
+
         // 예약 가능한 시간을 계산하여 availableTimes에 추가
         while (startTime.isBefore(closingTime)) {
             if (!reservedTimes.contains(startTime)) { //HashSet contains로 List보다 더 시간복잡도  줄임 O(1)
@@ -96,7 +99,6 @@ public class ReservationService {
 
         return availableTimes;
     }
-
     //예약 추가
     @Transactional
     public void makeReservation(ReservationRequestDto requestDTO, SessionUserDTO sessionUserDTO) {
