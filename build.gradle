@@ -65,3 +65,7 @@ dependencies {
 tasks.named('test') {
 	useJUnitPlatform()
 }
+//SNAPSHOT-plain.jar 파일 생성 안되도록 수정
+jar {
+	enabled = false
+}
