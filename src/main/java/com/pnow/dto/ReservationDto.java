@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -16,7 +17,7 @@ import java.time.format.DateTimeFormatter;
 @Setter
 @NoArgsConstructor  //기본생성자
 @AllArgsConstructor //모든생성자
-public class ReservationDto {
+public class ReservationDto implements Serializable {
     private Long id;                   //예약 id
     private Long storeId;              //가게 id
     private String storeName;          //가게 이름

@@ -1,13 +1,14 @@
 package com.pnow.dto;
 
-import com.pnow.domain.Store;
 import com.pnow.domain.Menu;
+import com.pnow.domain.Store;
 import com.pnow.domain.category.CategoryType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.io.Serializable;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -17,7 +18,7 @@ import java.util.stream.Collectors;
 @Setter
 @NoArgsConstructor  //기본생성자
 @AllArgsConstructor //모든생성자
-public class StoreDto {
+public class StoreDto implements Serializable {
     private Long id;                    //가게 id
     private String storeName;           //가게 이름
     private String openingTime;         //오픈 시간

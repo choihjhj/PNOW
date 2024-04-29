@@ -5,12 +5,13 @@ import lombok.Setter;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
 @Getter
 @Setter
-public class ReservationRequestDto {
+public class ReservationRequestDto implements Serializable {
     @NotNull(message = "가게Id는 필수 값입니다.") //String은 @NotBlank, 나머지는 @NotNull
     private Long storeId;              //가게 Id
 

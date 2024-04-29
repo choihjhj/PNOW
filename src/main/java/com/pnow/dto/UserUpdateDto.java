@@ -4,10 +4,11 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
+import java.io.Serializable;
 
 @Getter
 @Setter //UserControllerTest용
-public class UserUpdateDto {
+public class UserUpdateDto implements Serializable {
     @NotBlank(message = "이름은 필수 값입니다.")
     private String name; //이름
 }
