@@ -33,6 +33,7 @@ public class HomeController {
 
         //예약테이블의 오늘 날짜현재시간 지난 거 reservationStatus = ReservationStatus.COMPLETE 처리
         reservationService.updateUserReservationStatus(); /*관리자 페이지 없어서 임의로 자동처리 */
+        log.info("--예약테이블셋팅 완료--");
 
         if(user != null){
 

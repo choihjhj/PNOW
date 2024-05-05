@@ -123,12 +123,13 @@ public class ReservationService {
     //전달된 ReservationStatus status에 해당하는 회원의 예약 목록 조회(WAITING, COMPLETE)
     @Transactional(readOnly = true)
     public List<ReservationDto> findReservation(SessionUserDTO sessionUserDTO, ReservationStatus status){
-
+        log.info("예약목록조회 서비스 진입---");
         User user = findByIdOrThrow(userRepository, sessionUserDTO.getId(), "UserId");
 
         //user에 해당하는 예약 목록 조회
         List<Reservation> reservationList = reservationRepository.findAllByUserAndReservationStatusOrderByReservationDateAscReservationTimeAsc(user, status);
 
+        log.info("예약목록조회 dto 직렬화 과정 시작점");
         return reservationList.stream().map(ReservationDto::new)
                 .collect(Collectors.toList());
 
