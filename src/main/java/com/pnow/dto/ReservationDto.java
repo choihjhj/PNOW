@@ -25,7 +25,8 @@ public class ReservationDto implements Serializable {
     private LocalTime selectedTime;    //예약 시간
     private int numberOfPeople;        //인원수
     private ReservationStatus reservationStatus; //예약상태
-    private String createdDate; //예약접수일
+    private LocalDateTime createdDate; //예약접수일
+//    private String createdDate; //예약접수일
 
     public ReservationDto(Reservation reservation){
         this.id=reservation.getId();
@@ -35,7 +36,8 @@ public class ReservationDto implements Serializable {
         this.selectedTime=reservation.getReservationTime();
         this.numberOfPeople=reservation.getGuestCount();
         this.reservationStatus=reservation.getReservationStatus();
-        this.createdDate=formatTime(reservation.getCreatedDate());
+        this.createdDate = reservation.getCreatedDate(); // LocalDateTime 그대로 저장
+//        this.createdDate=formatTime(reservation.getCreatedDate());
     }
     private String formatTime(LocalDateTime time) { return time.format(DateTimeFormatter.ofPattern("yyyy-MM-dd, HH:mm")); }
 }
