@@ -8,9 +8,9 @@
 - **Server Port Number** : 9091
 - **Framework** : Springboot 2.7.17
 - **Database** : h2 database(test용), AWS RDS MariaDB
-- **CI & CD** : GitHub Actions
+[//]: # - **CI & CD** : GitHub Actions
 - **Server** : AWS EC2
-- **Deploy** : Docker or AWS CodeDeploy
+[//]: # - **Deploy** : Docker or AWS CodeDeploy
 - **Library** :
   - SpringBoot Web 
   - Spring Data JPA 
