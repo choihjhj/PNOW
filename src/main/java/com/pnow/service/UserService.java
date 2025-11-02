@@ -29,8 +29,7 @@ public class UserService {
         User user = findByIdOrThrow(userRepository, id, "UserId");
 
         //name 업데이트
-        user.setName(userUpdateDto.getName());
-        userRepository.save(user);
+        user.update(userUpdateDto.getName());
 
     }
 
