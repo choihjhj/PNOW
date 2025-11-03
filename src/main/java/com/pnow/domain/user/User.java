@@ -34,7 +34,7 @@ public class User extends BaseTimeEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private Role role; //ROLE_USER
+    private Role role; //
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<Bookmark> bookmarkList;

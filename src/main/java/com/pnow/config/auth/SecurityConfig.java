@@ -2,12 +2,12 @@ package com.pnow.config.auth;
 
 import com.pnow.domain.user.Role;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
 @RequiredArgsConstructor
-@EnableWebSecurity  // Spring Security를 활성화
+@EnableMethodSecurity(prePostEnabled = true)   // Spring Security를 활성화
 public class SecurityConfig  extends WebSecurityConfigurerAdapter {
 
     private final CustomOAuth2UserService customOAuth2UserService;

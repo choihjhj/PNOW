@@ -1,5 +1,6 @@
 package com.pnow.controller;
 
+import com.pnow.aop.CheckUserAuthority;
 import com.pnow.config.auth.LoginUser;
 import com.pnow.config.auth.dto.SessionUserDTO;
 import com.pnow.dto.UserUpdateDto;
@@ -32,7 +33,7 @@ public class UserController {
      * */
     @GetMapping
     public String userMyinfo(@LoginUser SessionUserDTO user, Model model) {
-        log.info("내정보 페이지 진입 user={}", user.getName());
+        log.info("내정보 페이지 진입 user={}", user);
         model.addAttribute("user", userService.findUser(user));
         return "users/myinfo";
     }
@@ -43,9 +44,11 @@ public class UserController {
      * PUT /users/{id}
      * */
     @PutMapping("/{id}")
+    @CheckUserAuthority //aop로 요청 path 변수 id와 로그인 유저 id 비교 -> 권한 없으면 예외
     public ResponseEntity<String> editUser(@PathVariable("id") Long id,
                                            @Valid @RequestBody UserUpdateDto userUpdateDto) {
         log.info("내정보 수정 메소드 진입 id={}, data={}", id, userUpdateDto.getName());
+
         userService.updateUser(id, userUpdateDto);
         return ResponseEntity.ok("회원 정보가 업데이트되었습니다.");
     }
@@ -55,6 +58,7 @@ public class UserController {
      * DELETE /users/{id}
      * */
     @DeleteMapping("/{id}")
+    @CheckUserAuthority //aop로 요청 path 변수 id와 로그인 유저 id 비교 -> 권한 없으면 예외
     public ResponseEntity<String> deleteUser(@PathVariable("id") Long id,
                                              HttpServletRequest request,
                                              HttpServletResponse response) {

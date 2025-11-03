@@ -2,6 +2,8 @@ package com.pnow.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -71,6 +73,26 @@ public class GlobalExceptionHandler {
 
         ErrorMessage errorMessage = new ErrorMessage(errors);
         return new ResponseEntity<>(errorMessage, HttpStatus.BAD_REQUEST);
+    }
+
+    //로그인 안 된 경우 (401 Unauthorized)
+    @ExceptionHandler(AuthenticationCredentialsNotFoundException.class)
+    public ResponseEntity<ErrorMessage> handleAuthException(AuthenticationCredentialsNotFoundException ex) {
+        List<String> errors = new ArrayList<>();
+        errors.add(ex.getMessage());
+
+        ErrorMessage errorMessage = new ErrorMessage(errors);
+        return new ResponseEntity<>(errorMessage, HttpStatus.UNAUTHORIZED);
+    }
+
+    //인증은 되었으나 권한이 없는 경우 (403 Forbidden)
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<ErrorMessage> handleAccessDeniedException(AccessDeniedException ex) {
+        List<String> errors = new ArrayList<>();
+        errors.add(ex.getMessage());
+
+        ErrorMessage errorMessage = new ErrorMessage(errors);
+        return new ResponseEntity<>(errorMessage, HttpStatus.FORBIDDEN);
     }
 
 

@@ -1,54 +1,85 @@
 package com.pnow.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.pnow.config.auth.dto.SessionUserDTO;
+import com.pnow.domain.user.Role;
+import com.pnow.domain.user.User;
 import com.pnow.dto.UserUpdateDto;
 import com.pnow.service.UserService;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.test.web.servlet.MockMvc;
+
+import java.util.List;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-@WebMvcTest(controllers = UserControllerTest.class)
-/*
-- JPA 기능은 동작하지 않는다.
-- @Controller, @ControllerAdvice 사용 가능
-- 단, @Service, @Repository등은 사용할 수 없다.
-*/
+
+@SpringBootTest
+@AutoConfigureMockMvc
 class UserControllerTest {
-    @MockBean
-    private UserService userService;
 
     @Autowired
     private MockMvc mvc;
-    /**
-     * 웹 API 테스트할 때 사용
-     * 스프링 MVC 테스트의 시작점
-     * HTTP GET,POST 등에 대해 API 테스트 가능
-     * */
 
+    @Autowired
+    private ObjectMapper objectMapper;
 
-    @Test
-    @DisplayName("회원 정보 수정 api 유효성 검사")
-    void editUserTest() throws Exception{
-        //given
-        String id="Test"; //IllegalStateException
-        String name = null; //MethodArgumentNotValidException
-        UserUpdateDto userUpdateDto = new UserUpdateDto();
-        userUpdateDto.setName(name);
+    @MockBean
+    private UserService userService;
 
-        //when
+    private SessionUserDTO sessionUser;
 
-        //then
-        mvc.perform(put("/users/" + id)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(new ObjectMapper().writeValueAsString(userUpdateDto)))
-                .andExpect(status().isBadRequest());
+    @BeforeEach
+    void setup() {
+        User loginUser = new User("홍길동", "test@example.com", "pic.png", Role.USER);
+        loginUser.setId(1L);
+        sessionUser = new SessionUserDTO(loginUser);
 
+        // SecurityContextHolder에 인증 객체 직접 넣기
+        UsernamePasswordAuthenticationToken authentication =
+                new UsernamePasswordAuthenticationToken(
+                        sessionUser,
+                        null,
+                        List.of(new SimpleGrantedAuthority("ROLE_USER"))
+                );
+        SecurityContextHolder.getContext().setAuthentication(authentication);
     }
 
+    @Test
+    @DisplayName("로그인한 사용자 ID와 요청 ID가 다르면 403 Forbidden")
+    void idTest() throws Exception {
+        Long requestId = 2L; // 로그인 사용자와 다른 ID
+
+        UserUpdateDto dto = new UserUpdateDto();
+        dto.setName("변경된 이름");
+
+        mvc.perform(put("/users/" + requestId)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(dto)))
+                .andExpect(status().isForbidden()); // 403 확인
+    }
+
+    @Test
+    @DisplayName("회원 정보 수정 @Valid 유효성 검사")
+    void editUserTest() throws Exception {
+        Long requestId = 1L; // 로그인 사용자와 같은 ID
+
+        UserUpdateDto dto = new UserUpdateDto();
+        dto.setName(null); // @Valid 검증 실패 유도
+
+        mvc.perform(put("/users/" + requestId)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(dto)))
+                .andExpect(status().isBadRequest()); // 400 확인
+    }
 }
