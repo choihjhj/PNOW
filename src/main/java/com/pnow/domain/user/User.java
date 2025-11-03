@@ -50,6 +50,14 @@ public class User extends BaseTimeEntity {
         this.role = role;
     }
 
+    //구글 로그인 개인정보 변경감지시 업데이트
+    public User update(String name, String picture) {
+        this.name = name;
+        this.picture = picture;
+        return this;
+    }
+
+    //PNOW 회원정보수정 기능, 메서드 오버로딩으로 update 분리
     public User update(String name) {
         this.name = name;
         return this;
