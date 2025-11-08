@@ -34,14 +34,14 @@ public class ReservationService {
     private final StoreRepository storeRepository;
     private final UserRepository userRepository;
 
-    //시간 지난 예약들의 status 업데이트(WAITING->COMPLETE)
+    //예약상태 자동 갱신(WAITING->COMPLETE)
     @Transactional
     public void updateUserReservationStatus(){
 
         LocalDate currentDate = LocalDate.now();
         LocalTime currentTime = LocalTime.now();
 
-        // 현재 날짜와 시간 이전의 예약목록 가져와서 예약 상태 변경
+        // 현재 날짜, 시간으로 이전 예약 상태들을(WAITING) COMPLETE 처리
         reservationRepository.bulkUpdateReservationStatus(
                 ReservationStatus.WAITING,
                 ReservationStatus.COMPLETE,
@@ -105,18 +105,8 @@ public class ReservationService {
         User user = findByIdOrThrow(userRepository, sessionUserDTO.getId(), "UserId");
 
         //예약 저장
-        reservationRepository.save(toEntity(requestDTO, user, store));
+        reservationRepository.save(requestDTO.toEntity(user, store));
 
-    }
-
-    private Reservation toEntity(ReservationRequestDto requestDto, User user, Store store) {
-        Reservation reservation = new Reservation();
-        reservation.setReservationDate(requestDto.getSelectedDate());
-        reservation.setReservationTime(requestDto.getSelectedTime());
-        reservation.setGuestCount(requestDto.getNumberOfPeople());
-        reservation.setUser(user);
-        reservation.setStore(store);
-        return reservation;
     }
 
     //전달된 ReservationStatus status에 해당하는 회원의 예약 목록 조회(WAITING, COMPLETE)

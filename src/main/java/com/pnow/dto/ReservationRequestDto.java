@@ -1,5 +1,9 @@
 package com.pnow.dto;
 
+import com.pnow.domain.Reservation.Reservation;
+import com.pnow.domain.Reservation.ReservationStatus;
+import com.pnow.domain.Store;
+import com.pnow.domain.user.User;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -23,5 +27,19 @@ public class ReservationRequestDto implements Serializable {
 
     @Min(1)
     private int numberOfPeople;        //인원수
+
+    /**
+     * DTO -> Entity 변환
+     */
+    public Reservation toEntity(User user, Store store){
+        return Reservation.builder()
+                .user(user)
+                .store(store)
+                .reservationDate(selectedDate)
+                .reservationTime(selectedTime)
+                .guestCount(numberOfPeople)
+                .reservationStatus(ReservationStatus.WAITING) // 기본값 지정
+                .build();
+    }
 
 }

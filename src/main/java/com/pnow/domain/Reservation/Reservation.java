@@ -3,6 +3,7 @@ package com.pnow.domain.Reservation;
 import com.pnow.domain.BaseTimeEntity;
 import com.pnow.domain.Store;
 import com.pnow.domain.user.User;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -46,5 +47,16 @@ public class Reservation extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     @Column //(nullable = false)
     private ReservationStatus reservationStatus; // 예약 상태:WAITING,COMPLETE 기본값은 'WAITING'
+
+    @Builder
+    public Reservation(User user, Store store, LocalDate reservationDate,
+                       LocalTime reservationTime, int guestCount, ReservationStatus reservationStatus){
+        this.user = user;
+        this.store = store;
+        this.reservationDate = reservationDate;
+        this.reservationTime = reservationTime;
+        this.guestCount = guestCount;
+        this.reservationStatus = reservationStatus;
+    }
 
 }

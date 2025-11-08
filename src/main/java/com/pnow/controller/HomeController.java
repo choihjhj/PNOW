@@ -5,7 +5,6 @@ import com.pnow.config.auth.LoginUser;
 import com.pnow.config.auth.dto.SessionUserDTO;
 import com.pnow.domain.Reservation.ReservationStatus;
 import com.pnow.service.ReservationService;
-import com.pnow.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -18,7 +17,6 @@ import javax.servlet.http.HttpSession;
 @Slf4j
 public class HomeController {
     private final ReservationService reservationService;
-    private final UserService userService;
     private final HttpSession httpSession;
 
     /*
