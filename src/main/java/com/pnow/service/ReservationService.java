@@ -37,18 +37,17 @@ public class ReservationService {
     //시간 지난 예약들의 status 업데이트(WAITING->COMPLETE)
     @Transactional
     public void updateUserReservationStatus(){
-        log.info("예약상태 업데이트 서비스 진입");
+
         LocalDate currentDate = LocalDate.now();
         LocalTime currentTime = LocalTime.now();
 
         // 현재 날짜와 시간 이전의 예약목록 가져와서 예약 상태 변경
-        List<Reservation> reservationsToUpdate = reservationRepository
-                .findByReservationDateBeforeOrReservationDateAndReservationTimeBeforeAndReservationStatus(
-                currentDate, currentDate, currentTime, ReservationStatus.WAITING);
-
-        reservationsToUpdate.forEach(reservation -> reservation.setReservationStatus(ReservationStatus.COMPLETE));
-
-        reservationRepository.saveAll(reservationsToUpdate);
+        reservationRepository.bulkUpdateReservationStatus(
+                ReservationStatus.WAITING,
+                ReservationStatus.COMPLETE,
+                currentDate,
+                currentTime
+        );
     }
 
     //선택한 날짜에 예약 가능 시간 목록 조회

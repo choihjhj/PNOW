@@ -33,10 +33,6 @@ public class HomeController {
     public String root(@LoginUser SessionUserDTO user) {
         log.info("root 메소드 진입 user = {}", user);
 
-        //예약테이블의 오늘 날짜현재시간 지난 거 reservationStatus = ReservationStatus.COMPLETE 처리
-        reservationService.updateUserReservationStatus(); /*관리자 페이지 없어서 임의로 자동처리 */
-        log.info("--예약테이블셋팅 완료--");
-
         if(user != null){
 
             // 업데이트된 사용자 정보 가져오기
