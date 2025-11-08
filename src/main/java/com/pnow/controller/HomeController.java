@@ -1,5 +1,6 @@
 package com.pnow.controller;
 
+import com.pnow.aop.LogExecutionTime;
 import com.pnow.config.auth.LoginUser;
 import com.pnow.config.auth.dto.SessionUserDTO;
 import com.pnow.domain.Reservation.ReservationStatus;
@@ -28,6 +29,7 @@ public class HomeController {
      * return "home"
      * */
     @GetMapping("/")
+    @LogExecutionTime
     public String root(@LoginUser SessionUserDTO user) {
         log.info("root 메소드 진입 user = {}", user);
 
