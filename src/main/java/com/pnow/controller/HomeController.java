@@ -31,7 +31,8 @@ public class HomeController {
         log.info("root 메소드 진입 user = {}", user);
 
         if(user != null){
-            // 세션에 로그인한 유저 예약리스트 업데이트 저장(home.html에서 fragment로 예약목록 topbar 사용할거라서)
+            // 세션에 로그인한 유저 예약리스트 저장(home.html에서 fragment로 예약목록 topbar 사용할거라서)
+            // model 아닌 세션 저장 이유: 모델은 일회성이라 페이지별로 공유 안됨,요청마다 model.addAttribute()를 반복하는 대신 HttpSession에 한 번 넣어두고 재활용하는 방식
             httpSession.setAttribute("reservationList",reservationService.findReservation(user, ReservationStatus.WAITING));
         }
 
