@@ -4,7 +4,6 @@ import com.pnow.aop.LogExecutionTime;
 import com.pnow.config.auth.LoginUser;
 import com.pnow.config.auth.dto.SessionUserDTO;
 import com.pnow.domain.Reservation.ReservationStatus;
-import com.pnow.domain.user.User;
 import com.pnow.service.ReservationService;
 import com.pnow.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +23,7 @@ public class HomeController {
 
     /*
      * 홈 접속
-     * - 세션에 사용자 정보 업데이트, 로그인한 유저 예약리스트 저장
+     * - 로그인한 유저 예약리스트 저장
      * GET /
      * return "home"
      * */
@@ -34,12 +33,6 @@ public class HomeController {
         log.info("root 메소드 진입 user = {}", user);
 
         if(user != null){
-
-            // 업데이트된 사용자 정보 가져오기
-            User updatedUser = userService.findUser(user);
-            // 세션에 업데이트된 사용자 정보 저장
-            httpSession.setAttribute("user", new SessionUserDTO(updatedUser));
-
             // 세션에 로그인한 유저 예약리스트 업데이트 저장(home.html에서 fragment로 예약목록 topbar 사용할거라서)
             httpSession.setAttribute("reservationList",reservationService.findReservation(user, ReservationStatus.WAITING));
         }

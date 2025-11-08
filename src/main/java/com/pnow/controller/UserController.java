@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 @RequestMapping("/users")
@@ -24,6 +25,7 @@ import javax.validation.Valid;
 @Slf4j
 public class UserController {
     private final UserService userService;
+    private final HttpSession httpSession;
 
     /*
      * 내정보 페이지 이동 myinfo.html
@@ -49,7 +51,9 @@ public class UserController {
                                            @Valid @RequestBody UserUpdateDto userUpdateDto) {
         log.info("내정보 수정 메소드 진입 id={}, data={}", id, userUpdateDto.getName());
 
-        userService.updateUser(id, userUpdateDto);
+        //변경된 회원정보 로그인 세션 user 에도 갱신
+        httpSession.setAttribute("user",new SessionUserDTO(userService.updateUser(id, userUpdateDto)));
+
         return ResponseEntity.ok("회원 정보가 업데이트되었습니다.");
     }
 

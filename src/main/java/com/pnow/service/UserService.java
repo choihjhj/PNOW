@@ -24,12 +24,12 @@ public class UserService {
     }
     //회원 정보 수정
     @Transactional
-    public void updateUser(Long id, UserUpdateDto userUpdateDto) {
+    public User updateUser(Long id, UserUpdateDto userUpdateDto) {
         // 회원 정보 조회
         User user = findByIdOrThrow(userRepository, id, "UserId");
 
         //name 업데이트
-        user.update(userUpdateDto.getName());
+        return user.update(userUpdateDto.getName());
 
     }
 
