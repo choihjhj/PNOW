@@ -1,16 +1,21 @@
-### 서비스 소개 
-플레이스나우(PNOW)는 실시간으로 지역별 한식/중식/일식/양식/카페 검색, 즐겨찾기, 예약 서비스를 제공하는 웹 사이트입니다. 
+### ◈ < PNOW > 서비스 소개 ◈
+플레이스나우(**PNOW**)는 **SpringBoot Framework** 로 개발한 토이 프로젝트로,   
+음식점 예약 **CURD** 기능을 기반으로 **Spring Security + OAuth2 구글 소셜 로그인** 을 적용해     
+**무중단 배포(AWS EC2)** 와 **CI/CD(Github Actions, AWS CodeDeploy)** 경험을 쌓아 보고자 개발한 프로젝트입니다.
+    
+개발된 기능으로는 실시간으로 예약 목록 확인 및 등록/취소를 할 수 있고, 현재 시간을 기준으로    
+음식점이 영업중/영업준비중 인지와 즐겨찾기 및 검색 기능도 포함되어 있습니다.
       
-### 개발 환경 
+### ▶ 개발 환경 및 기술 스택
+![img.png](/src/main/resources/static/img/aws구조2.png)
 - **Java** : java 11
 - **Editor** : Intellij IDEA
 - **Build** : Gradle 8.3
-- **Server Port Number** : 9091
 - **Framework** : Springboot 2.7.17
 - **Database** : h2 database(test용), AWS RDS MariaDB
-<!-- - **CI & CD** : GitHub Actions -->
+- **CI & CD** : GitHub Actions 
 - **Server** : AWS EC2
-<!-- - **Deploy** : Manual (EC2 with Shell Script via SSH) or Docker or AWS CodeDeploy -->
+- **Deploy** : AWS CodeDeploy
 - **Library** :
   - SpringBoot Web 
   - Spring Data JPA 
@@ -20,16 +25,47 @@
   - Validation 
   - Swagger 
   - Thymeleaf
+<!-- - **Server Port Number** : 9091 -->      
       
-      
-### ERD 
-![img.png](ERD.png)      
+### ▶ 프로젝트 기간    
+- 2024.02 ~ 2024.04(3개월) : AWS EC2 with Shell Script via SSH 수동 배포까지 완료
+- 2025.11 : Github Action으로 CI/AWS CodeDeploy CD 배포 자동화
 
-### Swagger 
-http://localhost:9091/swagger-ui/index.html       
+### ▶ ERD 
+![img.png](ERD.png)
+#
+### ▶ PNOW 서비스 화면
+
+![img.png](/src/main/resources/static/img/PNOW-이미지-0.jpg)
+![img.png](/src/main/resources/static/img/PNOW-이미지-1.jpg)
+![img.png](/src/main/resources/static/img/PNOW-이미지-2.jpg)
+![img.png](/src/main/resources/static/img/PNOW-이미지-3.jpg)
+![img.png](/src/main/resources/static/img/PNOW-이미지-4.jpg)
+![img.png](/src/main/resources/static/img/PNOW-이미지-5.jpg)
+![img.png](/src/main/resources/static/img/PNOW-이미지-6.jpg)
+![img.png](/src/main/resources/static/img/PNOW-이미지-7.jpg)
+![img.png](/src/main/resources/static/img/PNOW-이미지-8.jpg)
+![img.png](/src/main/resources/static/img/PNOW-이미지-9.jpg)
+![img.png](/src/main/resources/static/img/PNOW-이미지-10.jpg)
+![img.png](/src/main/resources/static/img/PNOW-이미지-11.jpg)
+![img.png](/src/main/resources/static/img/PNOW-이미지-12.jpg)
+![img.png](/src/main/resources/static/img/PNOW-이미지-13.jpg)
+![img.png](/src/main/resources/static/img/PNOW-이미지-14.jpg)
+![img.png](/src/main/resources/static/img/PNOW-이미지-15.jpg)
+![img.png](/src/main/resources/static/img/PNOW-이미지-16.jpg)
+![img.png](/src/main/resources/static/img/PNOW-이미지-17.jpg)
+![img.png](/src/main/resources/static/img/PNOW-이미지-18.jpg)
+![img.png](/src/main/resources/static/img/PNOW-이미지-19.jpg)
+![img.png](/src/main/resources/static/img/PNOW-이미지-20.jpg)
+![img.png](/src/main/resources/static/img/PNOW-이미지-21.jpg)
+
+#    
+### ▶ Swagger 
+http://localhost:9091/swagger-ui/index.html  
+
+![img.png](/src/main/resources/static/img/localhost_9091_swagger-ui_index.html.png)      
       
-      
-### Endpoints 
+### ▶ Endpoints 
       
 **HOME**    
 |HTTP|URI|설명|   
@@ -76,37 +112,3 @@ http://localhost:9091/swagger-ui/index.html
 |HTTP|URI|설명|   
 |:------:|:---:|:---:|   
 |GET|/districts/city/{cityId} |지역 목록 조회|   
-
-
-     
-[//]: # (Frontend   )
-
-[//]: # (- Bootstrap 4.3.1)
-
-[//]: # (- Thymeleaf 2.7.17    )
-
-[//]: # (       )
-[//]: # (Backend   )
-
-[//]: # (- Spring Boot 2.7.17)
-
-[//]: # (- Spring Security)
-
-[//]: # (- Oauth2-Client 2.7.17)
-
-[//]: # (- Spring Data JPA 2.7.17)
-
-[//]: # (- Validation 2.7.17)
-
-[//]: # (- Swagger 3.0.0)
-
-[//]: # (     )
-[//]: # (배포)
-
-[//]: # (- Ec2)
-
-[//]: # (- RDS : MariaDB)
-
-[//]: # (- GitHub Actions)
-
-[//]: # (- AWS CodeDeploy)
