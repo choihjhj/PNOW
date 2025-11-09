@@ -21,20 +21,23 @@ import javax.persistence.EntityNotFoundException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
 @Slf4j
 public class ReservationService {
+    // 예약 시간 간격
+    private static final int RESERVATION_INTERVAL_MINUTES = 30;
+
     private final ReservationRepository reservationRepository;
     private final StoreRepository storeRepository;
     private final UserRepository userRepository;
 
-    //예약상태 자동 갱신(WAITING->COMPLETE)
+    /**
+     * 예약상태 자동 갱신(WAITING->COMPLETE)
+     */
     @Transactional
     public void updateUserReservationStatus(){
 
@@ -50,7 +53,9 @@ public class ReservationService {
         );
     }
 
-    //선택한 날짜에 예약 가능 시간 목록 조회
+    /**
+     * 선택한 날짜에 예약 가능 시간 목록 조회
+     */
     @Transactional(readOnly = true)
     public List<ReservationAbleTimeDto> findReservationAbleTimeDTOList(Long storeId, LocalDate reservationDate) {
 
@@ -59,18 +64,30 @@ public class ReservationService {
         LocalTime closingTime = store.getClosingTime();
 
         Set<LocalTime> reservedTimes = getReservedTimes(storeId, reservationDate); //예약날짜에 예약된 시간들 저장
+        log.info("예약된 시간들({}개): {}", reservedTimes.size(), reservedTimes);
         return calculateAvailableTimes(openingTime, closingTime, reservedTimes,reservationDate); //예약날짜에 예약안 된 시간들 계산해서 저장
     }
 
+    //예약날짜에 예약된 시간들 set으로 저장
     private Set<LocalTime> getReservedTimes(Long storeId, LocalDate reservationDate){
-        List<Reservation> reservations = reservationRepository.findByStoreIdAndReservationDateAndReservationStatus(storeId, reservationDate, ReservationStatus.WAITING);
-        return reservations.stream().map(Reservation::getReservationTime).collect(Collectors.toSet());
+        List<Reservation> reservations = reservationRepository
+                .findByStoreIdAndReservationDateAndReservationStatus(
+                        storeId,
+                        reservationDate,
+                        ReservationStatus.WAITING);
+        return reservations.stream()
+                .map(Reservation::getReservationTime)
+                .collect(Collectors.toSet());
     }
 
-    private List<ReservationAbleTimeDto> calculateAvailableTimes(LocalTime openingTime, LocalTime closingTime, Set<LocalTime> reservedTimes, LocalDate reservationDate) {
+    //예약 가능한 시간 계산
+    private List<ReservationAbleTimeDto> calculateAvailableTimes(
+            LocalTime openingTime,
+            LocalTime closingTime,
+            Set<LocalTime> reservedTimes,
+            LocalDate reservationDate) {
         // 예약 가능한 시간을 저장할 List
         List<ReservationAbleTimeDto> availableTimes = new ArrayList<>();
-
         LocalTime startTime = openingTime; // 예약 가능한 시작시간을 오픈시간으로 초기화
         LocalTime currentTime = LocalTime.now();
 
@@ -80,10 +97,15 @@ public class ReservationService {
             int currentHour = currentTime.getHour();
 
             // 현재 분이 0분~29분이면 예약 가능한 시간을 현재시:30 으로 설정
-            if (currentMinute >= 0 && currentMinute < 30) {
-                startTime = LocalTime.of(currentHour, 30);
-            } else { // 현재 분이 30분~59분이면 예약 가능한 시간을 (현재시+1):00 으로 설정
-                startTime = LocalTime.of(currentHour + 1, 0);
+            // 현재 분이 30분~59분이면 예약 가능한 시간을 (현재시+1):00 으로 설정
+            LocalTime adjustedStartTime = (currentMinute < 30)
+                    ? LocalTime.of(currentHour, 30)
+                    : LocalTime.of(currentHour + 1, 0);
+            // 마감 시간 이후라면 예약 가능 없음
+            if (adjustedStartTime.isBefore(closingTime)) {
+                startTime = adjustedStartTime;
+            } else {
+                return Collections.emptyList();
             }
         }
 
@@ -91,14 +113,21 @@ public class ReservationService {
         // 예약 가능한 시간을 계산하여 availableTimes에 추가
         while (startTime.isBefore(closingTime)) {
             if (!reservedTimes.contains(startTime)) { //HashSet contains로 List보다 더 시간복잡도  줄임 O(1)
-                availableTimes.add(new ReservationAbleTimeDto(startTime.format(DateTimeFormatter.ofPattern("HH:mm"))));
+                availableTimes.add(
+                        new ReservationAbleTimeDto(startTime.format(DateTimeFormatter.ofPattern("HH:mm"))));
             }
-            startTime = startTime.plusMinutes(30); // 다음 시간으로 이동
+            startTime = startTime.plusMinutes(RESERVATION_INTERVAL_MINUTES); // 다음 시간으로 이동
         }
+
+        // 혹시라도 순서가 꼬이지 않게 정렬, DateTimeFormatter.ofPattern("HH:mm") 포멧이라 정렬 가능 "09:30" < "10:00"
+        availableTimes.sort(Comparator.comparing(ReservationAbleTimeDto::getReservationTime));
 
         return availableTimes;
     }
-    //예약 추가
+
+    /**
+     * 예약 추가
+     */
     @Transactional
     public void makeReservation(ReservationRequestDto requestDTO, SessionUserDTO sessionUserDTO) {
         Store store = findByIdOrThrow(storeRepository, requestDTO.getStoreId(), "StoreId");
@@ -109,7 +138,9 @@ public class ReservationService {
 
     }
 
-    //전달된 ReservationStatus status에 해당하는 회원의 예약 목록 조회(WAITING, COMPLETE)
+    /**
+     * 전달된 ReservationStatus status에 해당하는 회원의 예약 목록 조회(WAITING, COMPLETE)
+     */
     @Transactional(readOnly = true)
     public List<ReservationDto> findReservation(SessionUserDTO sessionUserDTO, ReservationStatus status){
         log.info("예약목록조회 서비스 진입---");
@@ -124,7 +155,9 @@ public class ReservationService {
 
     }
 
-    //예약 삭제
+    /**
+     * 예약 삭제
+     */
     @Transactional
     public void cancelReservation(Long id){
         Reservation reservation = findByIdOrThrow(reservationRepository, id, "ReservationId");

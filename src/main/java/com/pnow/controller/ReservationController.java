@@ -1,5 +1,6 @@
 package com.pnow.controller;
 
+import com.pnow.aop.LogExecutionTime;
 import com.pnow.config.auth.LoginUser;
 import com.pnow.config.auth.dto.SessionUserDTO;
 import com.pnow.domain.Reservation.ReservationStatus;
@@ -50,6 +51,7 @@ public class ReservationController {
      * */
     @GetMapping("/{storeId}/availability/{reservationDate}")
     @ResponseBody
+    @LogExecutionTime
     public List<ReservationAbleTimeDto> getReservationTime(@PathVariable("storeId") Long storeId,
                                                            @PathVariable("reservationDate") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate reservationDate) {
         log.info("예약 가능 시간 조회 메소드 진입 storeId = {}, reservationDate = {}", storeId, reservationDate);
