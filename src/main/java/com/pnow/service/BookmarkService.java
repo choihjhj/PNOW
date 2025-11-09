@@ -22,7 +22,11 @@ public class BookmarkService {
     private final StoreRepository storeRepository;
     private final UserRepository userRepository;
 
-    //userId, storeId 해당하는 즐겨찾기 조회 (StoreController @GetMapping("/stores/detail/{id}")에서 회원의 북마크정보 조회함)
+
+    /**
+     * userId, storeId 해당하는 즐겨찾기 조회
+     * - (StoreController @GetMapping("/stores/detail/{id}")에서 회원의 북마크정보 조회함)
+     */
     @Transactional(readOnly = true)
     public Bookmark findBookmarkWithUserIdAndStoreId(Long userId, Long storeId) {
         User user = findByIdOrThrow(userRepository, userId, "UserId");
@@ -30,14 +34,20 @@ public class BookmarkService {
         return bookmarkRepository.findByUserIdAndStoreId(user.getId(), store.getId());
     }
 
-    //즐겨찾기 삭제
+
+    /**
+     * 즐겨찾기 삭제
+     */
     @Transactional
     public void cancelBookmark(Long bookmarkId) {
         Bookmark bookmark = findByIdOrThrow(bookmarkRepository, bookmarkId, "BookmarkId");
         bookmarkRepository.delete(bookmark);
     }
 
-    //즐겨찾기 등록
+
+    /**
+     * 즐겨찾기 등록
+     */
     @Transactional
     public void makeBookmark(Long storeId, SessionUserDTO userDTO){
         Store store = findByIdOrThrow(storeRepository, storeId, "StoreId");
@@ -48,7 +58,9 @@ public class BookmarkService {
                 .build());
     }
 
-    //userId에 해당하는 즐겨찾기 목록 조회
+    /**
+     * userId에 해당하는 즐겨찾기 목록 조회
+     */
     @Transactional(readOnly = true)
     public List<Bookmark> findBookmarkWithUserId(SessionUserDTO userDTO){
         User user = findByIdOrThrow(userRepository, userDTO.getId(), "UserId");

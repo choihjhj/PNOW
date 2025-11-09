@@ -16,13 +16,19 @@ import javax.persistence.EntityNotFoundException;
 public class UserService {
     private final UserRepository userRepository;
 
-    //회원 정보 조회
+
+    /**
+     * 회원 정보 조회
+     */
     @Transactional(readOnly = true)
     public User findUser(SessionUserDTO user){
         return findByIdOrThrow(userRepository, user.getId(), "UserId");
 
     }
-    //회원 정보 수정
+
+    /**
+     * 회원 정보 수정
+     */
     @Transactional
     public User updateUser(Long id, UserUpdateDto userUpdateDto) {
         // 회원 정보 조회
@@ -33,7 +39,10 @@ public class UserService {
 
     }
 
-    //회원 탈퇴
+
+    /**
+     * 회원 탈퇴
+     */
     @Transactional
     public  void deleteUser(Long id){
         // 회원 정보 조회

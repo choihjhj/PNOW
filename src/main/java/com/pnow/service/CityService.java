@@ -12,8 +12,10 @@ import java.util.List;
 @Service
 public class CityService {
     private final CityRepository cityRepository;
-    
-    //도시 전체 목록 조회
+
+    /**
+     * 도시 전체 목록 조회
+     */
     @Transactional(readOnly = true)
     public List<City> findCityList(){
         return cityRepository.findAll();

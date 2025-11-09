@@ -14,7 +14,9 @@ import java.util.List;
 public class DistrictService {
     private final DistrictRepository districtRepository;
 
-    //지역 목록 조회
+    /**
+     * 지역 목록 조회
+     */
     @Transactional(readOnly = true)
     public List<DistrictDto> findDistrictsWithCityId(Long cityId) {
         List<DistrictDto> districtList = districtRepository.findDistrictDTOsByCityId(cityId);

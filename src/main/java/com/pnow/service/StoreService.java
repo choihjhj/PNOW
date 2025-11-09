@@ -19,7 +19,10 @@ public class StoreService {
 
     private final StoreRepository storeRepository;
 
-    //가게 목록 조회
+
+    /**
+     * 가게 목록 조회
+     */
     @Transactional(readOnly = true)
     public List<StoreDto> findStoreDTOList(Long categoryId, Long districtId) {
         List<Store> stores = storeRepository.findByCategoryIdAndDistrictIdOrderByStoreNameAsc(categoryId, districtId);
@@ -28,7 +31,10 @@ public class StoreService {
                 .collect(Collectors.toList());
     }
 
-    //가게 세부 정보 조회
+
+    /**
+     * 가게 세부 정보 조회
+     */
     @Transactional(readOnly = true)
     public StoreDto findStoreDTO(Long id){
         Store store = storeRepository.findById(id)
@@ -37,7 +43,10 @@ public class StoreService {
         return new StoreDto(store);
     }
 
-    //가게 이름 검색
+
+    /**
+     * 가게 이름 검색
+     */
     @Transactional(readOnly = true)
     public  List<Store> findSearchStore(String keyword){
         return storeRepository.findKeyword(keyword);

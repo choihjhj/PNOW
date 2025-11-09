@@ -68,7 +68,7 @@ public class ReservationService {
         return calculateAvailableTimes(openingTime, closingTime, reservedTimes,reservationDate); //예약날짜에 예약안 된 시간들 계산해서 저장
     }
 
-    //예약날짜에 예약된 시간들 set으로 저장
+    //예약날짜에 예약된 시간들 Set으로 저장
     private Set<LocalTime> getReservedTimes(Long storeId, LocalDate reservationDate){
         List<Reservation> reservations = reservationRepository
                 .findByStoreIdAndReservationDateAndReservationStatus(
