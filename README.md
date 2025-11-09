@@ -1,4 +1,4 @@
-### ◈ < PNOW > 서비스 소개 ◈
+# 📖 < PNOW > 서비스 소개
 플레이스나우(**PNOW**)는 **SpringBoot Framework** 로 개발한 토이 프로젝트로,   
 음식점 예약 **CURD** 기능을 기반으로 **Spring Security + OAuth2 구글 소셜 로그인** 을 적용해     
 **무중단 배포(AWS EC2)** 와 **CI/CD(Github Actions, AWS CodeDeploy)** 경험을 쌓아 보고자 개발한 프로젝트입니다.
@@ -6,7 +6,7 @@
 개발된 기능으로는 실시간으로 예약 목록 확인 및 등록/취소를 할 수 있고, 현재 시간을 기준으로    
 음식점이 영업중/영업준비중 인지와 즐겨찾기 및 검색 기능도 포함되어 있습니다.
       
-### ▶ 개발 환경 및 기술 스택
+## 💻 개발 환경 및 기술 스택
 ![img.png](/src/main/resources/static/img/aws구조2.png)
 - **Java** : java 11
 - **Editor** : Intellij IDEA
@@ -27,14 +27,14 @@
   - Thymeleaf
 <!-- - **Server Port Number** : 9091 -->      
       
-### ▶ 프로젝트 기간    
+## 🙂 프로젝트 기간    
 - 2024.02 ~ 2024.04(3개월) : AWS EC2 with Shell Script via SSH 수동 배포까지 완료
 - 2025.11 : Github Action으로 CI/AWS CodeDeploy CD 배포 자동화
 
-### ▶ ERD 
+## 🧩 ERD 
 ![img.png](ERD.png)
 #
-### ▶ PNOW 서비스 화면
+## 💥 PNOW 서비스 화면
 
 ![img.png](/src/main/resources/static/img/PNOW-이미지-0.jpg)
 ![img.png](/src/main/resources/static/img/PNOW-이미지-1.jpg)
@@ -58,14 +58,13 @@
 ![img.png](/src/main/resources/static/img/PNOW-이미지-19.jpg)
 ![img.png](/src/main/resources/static/img/PNOW-이미지-20.jpg)
 ![img.png](/src/main/resources/static/img/PNOW-이미지-21.jpg)
-
-#    
-### ▶ Swagger 
+    
+## ✨ Swagger 
 http://localhost:9091/swagger-ui/index.html  
 
 ![img.png](/src/main/resources/static/img/localhost_9091_swagger-ui_index.html.png)      
       
-### ▶ Endpoints 
+## ✔️ Endpoints 
       
 **HOME**    
 |HTTP|URI|설명|   
