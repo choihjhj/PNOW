@@ -150,7 +150,7 @@ public class ReservationService {
         List<Reservation> reservationList = reservationRepository.findAllByUserAndReservationStatusOrderByReservationDateAscReservationTimeAsc(user, status);
 
         log.info("예약목록조회 dto 직렬화 과정 시작점");
-        return reservationList.stream().map(ReservationDto::new)
+        return reservationList.stream().map(ReservationDto::fromEntity)
                 .collect(Collectors.toList());
 
     }
