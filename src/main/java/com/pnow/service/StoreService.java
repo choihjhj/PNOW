@@ -27,7 +27,7 @@ public class StoreService {
     public List<StoreDto> findStoreDTOList(Long categoryId, Long districtId) {
         List<Store> stores = storeRepository.findByCategoryIdAndDistrictIdOrderByStoreNameAsc(categoryId, districtId);
         return stores.stream()
-                .map(StoreDto::new)
+                .map(StoreDto::fromEntity)
                 .collect(Collectors.toList());
     }
 
@@ -40,7 +40,7 @@ public class StoreService {
         Store store = storeRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("StoreId not found : " + id));
 
-        return new StoreDto(store);
+        return StoreDto.fromEntity(store);
     }
 
 
