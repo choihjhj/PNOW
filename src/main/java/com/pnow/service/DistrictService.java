@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -19,7 +20,10 @@ public class DistrictService {
      */
     @Transactional(readOnly = true)
     public List<DistrictDto> findDistrictsWithCityId(Long cityId) {
-        List<DistrictDto> districtList = districtRepository.findDistrictDTOsByCityId(cityId);
+        List<DistrictDto> districtList = districtRepository.findByCityId(cityId).stream()
+                .map(DistrictDto::fromEntity)
+                .collect(Collectors.toList());
+
         if (districtList.isEmpty()) {
             throw new EntityNotFoundException("CityId not found : " + cityId);
         }

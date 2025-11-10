@@ -6,7 +6,6 @@ import com.pnow.domain.user.User;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 
@@ -14,7 +13,6 @@ import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-@Setter
 @Getter
 @Entity
 @DynamicInsert //@ColumnDefault 사용하려고

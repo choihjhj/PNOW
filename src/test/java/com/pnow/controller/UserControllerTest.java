@@ -42,7 +42,7 @@ class UserControllerTest {
     @BeforeEach
     void setup() {
         User loginUser = new User("홍길동", "test@example.com", "pic.png", Role.USER);
-        loginUser.setId(1L);
+//        loginUser.setId(1L); //테스트 시 주석 풀고 User @Setter 잠시 추가하기
         sessionUser = new SessionUserDTO(loginUser);
 
         // SecurityContextHolder에 인증 객체 직접 넣기
