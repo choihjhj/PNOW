@@ -34,20 +34,20 @@
 - **Build Tool** : Gradle 8.3
 - **Framework** : Spring Boot 2.7.17
 
----
+
 
 ### 🗄️ Database
 - **테스트용** : H2 Database
 - **운영용** : AWS RDS (MariaDB)
 
----
+
 
 ### ⚙️ CI / CD & Infrastructure
 - **CI/CD** : GitHub Actions, AWS S3, AWS CodeDeploy
 - **Server** : AWS EC2
 - **Storage** : Amazon S3 (배포 파일 및 정적 리소스 저장)
 
----
+
 
 ### 🔐 주요 라이브러리
 - Spring Boot Web
