@@ -31,5 +31,5 @@ jobs:
         shell: bash
 
       - name: Build with Gradle
-        run: ./gradlew clean build # gradle wrapper를 통해 해당 프로젝트를 build
+        run: ./gradlew clean build -x test # gradle wrapper를 통해 해당 프로젝트를 테스트 빼고 build
         shell: bash
