@@ -108,21 +108,25 @@
 
 ## 📚 API Endpoints 요약
 
-| 구분 | HTTP | URI | 설명 |
-|------|:----:|:----|:----|
-| **HOME** | GET | `/` | 홈페이지 조회 |
-| **USER** | GET | `/users` | 회원 정보 조회 |
-| | PUT | `/users/{id}` | 회원 정보 수정 |
-| | DELETE | `/users/{id}` | 회원 탈퇴 |
+| 구분 | HTTP | URI | 설명             |
+|------|:----:|:----|:---------------|
+| **HOME** | GET | `/` | 홈페이지 조회        |
+| **USER** | GET | `/users` | 회원 정보 조회       |
+| | PUT | `/users/{id}` | 회원 정보 수정       |
+| | DELETE | `/users/{id}` | 회원 탈퇴          |
 | **STORE** | GET | `/stores` | 맛집 카테고리 페이지 조회 |
-| | GET | `/stores/detail/{id}` | 가게 세부 정보 조회 |
-| | GET | `/stores/search` | 가게 검색 |
-| **RESERVATION** | POST | `/reservations` | 예약 등록 |
-| | DELETE | `/reservations/{id}` | 예약 삭제 |
-| | GET | `/reservations/stores/{storeId}` | 예약 페이지 조회 |
-| **BOOKMARK** | POST | `/bookmarks/stores/{storeId}` | 즐겨찾기 등록 |
-| | DELETE | `/bookmarks/{id}` | 즐겨찾기 삭제 |
-| **DISTRICT** | GET | `/districts/city/{cityId}` | 지역 목록 조회 |
+| | GET | `/stores/detail/{id}` | 가게 세부 정보 조회    |
+| | GET | `/stores/category/{categoryId}/district/{districtId}` | 가게 목록 조회       |
+| | GET | `/stores/search` | 가게 검색          |
+| **RESERVATION** | POST | `/reservations` | 예약 등록          |
+| | DELETE | `/reservations/{id}` | 예약 삭제          |
+| | GET | `/reservations/stores/{storeId}` | 예약 페이지 조회      |
+| | GET | `/reservations/{storeId}/availability/{reservationDate}` | 예약 가능 시간 목록 조회 |
+| | GET | `/reservations/status/{status}` | 예약 목록 조회       |
+| **BOOKMARK** | POST | `/bookmarks/stores/{storeId}` | 즐겨찾기 등록        |
+| | GET | `/bookmarks` | 즐겨찾기 목록 조회     |
+| | DELETE | `/bookmarks/{id}` | 즐겨찾기 삭제        |
+| **DISTRICT** | GET | `/districts/city/{cityId}` | 지역 목록 조회       |
 
 ---
 <!--
