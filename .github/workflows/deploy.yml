@@ -1,3 +1,8 @@
+# deploy.yml의 최상단
+env:
+  S3_BUCKET_NAME: pnow-s3-bucket
+  PROJECT_NAME: PNOW
+
 name: deploy # workflows의 이름
 
 # Event : 실행되는 시점을 설정
@@ -32,4 +37,16 @@ jobs:
 
       - name: Build with Gradle
         run: ./gradlew clean build -x test # gradle wrapper를 통해 해당 프로젝트를 테스트 빼고 build
+        shell: bash
+
+      # 추가 작성
+      - name: Get current time
+        uses: 1466587594/get-current-time@v2  # UTC -> KST
+        id: current-time
+        with:
+          format: YYYY-MM-DDTHH-mm-ss
+          utcOffset: "+09:00"
+
+      - name: Show Current Time
+        run: echo "CurrentTime=${{steps.current-time.outputs.formattedTime}}" # 포맷 지정
         shell: bash
