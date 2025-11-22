@@ -2,8 +2,8 @@
 env:
   S3_BUCKET_NAME: pnow-s3-bucket
   PROJECT_NAME: PNOW
-  CODE_DEPLOY_APP_NAME: springboot2-webservice
-  CODE_DEPLOY_GROUP_NAME: springboot2-webservice-group
+  CODE_DEPLOY_APP_NAME: springboot-webservice
+  CODE_DEPLOY_GROUP_NAME: springboot-webservice-group
 
 
 name: deploy # workflows의 이름
