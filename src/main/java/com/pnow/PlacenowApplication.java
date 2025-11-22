@@ -2,6 +2,7 @@ package com.pnow;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.ApplicationPidFileWriter;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication
@@ -9,7 +10,11 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 public class PlacenowApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(PlacenowApplication.class, args);
+//		SpringApplication.run(PlacenowApplication.class, args);
+		//설정한 값을 pid command 사용
+		SpringApplication application = new SpringApplication(PlacenowApplication.class);
+		application.addListeners(new ApplicationPidFileWriter());
+		application.run(args);
 	}
 
 }
