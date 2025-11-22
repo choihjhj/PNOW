@@ -71,6 +71,10 @@ jobs:
           mv before-deploy/before-deploy.zip deploy/$PROJECT_NAME.zip
         shell: bash
 
+      - name: Make zip file
+        run: zip -r ./$PROJECT_NAME.zip .         # 프로젝트 이름으로 해당 폴더를 모두 압축
+        shell: bash
+
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1      # aws에 해당 키 값으로 접속 진행
         with:
@@ -78,8 +82,8 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
 
-      - name: Upload to S3 #변경사항 있음! ./$PROJECT_NAME.zip ->  ./deploy/$PROJECT_NAME.zip 로 변경!!
-        run: aws s3 cp --region ap-northeast-2 ./deploy/$PROJECT_NAME.zip s3://$S3_BUCKET_NAME/$PROJECT_NAME/$PROJECT_NAME.zip    # s3에 프로젝트 이름에 해당하는 폴더에 zip 파일 저장
+      - name: Upload to S3
+        run: aws s3 cp --region ap-northeast-2 ./$PROJECT_NAME.zip s3://$S3_BUCKET_NAME/$PROJECT_NAME/$PROJECT_NAME.zip    # s3에 프로젝트 이름에 해당하는 폴더에 zip 파일 저장
 
       - name: Code Deploy
         run: aws deploy create-deployment --application-name $CODE_DEPLOY_APP_NAME --deployment-config-name CodeDeployDefault.AllAtOnce --deployment-group-name $CODE_DEPLOY_GROUP_NAME --s3-location bucket=$S3_BUCKET_NAME,bundleType=zip,key=$PROJECT_NAME/$PROJECT_NAME.zip    #(16)
