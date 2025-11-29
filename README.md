@@ -3,16 +3,7 @@
 > **Spring Boot 기반 음식점 예약 서비스**  
 > **CI/CD 자동 배포(AWS EC2, CodeDeploy)** 와  
 > **OAuth2 소셜 로그인(Google)**, **Spring Security**, **JPA** 등을 활용한  
-> **백엔드 개발 역량 강화를 위한 개인 프로젝트**입니다.    
-
-📙 프로젝트 기술 문서 (Tistory Blog)
-
-개발 과정, CI/CD 구축, 문제 해결 과정을 기록한 기술 블로그입니다.
-
-🔧 **[ [CICD] Spring Boot + GitHub Actions + AWS CodeDeploy를 활용한 CI/CD 구축(1) ](https://choihjhj.tistory.com/entry/CICD-Spring-Boot-GitHub-Actions-AWS-CodeDeploy%EB%A5%BC-%ED%99%9C%EC%9A%A9%ED%95%9C-CICD-%EA%B5%AC%EC%B6%951)**
-
-🔧 **[ [CICD] Spring Boot + GitHub Actions + AWS CodeDeploy를 활용한 CI/CD 구축(2) ](https://choihjhj.tistory.com/entry/CICD-Spring-Boot-GitHub-Actions-AWS-CodeDeploy%EB%A5%BC-%ED%99%9C%EC%9A%A9%ED%95%9C-CICD-%EA%B5%AC%EC%B6%952)**
-
+> **백엔드 개발 역량 강화를 위한 개인 프로젝트**입니다.
 
 ---
 
@@ -244,7 +235,14 @@ hooks:
 - [ ] **EC2 인스턴스** 용량 업그레이드로 안정적 배포
 
 ---
+## 📙 프로젝트 기술 문서 (Tistory Blog)
 
+개발 과정, CI/CD 구축, 문제 해결 과정을 기록한 기술 블로그입니다.
+
+> - 🔧 **[ [CICD] Spring Boot + GitHub Actions + AWS CodeDeploy를 활용한 CI/CD 구축(1) ](https://choihjhj.tistory.com/entry/CICD-Spring-Boot-GitHub-Actions-AWS-CodeDeploy%EB%A5%BC-%ED%99%9C%EC%9A%A9%ED%95%9C-CICD-%EA%B5%AC%EC%B6%951)**
+> - 🔧 **[ [CICD] Spring Boot + GitHub Actions + AWS CodeDeploy를 활용한 CI/CD 구축(2) ](https://choihjhj.tistory.com/entry/CICD-Spring-Boot-GitHub-Actions-AWS-CodeDeploy%EB%A5%BC-%ED%99%9C%EC%9A%A9%ED%95%9C-CICD-%EA%B5%AC%EC%B6%952)**
+
+---
 ## ✨ Swagger API Docs
 
 - **Swagger UI** : [http://ec2-15-165-144-6.ap-northeast-2.compute.amazonaws.com:9091/swagger-ui/index.html](http://localhost:9091/swagger-ui/index.html)
