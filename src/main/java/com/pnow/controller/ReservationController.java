@@ -1,10 +1,10 @@
 package com.pnow.controller;
 
 import com.pnow.aop.LogExecutionTime;
-import com.pnow.config.auth.LoginUser;
-import com.pnow.config.auth.dto.SessionUserDTO;
+import com.pnow.config.auth.dto.CustomUserPrincipal;
 import com.pnow.domain.Reservation.ReservationStatus;
 import com.pnow.dto.ReservationAbleTimeDto;
+import com.pnow.dto.ReservationDto;
 import com.pnow.dto.ReservationRequestDto;
 import com.pnow.dto.StoreDto;
 import com.pnow.service.ReservationService;
@@ -12,11 +12,10 @@ import com.pnow.service.StoreService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.time.LocalDate;
 import java.util.List;
@@ -28,7 +27,28 @@ import java.util.List;
 public class ReservationController {
     private final ReservationService reservationService;
     private final StoreService storeService;
-    private final HttpSession httpSession;
+    
+    
+    /*
+     * home.html 톱바에서 reservationList Ajax 조회
+     * 알림창(예약 목록 조회)
+     * GET /reservations/topbar
+     * return List<ReservationDto>
+     * */
+    @GetMapping("/topbar")
+    @ResponseBody
+    public List<ReservationDto> topbarReservations(
+            @AuthenticationPrincipal CustomUserPrincipal user) {
+
+        if (user == null) {
+            return List.of();
+        }
+
+        return reservationService.findReservation(
+        		user,
+                ReservationStatus.WAITING
+        );
+    }
 
     /*
      * reservation.html 예약 페이지 이동
@@ -65,7 +85,7 @@ public class ReservationController {
      * */
     @PostMapping
     @ResponseBody
-    public void createReservation(@Valid @RequestBody ReservationRequestDto requestDto, @LoginUser SessionUserDTO user) {
+    public void createReservation(@Valid @RequestBody ReservationRequestDto requestDto, @AuthenticationPrincipal CustomUserPrincipal user) {
         log.info("로그인 객체 user = {}", user);
         log.info("예약 등록 메서드 진입 storeId={}, 예약날짜={}, 예약시간={}, 인원수={}", requestDto.getStoreId(), requestDto.getSelectedDate(), requestDto.getSelectedTime(), requestDto.getNumberOfPeople());
         reservationService.makeReservation(requestDto, user);
@@ -78,12 +98,12 @@ public class ReservationController {
      * status가 COMPLETE이면 return "reservations/reservationPastList"
      * */
     @GetMapping("/status/{status}")
-    public String getReservationList(@PathVariable("status") ReservationStatus status, @LoginUser SessionUserDTO user, Model model) {
+    public String getReservationList(@PathVariable("status") ReservationStatus status, @AuthenticationPrincipal CustomUserPrincipal user, Model model) {
         log.info("예약 목록 조회 메소드 진입 user = {}, status = {}", user, status);
 
         switch (status) {
             case WAITING:
-                httpSession.setAttribute("reservationList", reservationService.findReservation(user, status));
+            	model.addAttribute("reservationList", reservationService.findReservation(user, status));
                 return "reservations/reservationList";
             case COMPLETE:
                 model.addAttribute("reservationPastList", reservationService.findReservation(user, status));

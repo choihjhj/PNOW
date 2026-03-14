@@ -4,25 +4,36 @@
 <head>
     <script th:inline="javascript">
         $(document).ready(function () {
-            var isLoggedIn = /*[[${#session.getAttribute('user') != null}]]*/ false;
-            // 공통 함수: 로그인 여부 확인
-            function checkLogin(e) {
-                if (!isLoggedIn) {
-                    alert('로그인 후 이용 가능합니다.');
-                    e.preventDefault();
-                }
-            }
-
-            // 예약하기, 즐겨찾기 버튼 클릭 시 로그인 여부 체크
-            $('#reservationButton, .bookmarkButton').click(checkLogin);
 
             // bookmarkId와 storeId 설정
             var bookmarkId = /*[[${bookmark?.id}]]*/ null;
             var storeId = /*[[${store.id}]]*/ null;
+            
+         	// 예약하기 버튼 클릭 이벤트
+         	$('#reservationButton').click(function (e) {
+         		e.preventDefault(); // 먼저 링크 기본 동작 차단
+         		
+         		var userId = $('#user').val(); // hidden input에서 로그인 여부 확인
+         		if (!userId || userId === '') {
+         			e.preventDefault();
+         			alert('로그인 후 이용 가능합니다.');
+         			return;
+         		}
+         		window.location.href = '/reservations/stores/' + storeId; // 로그인 상태일 때만 이동
+         	});
+         	
 
             <!-- 즐겨찾기 버튼 클릭 이벤트 핸들러 -->
-            $('.bookmarkButton').click(function (e) {
-                e.preventDefault();
+            $(document).on('click', '.bookmarkButton', function(e) {
+            	e.preventDefault(); // 링크 기본 동작 차단
+            	
+            	var userId = $('#user').val(); // hidden input에서 로그인 여부 확인
+            	if (!userId || userId === '') {
+            		e.preventDefault();
+         			alert('로그인 후 이용 가능합니다.');
+         			return;
+            	}
+            	              
 
                 var isBookmarked = $(this).hasClass('bookmarkOnButton'); // 즐겨찾기 했는지 확인 변수
 
@@ -62,11 +73,11 @@
                         <!-- 카드 안에 내용 시작 -->
                         <div class="d-sm-flex align-items-center justify-content-between mb-4">
                             <h1 class="h3 mb-0 text-gray-800" th:text="${store.storeName}">가게이름</h1>
-                            <a th:if="${#session.getAttribute('user') != null && bookmark != null}"
+                            <a th:if="${#authentication.authenticated and bookmark != null}"
                                class="bookmarkButton bookmarkOnButton" href="#">
                                 <img src="/img/별.png" alt="즐겨찾기했을 때" style="width: 50px; height: auto;">
                             </a>
-                            <a th:unless="${#session.getAttribute('user') != null && bookmark != null}"
+                            <a th:unless="${#authentication.authenticated and bookmark != null}"
                                class="bookmarkButton bookmarkOffButton" href="#">
                                 <img src="/img/빈별.png" alt="즐겨찾기안했을 때" style="width: 50px; height: auto;">
                             </a>
@@ -78,7 +89,7 @@
                         <span th:text="${store.cityName}+' '+${store.districtName}+' '+${store.detailAddress}">주소</span><br>
                         <span th:text="'&#128345;'+${store.openingTime}+'-'+${store.closingTime}">운영시간</span><br>
                         <span th:text="'&#128222;'+${store.phoneNumber}">전화번호</span><br>
-                        <a th:href="'/reservations/stores/' + ${store.id}" id="reservationButton"
+                        <a href="#" id="reservationButton"
                            class="btn btn-success btn-icon-split">
                             <span class="icon text-white-50">
                                 <i class="fas fa-check"></i>
@@ -104,6 +115,8 @@
     </div>
     <!-- End of Content Wrapper -->
 </div>
+<!-- hidden input: 로그인 여부 확인용 -->
+<input type="hidden" id="user" sec:authorize="isAuthenticated()" th:value="${#authentication.principal.id}" />
 <!-- End of Page Wrapper -->
 <div th:replace="home :: footer"/>
 </body>

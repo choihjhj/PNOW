@@ -1,10 +1,10 @@
 package com.pnow.controller;
 
-import com.pnow.config.auth.LoginUser;
-import com.pnow.config.auth.dto.SessionUserDTO;
+import com.pnow.config.auth.dto.CustomUserPrincipal;
 import com.pnow.service.BookmarkService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -35,7 +35,7 @@ public class BookmarkController {
      * */
     @PostMapping("/stores/{storeId}")
     @ResponseBody
-    public void createBookmark(@PathVariable("storeId") Long storeId, @LoginUser SessionUserDTO user){
+    public void createBookmark(@PathVariable("storeId") Long storeId, @AuthenticationPrincipal CustomUserPrincipal user){
         log.info("즐겨찾기 등록 메소드 진입 storeId = {}", storeId);
         bookmarkService.makeBookmark(storeId, user);
     }
@@ -46,7 +46,7 @@ public class BookmarkController {
      * return "/bookmarks/bookmarkList"
      * */
     @GetMapping
-    public String getBookmarkList(@LoginUser SessionUserDTO user, Model model){
+    public String getBookmarkList(@AuthenticationPrincipal CustomUserPrincipal user, Model model){
         log.info("즐겨찾기 목록 조회 메소드 진입 user = {}", user);
         model.addAttribute("bookmarkList",bookmarkService.findBookmarkWithUserId(user));
         return "bookmarks/bookmarkList";

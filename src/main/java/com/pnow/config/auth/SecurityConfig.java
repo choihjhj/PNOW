@@ -2,12 +2,13 @@ package com.pnow.config.auth;
 
 import com.pnow.domain.user.Role;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
 @RequiredArgsConstructor
-@EnableMethodSecurity(prePostEnabled = true)   // Spring Security를 활성화
+//@EnableMethodSecurity(prePostEnabled = true)   // Spring Security를 활성화
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig  extends WebSecurityConfigurerAdapter {
 
     private final CustomOAuth2UserService customOAuth2UserService;
@@ -30,6 +31,7 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
                 .deleteCookies("JSESSIONID") // 삭제할 쿠키 지정
                 .and()
                 .oauth2Login() //OAuth2 로그인 기능에 대한 여러 설정의 진입점
+                .defaultSuccessUrl("/", false)   // 로그인 성공 시 이동할 기본 페이지
                 .userInfoEndpoint() //OAuth2 로그인 성공 이후 사용자 정보 가져올 때의 설정 담당
                 .userService(customOAuth2UserService); //소셜 로그인 성공 시 후속 조치를 진행할 UserService 인터페이스의 구현체 등록
     }

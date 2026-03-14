@@ -1,7 +1,6 @@
 package com.pnow.controller;
 
-import com.pnow.config.auth.LoginUser;
-import com.pnow.config.auth.dto.SessionUserDTO;
+import com.pnow.config.auth.dto.CustomUserPrincipal;
 import com.pnow.domain.City;
 import com.pnow.domain.Store;
 import com.pnow.domain.category.Category;
@@ -12,6 +11,8 @@ import com.pnow.service.CityService;
 import com.pnow.service.StoreService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -74,7 +75,7 @@ public class StoreController {
      * return "/stores/storeDetail"
      * */
     @GetMapping("/detail/{id}")
-    public String getStore(Model model, @PathVariable("id") Long id, @LoginUser SessionUserDTO user ){
+    public String getStore(Model model, @PathVariable("id") Long id, @AuthenticationPrincipal CustomUserPrincipal user ){
         log.info("/store/detail/{id} get 메소드 진입 storeId = {}",id);
 
         StoreDto storeDTO = storeService.findStoreDTO(id);

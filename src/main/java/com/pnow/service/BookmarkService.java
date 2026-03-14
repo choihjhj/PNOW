@@ -1,6 +1,6 @@
 package com.pnow.service;
 
-import com.pnow.config.auth.dto.SessionUserDTO;
+import com.pnow.config.auth.dto.CustomUserPrincipal;
 import com.pnow.domain.Bookmark;
 import com.pnow.domain.Store;
 import com.pnow.domain.user.User;
@@ -11,7 +11,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
@@ -49,7 +48,7 @@ public class BookmarkService {
      * 즐겨찾기 등록
      */
     @Transactional
-    public void makeBookmark(Long storeId, SessionUserDTO userDTO){
+    public void makeBookmark(Long storeId, CustomUserPrincipal userDTO){
         Store store = findByIdOrThrow(storeRepository, storeId, "StoreId");
         User user = findByIdOrThrow(userRepository, userDTO.getId(), "UserId");
         bookmarkRepository.save(Bookmark.builder()
@@ -62,7 +61,7 @@ public class BookmarkService {
      * userId에 해당하는 즐겨찾기 목록 조회
      */
     @Transactional(readOnly = true)
-    public List<Bookmark> findBookmarkWithUserId(SessionUserDTO userDTO){
+    public List<Bookmark> findBookmarkWithUserId(CustomUserPrincipal userDTO){
         User user = findByIdOrThrow(userRepository, userDTO.getId(), "UserId");
         return bookmarkRepository.findAllByUser(user);
 

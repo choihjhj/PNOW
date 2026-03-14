@@ -1,7 +1,7 @@
 package com.pnow.config.auth;
 
+import com.pnow.config.auth.dto.CustomUserPrincipal;
 import com.pnow.config.auth.dto.OAuthAttributesDTO;
-import com.pnow.config.auth.dto.SessionUserDTO;
 import com.pnow.domain.user.User;
 import com.pnow.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -10,10 +10,8 @@ import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserServ
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
-import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
-import javax.servlet.http.HttpSession;
 import java.util.Collections;
 /**
  * 소셜 로그인 이후 가져온 사용자의 정보들을 기반으로 가입 및 정보수정, 세션 저장 등의 기능 지원하는 클래스
@@ -23,7 +21,6 @@ import java.util.Collections;
 public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
 
     private final UserRepository userRepository;
-    private final HttpSession httpSession;
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
@@ -41,13 +38,15 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 
         User user = saveOrUpdate(attributes); //소셜로그인 인증한 OAuthAttributes dto를 User 엔티티에 저장
 
-        httpSession.setAttribute("user", new SessionUserDTO(user)); // SessionUser dto에 User 엔티티를 담아서 세션에 "user"로 저장
-        //User 엔티티를 세션에 저장하면 직렬화 구현하지 않았다는 에러 발생, 직렬화기능을 가진 세션 DTO를 만들어 유지보수함
-
-        return new DefaultOAuth2User(
+        return new CustomUserPrincipal(
+                user.getId(),
+                user.getName(),
+                user.getEmail(),
+                user.getPicture(),
                 Collections.singleton(new SimpleGrantedAuthority(user.getRoleKey())),
-                attributes.getAttributes(),
-                attributes.getNameAttributeKey());
+                attributes.getAttributes()
+        );
+
     }
     private User saveOrUpdate(OAuthAttributesDTO attributes) {
         User user = userRepository.findByEmail(attributes.getEmail())

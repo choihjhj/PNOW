@@ -1,11 +1,12 @@
 package com.pnow.service;
 
-import com.pnow.config.auth.dto.SessionUserDTO;
+import com.pnow.config.auth.dto.CustomUserPrincipal;
 import com.pnow.domain.user.User;
 import com.pnow.dto.UserUpdateDto;
 import com.pnow.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,7 +22,7 @@ public class UserService {
      * 회원 정보 조회
      */
     @Transactional(readOnly = true)
-    public User findUser(SessionUserDTO user){
+    public User findUser(CustomUserPrincipal user){
         return findByIdOrThrow(userRepository, user.getId(), "UserId");
 
     }
@@ -30,6 +31,7 @@ public class UserService {
      * 회원 정보 수정
      */
     @Transactional
+    @PreAuthorize("#id == principal.id") // principal은 CustomUserPrincipal
     public User updateUser(Long id, UserUpdateDto userUpdateDto) {
         // 회원 정보 조회
         User user = findByIdOrThrow(userRepository, id, "UserId");
@@ -44,6 +46,7 @@ public class UserService {
      * 회원 탈퇴
      */
     @Transactional
+    @PreAuthorize("#id == principal.id") // principal은 CustomUserPrincipal
     public  void deleteUser(Long id){
         // 회원 정보 조회
         User user = findByIdOrThrow(userRepository, id, "UserId");

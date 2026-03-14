@@ -1,22 +1,19 @@
 package com.pnow.controller;
 
-import com.pnow.aop.CheckUserAuthority;
-import com.pnow.config.auth.LoginUser;
-import com.pnow.config.auth.dto.SessionUserDTO;
+import com.pnow.config.auth.dto.CustomUserPrincipal;
 import com.pnow.dto.UserUpdateDto;
 import com.pnow.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 @RequestMapping("/users")
@@ -25,7 +22,6 @@ import javax.validation.Valid;
 @Slf4j
 public class UserController {
     private final UserService userService;
-    private final HttpSession httpSession;
 
     /*
      * 내정보 페이지 이동 myinfo.html
@@ -34,7 +30,7 @@ public class UserController {
      * return "/users/myinfo"
      * */
     @GetMapping
-    public String userMyinfo(@LoginUser SessionUserDTO user, Model model) {
+    public String userMyinfo(@AuthenticationPrincipal CustomUserPrincipal user, Model model) {
         log.info("내정보 페이지 진입 user={}", user);
         model.addAttribute("user", userService.findUser(user));
         return "users/myinfo";
@@ -46,13 +42,14 @@ public class UserController {
      * PUT /users/{id}
      * */
     @PutMapping("/{id}")
-    @CheckUserAuthority //aop로 요청 path 변수 id와 로그인 유저 id 비교 -> 권한 없으면 예외
-    public ResponseEntity<String> editUser(@PathVariable("id") Long id,
-                                           @Valid @RequestBody UserUpdateDto userUpdateDto) {
-        log.info("내정보 수정 메소드 진입 id={}, data={}", id, userUpdateDto.getName());
+    public ResponseEntity<String> editUser(
+    		@PathVariable("id") Long id,
+    		@AuthenticationPrincipal CustomUserPrincipal user,
+    		@Valid @RequestBody UserUpdateDto userUpdateDto) {
+    	
+    	log.info("내정보 수정 메소드 진입 id={}, data={}", id, userUpdateDto.getName());
 
-        //변경된 회원정보 로그인 세션 user 에도 갱신
-        httpSession.setAttribute("user",new SessionUserDTO(userService.updateUser(id, userUpdateDto)));
+    	userService.updateUser(user.getId(), userUpdateDto);
 
         return ResponseEntity.ok("회원 정보가 업데이트되었습니다.");
     }
@@ -62,10 +59,11 @@ public class UserController {
      * DELETE /users/{id}
      * */
     @DeleteMapping("/{id}")
-    @CheckUserAuthority //aop로 요청 path 변수 id와 로그인 유저 id 비교 -> 권한 없으면 예외
-    public ResponseEntity<String> deleteUser(@PathVariable("id") Long id,
-                                             HttpServletRequest request,
-                                             HttpServletResponse response) {
+    public ResponseEntity<String> deleteUser(
+    		@PathVariable("id") Long id,
+    		@AuthenticationPrincipal CustomUserPrincipal user,
+    		HttpServletRequest request,
+    		HttpServletResponse response) {
         log.info("회원 탈퇴 메소드 진입 id={}", id);
 
         userService.deleteUser(id);

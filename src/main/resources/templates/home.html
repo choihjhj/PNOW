@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:fragment="header">
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -27,8 +27,8 @@
         $(document).ready(function() {
             // 공통 함수: 로그인 여부 확인
             function checkLogin(e) {
-                var userSession = $('#user').val();
-                if (!userSession) {
+                var userId = $('#user').val();
+                if (!userId || userId === '') {
                     alert('로그인 후 이용 가능합니다.');
                     e.preventDefault();
                 }
@@ -45,6 +45,76 @@
                     event.preventDefault(); // 검색을 막음
                 }
             });
+            
+            function loadTopbarReservations(){
+
+                const userId = $('#user').val();
+
+                //로그인 안했을 시 호출방지
+                if(!userId || userId === ''){ 
+                    return;
+                }
+
+                $.ajax({
+                    url: "/reservations/topbar",
+                    method: "GET",
+                    success: function(reservations){
+
+                        if(!reservations || reservations.length === 0){
+                            return;
+                        }
+
+                        // 예약 개수 표시
+                        $("#reservationCount")
+                            .text(reservations.length + "+")
+                            .show();
+
+                        const container = $("#reservationDropdownList");
+                        container.empty();
+
+                        reservations.forEach(function(reservation){
+
+                            const html = `
+                            <a href="/reservations/status/WAITING"
+                               class="dropdown-item d-flex align-items-center">
+
+                                <div class="mr-3">
+                                    <div class="icon-circle bg-primary">
+                                        <i class="fas fa-file-alt text-white"></i>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <div class="small text-gray-500">
+                                        ${reservation.createdDate}
+                                    </div>
+
+                                    <span class="font-weight-bold">
+                                        ${reservation.storeName}
+                                    </span><br>
+
+                                    <span class="font-weight-bold">
+                                        ${reservation.selectedDate},
+                                        ${reservation.selectedTime},
+                                        ${reservation.numberOfPeople}명
+                                    </span>
+                                </div>
+
+                            </a>
+                            `;
+
+                            container.append(html);
+
+                        });
+
+                    },
+                    error: function(){
+                        console.error("예약 목록 조회 실패");
+                    }
+                });
+
+            }
+            loadTopbarReservations();
         });
     </script>
 
@@ -105,22 +175,7 @@
                     <i class="fas fa-fw fa-chart-area"></i>
                     <span>즐겨찾기</span></a>
             </li>
-            <!-- Nav Item - Utilities Collapse Menu 회원메뉴-->
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
-                   aria-expanded="true" aria-controls="collapseUtilities">
-                    <i class="fas fa-fw fa-wrench"></i>
-                    <span>회원메뉴</span>
-                </a>
-                <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
-                     data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Custom Utilities:</h6>
-                        <a class="collapse-item" href="/users" id="userInfoLink">내정보</a>
-                        <a class="collapse-item" href="/reservations/status/COMPLETE" id="userReservationLink">지난 예약 목록</a>
-                    </div>
-                </div>
-            </li>
+
             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">
             <!-- Sidebar Toggler (Sidebar) 사이드바줄이기버튼< -->
@@ -186,30 +241,19 @@
                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fas fa-bell fa-fw"></i>
                                 <!-- Counter - Alerts -->
-                                <span th:if="${#session.getAttribute('user') != null and #session.getAttribute('reservationList') != null}"
+                                <span id="reservationCount"
                                       class="badge badge-danger badge-counter"
-                                      th:text="${#session.getAttribute('reservationList').size()} + ' +'">3+</span>
+                                      style="display:none;"></span>
 
 
                             </a>
                             <!-- Dropdown - Alerts -->
-                            <div th:if="${#session.getAttribute('user') != null}" class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                            <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                  aria-labelledby="alertsDropdown">
                                 <h6 class="dropdown-header">
                                     Reservation list
                                 </h6>
-                                <a th:href="@{/reservations/status/WAITING}" class="dropdown-item d-flex align-items-center" th:each="reservation : ${#session.getAttribute('reservationList')}">
-                                    <div class="mr-3">
-                                        <div class="icon-circle bg-primary">
-                                            <i class="fas fa-file-alt text-white"></i>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div class="small text-gray-500" th:text="${reservation.createdDate}">예약접수일</div>
-                                        <span class="font-weight-bold" th:text="${reservation.storeName}">가게이름</span><br>
-                                        <span class="font-weight-bold" th:text="${reservation.selectedDate} + ', ' + ${reservation.selectedTime} + ', ' + ${reservation.numberOfPeople} + '명'">예약날짜 예약시간 인원수</span>
-                                    </div>
-                                </a>
+                                <div id="reservationDropdownList"></div>
 
                                 <a class="dropdown-item text-center small text-gray-500"
                                    th:href="@{/reservations/status/WAITING}">Show All Alerts</a>
@@ -218,23 +262,27 @@
                         <div class="topbar-divider d-none d-sm-block"></div>
                         <!-- Nav Item - User Information -->
                         <li class="nav-item dropdown no-arrow">
-                            <input type="hidden" id="user" th:value="${#session.getAttribute('user')}"/>
-                            <div class="nav-link dropdown-toggle" th:unless="${#session.getAttribute('user')}">
+                            <input type="hidden" id="user"  sec:authorize="isAuthenticated()" th:value="${#authentication.principal.id}" />
+                            <div class="nav-link dropdown-toggle" sec:authorize="isAnonymous()">
                                 <span class="mr-2 d-none d-lg-inline text-gray-600 small">Login : </span>
                                 <a th:href="@{/oauth2/authorization/google}" class="btn btn-success active"
                                    role="button">Google</a>
                             </div>
-                            <div th:if="${#session.getAttribute('user') != null}">
+                            <div sec:authorize="isAuthenticated()">
                                 <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <span class="mr-2 d-none d-lg-inline text-gray-600 small"
-                                          th:text="${#session.getAttribute('user').getName()}">프로필</span>
+                                           >반갑습니다!</span>
                                     <img class="img-profile rounded-circle"
-                                         th:src="${#session.getAttribute('user').getPicture()}">
+                                         th:src="${#authentication.principal.picture}">
                                 </a>
                                 <!-- Dropdown - User Information -->
                                 <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                      aria-labelledby="userDropdown">
+                                     
+                                    <a class="dropdown-item" th:href="@{/users}"><i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>내정보</a>
+                                    <a class="dropdown-item" th:href="@{/reservations/status/COMPLETE}"><i class="fas fa-history fa-sm fa-fw mr-2 text-gray-400"></i>지난 예약 목록</a>
+                                    <div class="dropdown-divider"></div>
                                     <a th:href="@{/logout}" class="btn btn-info active" role="button">Logout</a>
                                 </div>
                             </div>
