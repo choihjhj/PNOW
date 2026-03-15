@@ -16,7 +16,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import javax.persistence.EntityNotFoundException;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -34,6 +33,7 @@ public class ReservationService {
     private final ReservationRepository reservationRepository;
     private final StoreRepository storeRepository;
     private final UserRepository userRepository;
+    private final MailService mailService;
 
     /**
      * 예약상태 자동 갱신(WAITING->COMPLETE)
@@ -135,6 +135,9 @@ public class ReservationService {
 
         //예약 저장
         reservationRepository.save(requestDTO.toEntity(user, store));
+        
+        //예약 추가 메일 발송
+        mailService.sendReservationConfirm(user.getEmail(), store.getStoreName(), requestDTO, "추가");
 
     }
 
@@ -159,9 +162,12 @@ public class ReservationService {
      * 예약 삭제
      */
     @Transactional
-    public void cancelReservation(Long id){
+    public void cancelReservation(Long id, CustomUserPrincipal user){
         Reservation reservation = findByIdOrThrow(reservationRepository, id, "ReservationId");
         reservationRepository.delete(reservation);
+        
+      //예약 취소 메일 발송
+      mailService.sendReservationConfirm(user.getEmail(), reservation.getStore().getStoreName(), ReservationRequestDto.fromReservationEntity(reservation), "취소");
     }
 
     private <T> T findByIdOrThrow(JpaRepository<T, Long> repository, Long id, String entityName) {

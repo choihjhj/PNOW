@@ -120,9 +120,9 @@ public class ReservationController {
      * */
     @DeleteMapping("/{id}")
     @ResponseBody
-    public void deleteReservation( @PathVariable("id") Long id){
+    public void deleteReservation( @PathVariable("id") Long id, @AuthenticationPrincipal CustomUserPrincipal user){
         log.info("예약 삭제 메소드 진입 reservationId = {}", id);
-        reservationService.cancelReservation(id);
+        reservationService.cancelReservation(id, user);
     }
 
 }

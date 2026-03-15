@@ -1,20 +1,25 @@
 package com.pnow.dto;
 
-import com.pnow.domain.Reservation.Reservation;
-import com.pnow.domain.Reservation.ReservationStatus;
-import com.pnow.domain.Store;
-import com.pnow.domain.user.User;
-import lombok.Getter;
-import lombok.Setter;
-
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+
+import com.pnow.domain.Store;
+import com.pnow.domain.Reservation.Reservation;
+import com.pnow.domain.Reservation.ReservationStatus;
+import com.pnow.domain.user.User;
+
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 @Getter
 @Setter
+@NoArgsConstructor //기본생성자, JUnit test에서 @Builder사용하려고
 public class ReservationRequestDto implements Serializable {
     @NotNull(message = "가게Id는 필수 값입니다.") //String은 @NotBlank, 나머지는 @NotNull
     private Long storeId;              //가게 Id
@@ -27,6 +32,21 @@ public class ReservationRequestDto implements Serializable {
 
     @Min(1)
     private int numberOfPeople;        //인원수
+    
+    @Builder
+    public ReservationRequestDto(Long storeId, LocalDate selectedDate, LocalTime selectedTime, int numberOfPeople){
+    	this.storeId=storeId;
+    	this.selectedDate=selectedDate;
+    	this.selectedTime=selectedTime;
+    	this.numberOfPeople=numberOfPeople;
+    }
+    
+    @Builder
+    public ReservationRequestDto(LocalDate selectedDate, LocalTime selectedTime, int numberOfPeople){
+    	this.selectedDate=selectedDate;
+    	this.selectedTime=selectedTime;
+    	this.numberOfPeople=numberOfPeople;
+    }
 
     /**
      * DTO -> Entity 변환
@@ -40,6 +60,15 @@ public class ReservationRequestDto implements Serializable {
                 .guestCount(numberOfPeople)
                 .reservationStatus(ReservationStatus.WAITING) // 기본값 지정
                 .build();
+    }
+    
+    // Reservation Entity → ReservationRequestDto 변환
+    public static ReservationRequestDto fromReservationEntity(Reservation reservation) {
+        return ReservationRequestDto.builder()
+        		.selectedDate(reservation.getReservationDate())
+        		.selectedTime(reservation.getReservationTime())
+        		.numberOfPeople(reservation.getGuestCount())
+				.build();
     }
 
 }

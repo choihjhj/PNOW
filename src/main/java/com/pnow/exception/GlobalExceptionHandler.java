@@ -2,6 +2,7 @@ package com.pnow.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.MailSendException;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.validation.FieldError;
@@ -93,6 +94,14 @@ public class GlobalExceptionHandler {
 
         ErrorMessage errorMessage = new ErrorMessage(errors);
         return new ResponseEntity<>(errorMessage, HttpStatus.FORBIDDEN);
+    }
+    
+    //예약 완료 메일 전송 오류
+    @ExceptionHandler(MailSendException.class)
+    public ResponseEntity<ErrorMessage> handleMailSendException(MailSendException ex) {
+        List<String> errors = List.of(ex.getMessage());
+        ErrorMessage errorMessage = new ErrorMessage(errors);
+        return new ResponseEntity<>(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
 
