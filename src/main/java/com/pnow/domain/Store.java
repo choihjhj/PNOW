@@ -1,14 +1,30 @@
 package com.pnow.domain;
 
-import com.pnow.domain.Reservation.Reservation;
-import com.pnow.domain.category.Category;
-import lombok.Getter;
-import javax.persistence.*;
 import java.time.LocalTime;
 import java.util.List;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+
+import com.pnow.domain.Reservation.Reservation;
+import com.pnow.domain.category.Category;
+
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 @Getter
+@Setter
 @Entity
+@NoArgsConstructor //기본생성자, JUnit test에서 @Builder사용하려고
 public class Store {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -47,5 +63,31 @@ public class Store {
 
     @OneToMany(mappedBy = "store", cascade = CascadeType.REMOVE)
     private List<Menu> menuList;
-
+    
+    @Builder
+    public Store(Long id,Category category,String storeName,District district,String detailAddress,String phoneNumber,
+    		LocalTime openingTime,LocalTime closingTime) {
+    	this.id=id;
+    	this.category=category;
+    	this.storeName=storeName;
+    	this.district=district;
+    	this.detailAddress=detailAddress;
+    	this.phoneNumber=phoneNumber;
+    	this.openingTime=openingTime;
+    	this.closingTime=closingTime;
+    	
+    }
+    @Builder
+    public Store(Category category,String storeName,District district,String detailAddress,String phoneNumber,
+    		LocalTime openingTime,LocalTime closingTime) {
+    	this.category=category;
+    	this.storeName=storeName;
+    	this.district=district;
+    	this.detailAddress=detailAddress;
+    	this.phoneNumber=phoneNumber;
+    	this.openingTime=openingTime;
+    	this.closingTime=closingTime;
+    	
+    }
+    
 }

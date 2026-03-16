@@ -68,16 +68,13 @@ public class ReservationService {
         return calculateAvailableTimes(openingTime, closingTime, reservedTimes,reservationDate); //예약날짜에 예약안 된 시간들 계산해서 저장
     }
 
-    //예약날짜에 예약된 시간들 Set으로 저장
+    //예약날짜에 예약된 시간들 List -> Set 으로 저장
     private Set<LocalTime> getReservedTimes(Long storeId, LocalDate reservationDate){
-        List<Reservation> reservations = reservationRepository
-                .findByStoreIdAndReservationDateAndReservationStatus(
-                        storeId,
-                        reservationDate,
-                        ReservationStatus.WAITING);
-        return reservations.stream()
-                .map(Reservation::getReservationTime)
-                .collect(Collectors.toSet());
+    	Set<LocalTime> reservedTimes = new HashSet<>(reservationRepository.findReservedTimes(
+    			storeId,
+    			reservationDate,
+    			ReservationStatus.WAITING));
+    	return reservedTimes;
     }
 
     //예약 가능한 시간 계산

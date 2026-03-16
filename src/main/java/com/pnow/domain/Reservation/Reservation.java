@@ -17,6 +17,15 @@ import java.time.LocalTime;
 @Entity
 @DynamicInsert //@ColumnDefault 사용하려고
 @NoArgsConstructor //기본생성자, JUnit test에서 @Builder사용하려고
+
+@Table(
+	    indexes = {
+	        @Index(
+	            name = "idx_reservation_store_date_status",
+	            columnList = "store_id, reservationDate, reservationStatus"
+	        )
+	    }
+	)
 public class Reservation extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

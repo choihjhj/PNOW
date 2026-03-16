@@ -15,8 +15,23 @@ import java.util.List;
 
 @Repository
 public interface ReservationRepository extends JpaRepository<Reservation, Long> {
-    //storeId, reservationDate, reservationStatus에 해당하는 예약목록 조회
-    List<Reservation> findByStoreIdAndReservationDateAndReservationStatus(Long storeId, LocalDate reservationDate, ReservationStatus reservationStatus);
+
+	//가게의 선택날짜에 예약된 reservationTime 목록 조회
+	@Query(""
+			+ "SELECT r.reservationTime "
+			+ "FROM Reservation r "
+			+ "WHERE r.store.id = :storeId "
+			+ "AND r.reservationDate = :reservationDate "
+			+ "AND r.reservationStatus = :reservationStatus "
+			+ "")
+	List<LocalTime> findReservedTimes(
+			@Param("storeId") Long storeId,
+			@Param("reservationDate") LocalDate reservationDate,
+			@Param("reservationStatus") ReservationStatus reservationStatus
+			);
+	
+    //storeId, reservationDate, reservationStatus에 해당하는 예약된 Reservation 목록 조회
+    //List<Reservation> findByStoreIdAndReservationDateAndReservationStatus(Long storeId, LocalDate reservationDate, ReservationStatus reservationStatus);
 
     //user에 해당하는 예약목록 조회
     List<Reservation> findAllByUserAndReservationStatusOrderByReservationDateAscReservationTimeAsc(User user, ReservationStatus reservationStatus);
