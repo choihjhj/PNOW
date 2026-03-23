@@ -16,7 +16,7 @@ public class ReservationScheduler {
      * 1분마다 예약 상태 자동 업데이트
      * - 이전에 완료되지 않은 예약(WAITING)을 COMPLETE로 변경
      */
-    @Scheduled(fixedRate = 60000) // 1분마다 실행
+    @Scheduled(cron = "0 */1 * * * *") // 1분마다 실행
     public void updateReservationStatus() {
         log.info("스케줄러 실행 - 예약 상태 업데이트 시작");
         try {

@@ -37,7 +37,7 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
     List<Reservation> findAllByUserAndReservationStatusOrderByReservationDateAscReservationTimeAsc(User user, ReservationStatus reservationStatus);
 
     //예약 상태 갱신 WAITING -> COMPLETE, ReservationScheduler에서 사용
-    @Modifying
+    @Modifying(clearAutomatically = true)
     @Query("UPDATE Reservation r SET r.reservationStatus = :newStatus " +
             "WHERE r.reservationStatus = :oldStatus " +
             "AND (r.reservationDate < :currentDate OR " +

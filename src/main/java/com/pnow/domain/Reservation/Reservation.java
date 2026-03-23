@@ -21,14 +21,18 @@ import java.time.LocalTime;
 @Table(
 		indexes = {
 				@Index(
-						name = "idx_reservation_store_date_status",
+						name = "idx_reservation_store_date_status", //예약 가능 시간 목록 조회용
 						columnList = "store_id, reservationDate, reservationStatus"
-						)
+						),
+				@Index(
+			            name = "idx_reservation_status_date_time", // 예약 상태 변경 스케줄러용
+			            columnList = "reservationStatus, reservationDate, reservationTime"
+			        )
 		},
 		uniqueConstraints = {
 				@UniqueConstraint(
-						name = "uk_store_date_time_status",
-						columnNames = {"store_id", "reservationDate", "reservationTime", "reservationStatus"}
+						name = "uk_store_date_time", //중복 예약 동시성 방지용
+						columnNames = {"store_id", "reservationDate", "reservationTime"}
 						)
 		}
 		)
