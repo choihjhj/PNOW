@@ -109,6 +109,7 @@
                 e.preventDefault();
 
                 var storeId = $("#storeId").val();
+                var storeName = $("#storeName").val();
                 // 날짜와 시간을 선택했는지 확인
                 var selectedDate = $("#datepicker").val();
                 var selectedTime = $("#ReservationAbleTimeDTOContainer").find(".selected").text();
@@ -122,6 +123,7 @@
 
                 var requestData = {
                     storeId: storeId,
+                    storeName: storeName,
                     selectedDate: selectedDate,
                     selectedTime: selectedTime,
                     numberOfPeople: numberOfPeople
@@ -180,6 +182,7 @@
                     <div class="card-header py-3">
                         <!-- 카드 안에 내용 시작 -->
                         <input type="hidden" id="storeId" th:value="${store.id}"/>
+                        <input type="hidden" id="storeName" th:value="${store.storeName}"/>
                         <div class="d-sm-flex align-items-center justify-content-between mb-4">
                             <h1 class="h3 mb-0 text-gray-800" th:text="${store.storeName}">가게이름</h1>
                         </div>

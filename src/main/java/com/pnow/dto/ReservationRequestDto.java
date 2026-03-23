@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 import com.pnow.domain.Store;
@@ -23,6 +24,9 @@ import lombok.Setter;
 public class ReservationRequestDto implements Serializable {
     @NotNull(message = "가게Id는 필수 값입니다.") //String은 @NotBlank, 나머지는 @NotNull
     private Long storeId;              //가게 Id
+    
+    @NotBlank(message = "가게이름은 필수 값입니다.")
+    private String storeName;
 
     @NotNull(message = "예약 날짜는 필수 값입니다.")
     private LocalDate selectedDate;    //예약 날짜
@@ -34,8 +38,17 @@ public class ReservationRequestDto implements Serializable {
     private int numberOfPeople;        //인원수
     
     @Builder
-    public ReservationRequestDto(Long storeId, LocalDate selectedDate, LocalTime selectedTime, int numberOfPeople){
+    public ReservationRequestDto(Long storeId, String storeName, LocalDate selectedDate, LocalTime selectedTime, int numberOfPeople){
     	this.storeId=storeId;
+    	this.storeName=storeName;
+    	this.selectedDate=selectedDate;
+    	this.selectedTime=selectedTime;
+    	this.numberOfPeople=numberOfPeople;
+    }
+    
+    @Builder
+    public ReservationRequestDto(String storeName, LocalDate selectedDate, LocalTime selectedTime, int numberOfPeople){
+    	this.storeName=storeName;
     	this.selectedDate=selectedDate;
     	this.selectedTime=selectedTime;
     	this.numberOfPeople=numberOfPeople;

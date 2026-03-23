@@ -127,14 +127,14 @@ public class ReservationService {
      */
     @Transactional
     public void makeReservation(ReservationRequestDto requestDTO, CustomUserPrincipal principalUser) {
-        Store store = findByIdOrThrow(storeRepository, requestDTO.getStoreId(), "StoreId");
-        User user = findByIdOrThrow(userRepository, principalUser.getId(), "UserId");
+        Store store = storeRepository.getReferenceById(requestDTO.getStoreId());
+        User user = userRepository.getReferenceById(principalUser.getId());
 
         //예약 저장
         reservationRepository.save(requestDTO.toEntity(user, store));
         
         //예약 추가 메일 발송
-        mailService.sendReservationConfirm(user.getEmail(), store.getStoreName(), requestDTO, "추가");
+        mailService.sendReservationConfirm(principalUser.getEmail(), requestDTO, "추가");
 
     }
 
@@ -164,7 +164,7 @@ public class ReservationService {
         reservationRepository.delete(reservation);
         
       //예약 취소 메일 발송
-      mailService.sendReservationConfirm(user.getEmail(), reservation.getStore().getStoreName(), ReservationRequestDto.fromReservationEntity(reservation), "취소");
+      mailService.sendReservationConfirm(user.getEmail(), ReservationRequestDto.fromReservationEntity(reservation), "취소");
     }
 
     private <T> T findByIdOrThrow(JpaRepository<T, Long> repository, Long id, String entityName) {

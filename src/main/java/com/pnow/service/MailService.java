@@ -18,14 +18,14 @@ public class MailService {
 	private final JavaMailSender mailSender;
 
 	@Async //비동기 처리
-    public void sendReservationConfirm(String email, String storeName, ReservationRequestDto requestDTO, String status) {
+    public void sendReservationConfirm(String email, ReservationRequestDto requestDTO, String status) {
 
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(email);
-        message.setSubject("[PNOW] " + storeName + " 예약이 " + status + "되었습니다."); //제목
+        message.setSubject("[PNOW] " + requestDTO.getStoreName() + " 예약이 " + status + "되었습니다."); //제목
         message.setText(
                 "예약 안내\n\n" +
-                "매장명 : " + storeName + "\n" +
+                "매장명 : " + requestDTO.getStoreName() + "\n" +
                 "예약 날짜 : " + requestDTO.getSelectedDate() + "\n" +
                 "예약 시간 : " + requestDTO.getSelectedTime() + "\n" +
                 "예약 인원 : " + requestDTO.getNumberOfPeople() + "명\n\n" +
