@@ -8,11 +8,13 @@ import com.pnow.domain.user.User;
 import com.pnow.dto.ReservationAbleTimeDto;
 import com.pnow.dto.ReservationDto;
 import com.pnow.dto.ReservationRequestDto;
+import com.pnow.exception.DuplicateReservationException;
 import com.pnow.repository.ReservationRepository;
 import com.pnow.repository.StoreRepository;
 import com.pnow.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -124,17 +126,34 @@ public class ReservationService {
 
     /**
      * 예약 추가
+     * 
+     * save() - 메일은 이미 보냈는데 DB는 실패
+     * → 영속성 컨텍스트 저장
+     * → mailService 실행
+     * → commit 시 flush
+     * → INSERT 실행
+     * → UniqueConstraint 체크
+     * → Exception 발생 (이미 메일 보낸 후)
+     *
+     * saveAndFlush() - DB 성공한 경우에만 메일 발송됨
+     * → 즉시 flush (INSERT 실행)
+     * → UniqueConstraint 체크
+     * → Exception 발생 (메일 보내기 전에)
      */
     @Transactional
     public void makeReservation(ReservationRequestDto requestDTO, CustomUserPrincipal principalUser) {
-        Store store = storeRepository.getReferenceById(requestDTO.getStoreId());
-        User user = userRepository.getReferenceById(principalUser.getId());
+    	try {
+    		Store store = storeRepository.getReferenceById(requestDTO.getStoreId());
+    		User user = userRepository.getReferenceById(principalUser.getId());
 
-        //예약 저장
-        reservationRepository.save(requestDTO.toEntity(user, store));
-        
-        //예약 추가 메일 발송
-        mailService.sendReservationConfirm(principalUser.getEmail(), requestDTO, "추가");
+    		//예약 저장
+    		reservationRepository.saveAndFlush(requestDTO.toEntity(user, store));
+
+    		//예약 추가 메일 발송
+    		mailService.sendReservationConfirm(principalUser.getEmail(), requestDTO, "추가");
+    	} catch (DataIntegrityViolationException e) { //동시성 문제 예외 처리
+    	    throw new DuplicateReservationException();
+    	}
 
     }
 

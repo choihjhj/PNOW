@@ -103,6 +103,14 @@ public class GlobalExceptionHandler {
         ErrorMessage errorMessage = new ErrorMessage(errors);
         return new ResponseEntity<>(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+    
+    //예약 추가 동시성 예외 처리
+    @ExceptionHandler(DuplicateReservationException.class)
+    public ResponseEntity<ErrorMessage> handleDuplicateReservation() {
+        return ResponseEntity
+                .status(HttpStatus.CONFLICT)
+                .body(new ErrorMessage(List.of("이미 예약된 시간입니다.")));
+    }
 
 
     private String extractField(Path path) {
