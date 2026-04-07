@@ -26,7 +26,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
         //인터페이스 생성
         OAuth2UserService<OAuth2UserRequest, OAuth2User> delegate = new DefaultOAuth2UserService();
-        OAuth2User oAuth2User = delegate.loadUser(userRequest); //인터페이스에 userRequest를 받아 로드
+        OAuth2User oAuth2User = delegate.loadUser(userRequest); //access token 꺼냄, Google UserInfo API 호출, JSON 형태 사용자 정보 받아옴
 
         //1. 현재 로그인 진행 중인 서비스(구글, 로그인)를 구분
         String registrationId = userRequest.getClientRegistration().getRegistrationId();
@@ -38,7 +38,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 
         User user = saveOrUpdate(attributes); //소셜로그인 인증한 OAuthAttributes dto를 User 엔티티에 저장
 
-        return new CustomUserPrincipal(
+        return new CustomUserPrincipal( //SecurityContext에 저장 (로그인 완료)
                 user.getId(),
                 user.getName(),
                 user.getEmail(),

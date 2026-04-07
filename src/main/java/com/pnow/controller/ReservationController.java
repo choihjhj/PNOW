@@ -85,6 +85,7 @@ public class ReservationController {
      * */
     @PostMapping
     @ResponseBody
+    @LogExecutionTime
     public void createReservation(@Valid @RequestBody ReservationRequestDto requestDto, @AuthenticationPrincipal CustomUserPrincipal user) {
         log.info("로그인 객체 user = {}", user);
         log.info("예약 등록 메서드 진입 storeId={}, storeName={}, 예약날짜={}, 예약시간={}, 인원수={}", requestDto.getStoreId(),requestDto.getStoreName(), requestDto.getSelectedDate(), requestDto.getSelectedTime(), requestDto.getNumberOfPeople());

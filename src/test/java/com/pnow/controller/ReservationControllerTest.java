@@ -33,9 +33,9 @@ class ReservationControllerTest {
   
     @Test
     @DisplayName("예약 추가 동시성 테스트")
-    void 동시에_10명_예약하면_1개만_성공_나머지는_예외처리() throws InterruptedException {
+    void 동시에_100명_예약하면_1개만_성공_나머지_99명_예외처리() throws InterruptedException {
 
-        int threadCount = 10; //10명 동시 예약
+        int threadCount = 100; //100명 동시 예약
 
         ExecutorService executorService = Executors.newFixedThreadPool(threadCount);
         CountDownLatch latch = new CountDownLatch(threadCount);
