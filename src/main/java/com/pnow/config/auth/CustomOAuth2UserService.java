@@ -24,21 +24,31 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
-        //인터페이스 생성
+        
         OAuth2UserService<OAuth2UserRequest, OAuth2User> delegate = new DefaultOAuth2UserService();
-        OAuth2User oAuth2User = delegate.loadUser(userRequest); //access token 꺼냄, Google UserInfo API 호출, JSON 형태 사용자 정보 받아옴
+        
+        // userRequest에는 OAuth2 로그인 과정에서 획득한 Access Token이 들어있다.
+        // DefaultOAuth2UserService가 Access Token을 사용하여
+        // Provider의 UserInfo Endpoint에서 사용자 정보를 가져온다.
+        OAuth2User oAuth2User = delegate.loadUser(userRequest); 
 
-        //1. 현재 로그인 진행 중인 서비스(구글, 로그인)를 구분
+        // 현재 로그인에 사용한 OAuth2 Provider 확인
         String registrationId = userRequest.getClientRegistration().getRegistrationId();
-        //2. OAuth2 로그인 진행 시 키가 되는 필드 = Primary Key
+        
+        
+        // Provider에서 사용자 식별에 사용하는 attribute 이름
+        // Google의 경우 일반적으로 "sub"
         String userNameAttributeName = userRequest.getClientRegistration().getProviderDetails().getUserInfoEndpoint().getUserNameAttributeName();
 
         //-------- OAuth2UserService를 통해 가져온 OAuth2User의 attribute를 담을 클래스
         OAuthAttributesDTO attributes = OAuthAttributesDTO.of(registrationId, userNameAttributeName, oAuth2User.getAttributes());
 
-        User user = saveOrUpdate(attributes); //소셜로그인 인증한 OAuthAttributes dto를 User 엔티티에 저장
-
-        return new CustomUserPrincipal( //SecurityContext에 저장 (로그인 완료)
+        //소셜로그인 인증한 OAuthAttributes dto를 아래 saveOrUpdate()메서드에서 이메일 기준으로 DB에서 기존회원조회 또는 신규회원생성 후 User 엔티티로 반환
+        User user = saveOrUpdate(attributes); 
+        
+        // 이후 Spring Security가 Authentication의 principal로 사용할
+        // 애플리케이션 전용 사용자 객체 반환(OAuth2User 타입)
+        return new CustomUserPrincipal( 
                 user.getId(),
                 user.getName(),
                 user.getEmail(),
