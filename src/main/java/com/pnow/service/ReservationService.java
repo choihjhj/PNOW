@@ -127,18 +127,20 @@ public class ReservationService {
     /**
      * 예약 추가
      * 
-     * save() - 메일은 이미 보냈는데 DB는 실패
-     * → 영속성 컨텍스트 저장
-     * → mailService 실행
-     * → commit 시 flush
+     * save()를 사용할 경우:
+     * → 영속성 컨텍스트에 예약 엔티티 저장
+     * → 메일 발송(mailService 실행)
+     * → 트랜잭션 종료 시 flush
      * → INSERT 실행
-     * → UniqueConstraint 체크
-     * → Exception 발생 (이미 메일 보낸 후)
+     * → Unique Constraint 위반 발생 가능
+     * → 이미 메일을 발송한 후 DB 예외가 발생할 수 있음
      *
-     * saveAndFlush() - DB 성공한 경우에만 메일 발송됨
-     * → 즉시 flush (INSERT 실행)
-     * → UniqueConstraint 체크
-     * → Exception 발생 (메일 보내기 전에)
+     * saveAndFlush()를 사용하면:
+     * → 즉시 flush
+     * → INSERT SQL 실행
+     * → Unique Constraint 검사
+     * → 중복 예약이면 예외 발생
+     * → 메일 발송 전에 예외 처리 가능
      */
     @Transactional
     public void makeReservation(ReservationRequestDto requestDTO, CustomUserPrincipal principalUser) {

@@ -33,13 +33,13 @@ class ReservationControllerTest {
   
     @Test
     @DisplayName("예약 추가 동시성 테스트")
-    void 동시에_100명_예약하면_1개만_성공_나머지_99명_예외처리() throws InterruptedException {
+    void 동시에_100개_예약하면_1개만_성공_나머지_99개_예외처리() throws InterruptedException {
 
-        int threadCount = 100; //100명 동시 예약
+        int threadCount = 100; //100개 동시 예약
 
-        ExecutorService executorService = Executors.newFixedThreadPool(threadCount);
-        CountDownLatch latch = new CountDownLatch(threadCount);
-        AtomicInteger successCount = new AtomicInteger(0);
+        ExecutorService executorService = Executors.newFixedThreadPool(threadCount); //100개 스레드풀 생성
+        CountDownLatch latch = new CountDownLatch(threadCount); //카운트다운으로 100~0개의 작업이 끝날 때까지 기다리는 카운터
+        AtomicInteger successCount = new AtomicInteger(0); //예약성공 스레드 갯수 변수
 
         ReservationRequestDto requestDto =
                 ReservationRequestDto.builder()
@@ -67,16 +67,16 @@ class ReservationControllerTest {
             executorService.submit(() -> {
                 try {
                     reservationService.makeReservation(requestDto, principal);
-                    successCount.incrementAndGet(); // 성공 카운트 증가
+                    successCount.incrementAndGet(); 
                 } catch (Exception e) {
                     System.out.println("예약 실패: " + e.getClass().getSimpleName() + " - " + e.getMessage());
                 } finally {
-                    latch.countDown();
+                    latch.countDown(); //해당 스레드 작업 완료처리
                 }
             });
         }
 
-        latch.await();
+        latch.await(); //모든 작업 끝날때까지 기다림
         executorService.shutdown();
 
         System.out.println("성공한 예약 수 = " + successCount.get());
