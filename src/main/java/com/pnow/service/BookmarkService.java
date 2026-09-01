@@ -63,7 +63,8 @@ public class BookmarkService {
     @Transactional(readOnly = true)
     public List<Bookmark> findBookmarkWithUserId(CustomUserPrincipal userDTO){
         User user = findByIdOrThrow(userRepository, userDTO.getId(), "UserId");
-        return bookmarkRepository.findAllByUser(user);
+        return bookmarkRepository.findAllByUserIdWithStoreInfo(user.getId());
+//        return bookmarkRepository.findAllByUser(user);
 
     }
 
